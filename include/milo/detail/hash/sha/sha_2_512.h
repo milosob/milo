@@ -7,7 +7,7 @@
 #include <milo/concepts.h>
 #include <milo/impl.h>
 #include <milo/memory.h>
-#include <milo/options.h>
+#include <milo/option.h>
 #include <milo/update.h>
 
 #include <milo/detail/hash/impl.h>
