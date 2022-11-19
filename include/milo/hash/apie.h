@@ -25,8 +25,6 @@ namespace milo::hash
     {
     public:
         
-        using type = apie;
-        
         using impl_type = t_impl;
     
     public:
@@ -50,16 +48,18 @@ namespace milo::hash
             initialize();
         }
         
-        constexpr apie(type&& object) noexcept(true) = default;
+        constexpr apie(apie&& object) noexcept(true) = default;
         
-        constexpr apie(const type& object) noexcept(true) = default;
+        constexpr apie(const apie& object) noexcept(true) = default;
         
         constexpr ~apie() noexcept(true) = default;
     
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(
+            const apie& object
+        ) noexcept(true) -> apie& = default;
     
     private:
         
@@ -89,7 +89,7 @@ namespace milo::hash
             
             m_finalized = false;
         }
-    
+        
         /**
          * This function updates message.
          *
@@ -136,7 +136,7 @@ namespace milo::hash
                 a_message.size()
             );
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -159,13 +159,13 @@ namespace milo::hash
         ) noexcept(true) -> size_t
         {
             do_finalize();
-    
+            
             return m_impl.digest(
                 a_digest_ptr,
                 a_digest_size
             );
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -188,23 +188,23 @@ namespace milo::hash
         ) noexcept(concepts::container_static<t_digest>) -> size_t
         {
             do_finalize();
-    
+            
             a_digest_size = common::min(
                 a_digest_size,
                 digest_size
             );
-    
+            
             a_digest_size = utility::resize(
                 a_digest,
                 a_digest_size
             );
-    
+            
             return digest(
                 a_digest.data(),
                 a_digest_size
             );
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -229,15 +229,15 @@ namespace milo::hash
         }
         {
             t_digest result;
-    
+            
             digest(
                 result,
                 a_digest_size
             );
-    
+            
             return result;
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -259,12 +259,12 @@ namespace milo::hash
         }
         {
             t_digest result;
-    
+            
             digest(
                 result,
                 result.size()
             );
-    
+            
             return result;
         }
     };
@@ -303,12 +303,12 @@ namespace milo::hash
     ) noexcept(true) -> size_t
     {
         apie<t_impl> apie;
-    
+        
         apie.template update<t_message>(
             a_message_ptr,
             a_message_size
         );
-    
+        
         return apie.template digest<t_digest>(
             a_digest_ptr,
             a_digest_size
@@ -346,11 +346,11 @@ namespace milo::hash
     ) noexcept(concepts::container_static<t_digest>) -> size_t
     {
         apie<t_impl> apie;
-    
+        
         apie.template update<t_message>(
             a_message
         );
-    
+        
         return apie.template digest<t_digest>(
             a_digest,
             a_digest_size
@@ -385,11 +385,11 @@ namespace milo::hash
     ) noexcept(false) -> t_digest
     {
         apie<t_impl> apie;
-    
+        
         apie.template update<t_message>(
             a_message
         );
-    
+        
         return apie.template digest<t_digest>(
             a_digest_size
         );
@@ -420,7 +420,7 @@ namespace milo::hash
     ) noexcept(true) -> t_digest
     {
         apie<t_impl> apie;
-    
+        
         apie.template update<t_message>(
             a_message
         );
