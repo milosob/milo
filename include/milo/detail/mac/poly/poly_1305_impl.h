@@ -25,7 +25,9 @@ namespace milo::detail
         hook(
         ) noexcept(true)
         {
-            return t_impl::template process<uint8_t>;
+            return t_impl::template process<
+                uint8_t
+            >;
         }
     };
     
