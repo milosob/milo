@@ -9,13 +9,13 @@
 #include <milo/memory.h>
 
 
-namespace milo::mac::detail
+namespace milo::detail
 {
     template<
         concepts::hash t_hash,
         typename... t_options
     >
-    class hmac
+    class mac_hmac
     {
     public:
         
@@ -53,13 +53,13 @@ namespace milo::mac::detail
     
     public:
         
-        constexpr hmac() noexcept(true) = default;
+        constexpr mac_hmac() noexcept(true) = default;
         
-        constexpr hmac(hmac&& object) noexcept(true) = default;
+        constexpr mac_hmac(mac_hmac&& object) noexcept(true) = default;
         
-        constexpr hmac(const hmac& object) noexcept(true) = default;
+        constexpr mac_hmac(const mac_hmac& object) noexcept(true) = default;
         
-        constexpr ~hmac() noexcept(true)
+        constexpr ~mac_hmac() noexcept(true)
         {
             memory::erase(m_buffer);
         }
@@ -67,7 +67,9 @@ namespace milo::mac::detail
     public:
         
         constexpr auto
-        operator =(const hmac& object) noexcept(true) -> hmac& = default;
+        operator =(
+            const mac_hmac& object
+        ) noexcept(true) -> mac_hmac& = default;
     
     public:
         
@@ -75,7 +77,7 @@ namespace milo::mac::detail
          * This function initializes context.
          *
          * @tparam t_key
-         * Key hmac.
+         * Key type.
          * @param a_key_ptr
          * Key pointer.
          * @param a_key_size
@@ -154,7 +156,7 @@ namespace milo::mac::detail
          * This function updates the message.
          *
          * @tparam t_message
-         * Message hmac.
+         * Message type.
          * @param a_message_ptr
          * Message pointer.
          * @param a_message_size
@@ -199,7 +201,7 @@ namespace milo::mac::detail
          * This function extracts digest.
          *
          * @tparam t_digest
-         * Digest hmac.
+         * Digest type.
          * @param a_digest_ptr
          * Digest pointer.
          * @param a_digest_size

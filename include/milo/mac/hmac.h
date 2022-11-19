@@ -9,5 +9,5 @@
 namespace milo::mac
 {
     template<typename t_hash>
-    using hmac = detail::hmac<t_hash>;
+    using hmac = detail::mac_hmac<t_hash>;
 }
