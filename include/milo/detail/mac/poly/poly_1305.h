@@ -91,7 +91,9 @@ namespace milo::detail
     public:
         
         constexpr auto
-        operator =(const mac_poly_1305& object) noexcept(true) -> mac_poly_1305& = default;
+        operator =(
+            const mac_poly_1305& object
+        ) noexcept(true) -> mac_poly_1305& = default;
     
     public:
         
