@@ -6,7 +6,7 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/mac/poly_1305.h>
+#include <milo/mac/poly.h>
 #include <milo/mac/test.h>
 
 

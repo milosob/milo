@@ -3,7 +3,7 @@
     "payload": {
         "impl": "milo::mac::poly_1305",
         "include": [
-            "<milo/mac/poly_1305.h>"
+            "<milo/mac/poly.h>"
         ],
         "vectors": [
             {

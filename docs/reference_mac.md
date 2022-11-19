@@ -27,7 +27,7 @@ Headers and types:
     - `milo::mac::apie<mac_type>`
 - `<milo/mac/hmac.h>`
     - `milo::mac::hmac<hash_type>`
-- `<milo/mac/poly_1305.h>`
+- `<milo/mac/poly.h>`
     - `milo::mac::poly_1305`
 
 All implementations of the algorithms share the same interface.
@@ -75,7 +75,7 @@ milo::mac::hmac<milo::hash::sha_2_256> hmac;
 #### Algorithms Poly-1305
 
 ```c++
-#include <milo/mac/poly_1305.h>
+#include <milo/mac/poly.h>
     
 milo::mac::poly_1305 poly_1305;
 ```
@@ -184,7 +184,7 @@ int main()
 #include <milo/codec/apie.h>
 #include <milo/codec/hex.h>
 #include <milo/mac/apie.h>
-#include <milo/mac/poly_1305.h>
+#include <milo/mac/poly.h>
 
 int main()
 {

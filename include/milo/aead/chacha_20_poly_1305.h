@@ -8,7 +8,7 @@
 #include <milo/memory.h>
 
 #include <milo/cipher/chacha_20.h>
-#include <milo/mac/poly_1305.h>
+#include <milo/mac/poly.h>
 
 
 namespace milo::aead
