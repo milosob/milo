@@ -28,7 +28,7 @@ namespace milo::detail
     class hash_sha_2_512
     {
     public:
-    
+        
         struct impl_type
             : milo::impl::proxy<
                 milo::impl::scope::runtime,
@@ -47,9 +47,9 @@ namespace milo::detail
         
         struct properties
         {
-            using hash_type [[maybe_unused]] = int;
-    
-            using hash_sha_2_type [[maybe_unused]] = int;
+            using hash [[maybe_unused]] = int;
+            
+            using hash_sha_2 [[maybe_unused]] = int;
         };
     
     public:
@@ -74,13 +74,13 @@ namespace milo::detail
         size_t m_buffer_size = 0;
     
     public:
-    
+        
         constexpr hash_sha_2_512() noexcept(true) = default;
-    
+        
         constexpr hash_sha_2_512(hash_sha_2_512&& object) noexcept(true) = default;
-    
+        
         constexpr hash_sha_2_512(const hash_sha_2_512& object) noexcept(true) = default;
-    
+        
         constexpr  ~hash_sha_2_512() noexcept(true)
         {
             memory::erase(m_h);
@@ -90,7 +90,7 @@ namespace milo::detail
         }
     
     public:
-    
+        
         constexpr auto
         operator =(
             const hash_sha_2_512& object
@@ -179,7 +179,7 @@ namespace milo::detail
         {
             m_processed_bytes[1] += m_processed_bytes[0] > (UINT64_MAX - a_message_size);
             m_processed_bytes[0] += a_message_size;
-    
+            
             m_buffer_size = update::block_soak_candidate<
                 impl_type
             >(
@@ -200,26 +200,26 @@ namespace milo::detail
         {
             size_t left_size = m_buffer_size;
             size_t last_size = size_t(block_size) << size_t(left_size >= 112);
-    
+            
             m_buffer[left_size] = 128;
-    
+            
             for (auto i = left_size + 1; i < last_size - 16; i += 1)
             {
                 m_buffer[i] = 0;
             }
-    
+            
             memory::stor_be<uint64_t>(
                 m_buffer + last_size - 16,
                 0,
                 m_processed_bytes[1] << 3 | m_processed_bytes[0] >> 61
             );
-    
+            
             memory::stor_be<uint64_t>(
                 m_buffer + last_size - 16,
                 1,
                 m_processed_bytes[0] << 3
             );
-    
+            
             impl_type::template invoke<
                 0
             >(
@@ -254,13 +254,13 @@ namespace milo::detail
                 a_digest_size,
                 digest_size
             );
-    
+            
             memory::copy_be(
                 a_digest_ptr,
                 m_h,
                 a_digest_size
             );
-    
+            
             return a_digest_size;
         }
     };

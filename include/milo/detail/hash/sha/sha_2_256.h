@@ -49,9 +49,9 @@ namespace milo::detail
         
         struct properties
         {
-            using hash_type [[maybe_unused]] = int;
+            using hash [[maybe_unused]] = int;
             
-            using hash_sha_2_type [[maybe_unused]] = int;
+            using hash_sha_2 [[maybe_unused]] = int;
         };
     
     public:

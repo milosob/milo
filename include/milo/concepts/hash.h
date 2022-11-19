@@ -21,7 +21,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::hash_type;
+        typename t_0::properties::hash;
     } &&
     requires
     {
@@ -80,7 +80,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::hash_sha_1_type;
+        typename t_0::properties::hash_sha_1;
     };
     
     template<typename t_0>
@@ -91,7 +91,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::hash_sha_2_type;
+        typename t_0::properties::hash_sha_2;
     };
 
     /*
