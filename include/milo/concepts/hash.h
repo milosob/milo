@@ -73,6 +73,17 @@ namespace milo::concepts
     };
     
     template<typename t_0>
+    concept hash_sha_1 =
+    requires
+    {
+        requires hash<t_0>;
+    } &&
+    requires
+    {
+        typename t_0::properties::hash_sha_1_type;
+    };
+    
+    template<typename t_0>
     concept hash_sha_2 =
     requires
     {
