@@ -22,14 +22,11 @@ namespace milo::hash
         concepts::hash t_impl
     >
     class test
+        : private common::disabled
     {
     public:
         
         using impl_type = t_impl;
-    
-    public:
-        
-        constexpr test() noexcept(true) = delete;
     
     public:
         
@@ -61,7 +58,7 @@ namespace milo::hash
             auto digest = hash::digest<impl_type>(
                 a_message
             );
-    
+            
             if (!memory::equal(
                 digest,
                 a_digest
@@ -69,7 +66,7 @@ namespace milo::hash
             {
                 return false;
             }
-    
+            
             return true;
         }
     };
