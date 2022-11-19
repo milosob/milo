@@ -25,8 +25,6 @@ namespace milo::mac
     {
     public:
         
-        using type = apie;
-        
         using impl_type = t_impl;
     
     public:
@@ -47,16 +45,18 @@ namespace milo::mac
         
         constexpr apie() noexcept(true) = default;
         
-        constexpr apie(type&& object) noexcept(true) = default;
+        constexpr apie(apie&& object) noexcept(true) = default;
         
-        constexpr apie(const type& object) noexcept(true) = default;
+        constexpr apie(const apie& object) noexcept(true) = default;
     
         constexpr ~apie() noexcept(true) = default;
 
     public:
     
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(
+            const apie& object
+        ) noexcept(true) -> apie& = default;
 
     public:
     
