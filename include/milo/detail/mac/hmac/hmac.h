@@ -9,17 +9,15 @@
 #include <milo/memory.h>
 
 
-namespace milo::mac
+namespace milo::mac::detail
 {
     template<
         concepts::hash t_hash,
         typename... t_options
     >
-    class hmac_basic
+    class hmac
     {
     public:
-        
-        using type = hmac_basic;
         
         using hash_type = t_hash;
     
@@ -27,11 +25,11 @@ namespace milo::mac
         
         struct properties
         {
-            using mac_type [[maybe_unused]] = type;
+            using mac_type [[maybe_unused]] = int;
             
-            using mac_hmac_type [[maybe_unused]] = type;
+            using mac_hmac_type [[maybe_unused]] = int;
             
-            using prf_type [[maybe_unused]] = type;
+            using prf_type [[maybe_unused]] = int;
         };
     
     public:
@@ -55,13 +53,13 @@ namespace milo::mac
     
     public:
         
-        constexpr hmac_basic() noexcept(true) = default;
+        constexpr hmac() noexcept(true) = default;
         
-        constexpr hmac_basic(type&& object) noexcept(true) = default;
+        constexpr hmac(hmac&& object) noexcept(true) = default;
         
-        constexpr hmac_basic(const type& object) noexcept(true) = default;
+        constexpr hmac(const hmac& object) noexcept(true) = default;
         
-        constexpr ~hmac_basic() noexcept(true)
+        constexpr ~hmac() noexcept(true)
         {
             memory::erase(m_buffer);
         }
@@ -69,7 +67,7 @@ namespace milo::mac
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(const hmac& object) noexcept(true) -> hmac& = default;
     
     public:
         
@@ -77,7 +75,7 @@ namespace milo::mac
          * This function initializes context.
          *
          * @tparam t_key
-         * Key type.
+         * Key hmac.
          * @param a_key_ptr
          * Key pointer.
          * @param a_key_size
@@ -156,7 +154,7 @@ namespace milo::mac
          * This function updates the message.
          *
          * @tparam t_message
-         * Message type.
+         * Message hmac.
          * @param a_message_ptr
          * Message pointer.
          * @param a_message_size
@@ -201,7 +199,7 @@ namespace milo::mac
          * This function extracts digest.
          *
          * @tparam t_digest
-         * Digest type.
+         * Digest hmac.
          * @param a_digest_ptr
          * Digest pointer.
          * @param a_digest_size
@@ -222,7 +220,7 @@ namespace milo::mac
                 a_digest_size,
                 digest_size
             );
-    
+            
             return m_hash.digest(
                 a_digest_ptr,
                 a_digest_size
