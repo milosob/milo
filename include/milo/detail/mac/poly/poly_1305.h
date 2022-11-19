@@ -5,37 +5,45 @@
 
 #include <milo/common.h>
 #include <milo/concepts.h>
+#include <milo/impl.h>
 #include <milo/memory.h>
 #include <milo/options.h>
 #include <milo/update.h>
 
+#include <milo/detail/mac/poly/poly_1305_impl.h>
+#include <milo/detail/mac/poly/poly_1305_impl_sw.h>
 
-namespace milo::mac
+
+namespace milo::detail
 {
     template<
-        typename t_block,
         typename... t_options
     >
-    requires
-    requires
+    class mac_poly_1305
     {
-        requires concepts::block_soak<t_block, const uint32_t*, uint32_t*, uint32_t>;
-    }
-    class poly_1305_basic
-    {
-    public:
+    private:
         
-        using type = poly_1305_basic;
-        
-        using block_type = t_block;
+        struct impl_type
+            : milo::impl::proxy<
+                milo::impl::scope::runtime,
+                mac_poly_1305_impl_selector,
+                mac_poly_1305_impl_invoker,
+                mac_poly_1305_impl_sw,
+                void,
+                mac_poly_1305_impl_sw
+            >
+        {
+            static
+            constexpr auto block_size = mac_poly_1305_impl_sw::block_size;
+        };
     
     public:
         
         struct properties
         {
-            using mac_type [[maybe_unused]] = type;
+            using mac_type [[maybe_unused]] = int;
             
-            using mac_poly_1305_type [[maybe_unused]] = type;
+            using mac_poly_1305_type [[maybe_unused]] = int;
         };
     
     public:
@@ -49,7 +57,7 @@ namespace milo::mac
     private:
         
         static
-        constexpr size_t block_size = t_block::block_size;
+        constexpr size_t block_size = impl_type::block_size;
     
     private:
         
@@ -65,13 +73,13 @@ namespace milo::mac
     
     public:
         
-        constexpr poly_1305_basic() noexcept(true) = default;
+        constexpr mac_poly_1305() noexcept(true) = default;
         
-        constexpr poly_1305_basic(type&& object) noexcept(true) = default;
+        constexpr mac_poly_1305(mac_poly_1305&& object) noexcept(true) = default;
         
-        constexpr poly_1305_basic(const type& object) noexcept(true) = default;
+        constexpr mac_poly_1305(const mac_poly_1305& object) noexcept(true) = default;
         
-        constexpr ~poly_1305_basic() noexcept(true)
+        constexpr ~mac_poly_1305() noexcept(true)
         {
             memory::erase(m_key_r);
             memory::erase(m_key_s);
@@ -83,10 +91,10 @@ namespace milo::mac
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(const mac_poly_1305& object) noexcept(true) -> mac_poly_1305& = default;
     
     public:
-    
+        
         /**
          * This function initializes context.
          *
@@ -131,7 +139,7 @@ namespace milo::mac
             m_acc[4] = 0;
             m_buffer_size = 0;
         }
-    
+        
         /**
          * This function updates the message.
          *
@@ -151,7 +159,9 @@ namespace milo::mac
             size_t a_message_size
         ) noexcept(true) -> void
         {
-            m_buffer_size = update::block_soak<block_type>(
+            m_buffer_size = update::block_soak_candidate<
+                impl_type
+            >(
                 m_buffer,
                 m_buffer_size,
                 a_message_ptr,
@@ -179,7 +189,9 @@ namespace milo::mac
                     block_size - m_buffer_size - 1
                 );
                 
-                block_type::process(
+                impl_type::template invoke<
+                    0
+                >(
                     m_buffer,
                     1,
                     m_key_r,
@@ -216,7 +228,7 @@ namespace milo::mac
             m_acc[2] = t_2;
             m_acc[3] = t_3;
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -242,13 +254,13 @@ namespace milo::mac
                 a_digest_size,
                 digest_size
             );
-    
+            
             memory::copy_le(
                 a_digest_ptr,
                 m_acc,
                 a_digest_size
             );
-    
+            
             return a_digest_size;
         }
     };

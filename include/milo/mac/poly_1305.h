@@ -3,11 +3,10 @@
 #pragma once
 
 
-#include <milo/mac/poly_1305/poly_1305_basic.h>
-#include <milo/mac/poly_1305/poly_1305_block.h>
+#include <milo/detail/mac/poly/poly_1305.h>
 
 
 namespace milo::mac
 {
-    using poly_1305 = poly_1305_basic<poly_1305_block>;
+    using poly_1305 = detail::mac_poly_1305<>;
 }

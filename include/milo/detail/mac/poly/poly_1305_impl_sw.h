@@ -8,22 +8,15 @@
 #include <milo/memory.h>
 
 
-namespace milo::mac
+namespace milo::detail
 {
-    class poly_1305_block_sw
+    class mac_poly_1305_impl_sw
+        : private common::disabled
     {
-    public:
-        
-        using type = poly_1305_block_sw;
-    
     public:
         
         static
         constexpr size_t block_size = 16;
-    
-    public:
-        
-        constexpr poly_1305_block_sw() noexcept(true) = delete;
     
     public:
         
