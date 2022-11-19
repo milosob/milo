@@ -12,6 +12,7 @@
 
 #include <milo/detail/hash/impl.h>
 #include <milo/detail/hash/sha/sha_2_256_impl_sw.h>
+#include <milo/detail/hash/sha/sha_2_256_impl_hw_x86_sha_2.h>
 
 
 namespace milo::detail
@@ -28,7 +29,7 @@ namespace milo::detail
     class hash_sha_2_256
     {
     public:
-    
+        
         struct impl_type
             : milo::impl::proxy<
                 milo::impl::scope::runtime,
@@ -36,6 +37,7 @@ namespace milo::detail
                 hash_impl_invoker,
                 hash_sha_2_256_impl_sw,
                 void, // TODO Forcing implementation is not implemented.
+                hash_sha_2_256_impl_hw_x86_sha2,
                 hash_sha_2_256_impl_sw
             >
         {
@@ -48,7 +50,7 @@ namespace milo::detail
         struct properties
         {
             using hash_type [[maybe_unused]] = int;
-    
+            
             using hash_sha_2_type [[maybe_unused]] = int;
         };
     
@@ -64,23 +66,23 @@ namespace milo::detail
         constexpr size_t digest_size = options::query::digest_size<options::digest_size<bits / 8>, t_options...>;
     
     private:
-    
+        
         uint32_t m_h[8]{};
-    
+        
         uint64_t m_processed_bytes = 0;
-    
+        
         uint8_t m_buffer[block_size * 2]{};
-    
+        
         size_t m_buffer_size = 0;
-
+    
     public:
-    
+        
         constexpr hash_sha_2_256() noexcept(true) = default;
-    
+        
         constexpr hash_sha_2_256(hash_sha_2_256&& object) noexcept(true) = default;
-    
+        
         constexpr hash_sha_2_256(const hash_sha_2_256& object) noexcept(true) = default;
-    
+        
         constexpr ~hash_sha_2_256() noexcept(true)
         {
             memory::erase(m_h);
@@ -88,9 +90,9 @@ namespace milo::detail
             memory::erase(m_buffer);
             memory::erase(m_buffer_size);
         }
-
-    public:
     
+    public:
+        
         constexpr auto
         operator =(
             const hash_sha_2_256& object
@@ -153,7 +155,7 @@ namespace milo::detail
         ) noexcept(true) -> void
         {
             m_processed_bytes += a_message_size;
-    
+            
             m_buffer_size = update::block_soak_candidate<
                 impl_type
             >(
@@ -174,20 +176,20 @@ namespace milo::detail
         {
             size_t left_size = m_buffer_size;
             size_t last_size = size_t(block_size) << size_t(left_size >= 56);
-    
+            
             m_buffer[left_size] = 128;
-    
+            
             for (auto i = left_size + 1; i < last_size - 8; i += 1)
             {
                 m_buffer[i] = 0;
             }
-    
+            
             memory::stor_be<uint64_t>(
                 m_buffer + last_size - 8,
                 0,
                 m_processed_bytes << 3
             );
-    
+            
             impl_type::template invoke<
                 0
             >(
@@ -222,13 +224,13 @@ namespace milo::detail
                 a_digest_size,
                 digest_size
             );
-    
+            
             memory::copy_be(
                 a_digest_ptr,
                 m_h,
                 a_digest_size
             );
-    
+            
             return a_digest_size;
         }
     };
