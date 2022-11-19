@@ -21,7 +21,6 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::type;
         typename t_0::properties::prf;
     } &&
     requires
