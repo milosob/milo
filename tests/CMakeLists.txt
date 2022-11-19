@@ -1,0 +1,97 @@
+project(
+        ${PROJECT_NAME}_tests
+        VERSION ${PROJECT_VERSION}
+        LANGUAGES CXX
+)
+
+file(
+        GLOB
+        MEMORY_TESTS
+        memory_*.cpp
+)
+
+file(
+        GLOB
+        HASH_TESTS
+        hash_*.cpp
+)
+
+file(
+        GLOB
+        MAC_TESTS
+        mac_*.cpp
+)
+
+file(
+        GLOB
+        KDF_TESTS
+        kdf_*.cpp
+)
+
+file(
+        GLOB
+        CIPHER_TESTS
+        cipher_*.cpp
+)
+
+file(
+        GLOB
+        AEAD_TESTS
+        aead_*.cpp
+)
+
+file(
+        GLOB
+        CODEC_TEST
+        codec_*.cpp
+)
+
+set(
+        TESTS
+        ${MEMORY_TESTS}
+        ${HASH_TESTS}
+        ${MAC_TESTS}
+        ${KDF_TESTS}
+        ${CIPHER_TESTS}
+        ${AEAD_TESTS}
+        ${CODEC_TESTS}
+)
+
+foreach (TEST_SOURCE ${TESTS})
+    get_filename_component(
+            TEST_NAME
+            ${TEST_SOURCE}
+            NAME_WE
+    )
+
+    add_executable(
+            ${TEST_NAME}
+            ${TEST_SOURCE}
+    )
+
+    target_link_libraries(
+            ${TEST_NAME}
+            PRIVATE
+            ${CMAKE_PROJECT_NAME}
+    )
+
+    target_compile_options(
+            ${TEST_NAME}
+            PRIVATE
+            $<$<CXX_COMPILER_ID:Clang>:-Wall -fconstexpr-steps=2147483648>
+            $<$<CXX_COMPILER_ID:GNU>:-Wall -fconstexpr-ops-limit=2147483648>
+            $<$<CXX_COMPILER_ID:MSVC>:/Wall /constexpr:steps2147483648>
+    )
+
+    target_compile_definitions(
+            ${TEST_NAME}
+            PRIVATE
+            $<$<BOOL:${MILO_BUILD_TESTS_CONSTEXPR}>:MILO_TESTS_CONSTEXPR>
+    )
+
+    add_test(
+            ${TEST_NAME}
+            ${TEST_NAME}
+    )
+
+endforeach ()

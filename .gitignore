@@ -1,0 +1,16 @@
+# CMake builds
+cmake-build-*/
+
+# JetBrains
+.idea/
+
+# VisualStudio
+.vs/
+
+# Generated headers
+include/milo/config.h
+
+# Python
+apps/codegen/build/
+apps/codegen/codegen.egg-info/
+apps/codegen/__pycache__/
