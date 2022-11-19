@@ -41,9 +41,9 @@ namespace milo::detail
         
         struct properties
         {
-            using mac_type [[maybe_unused]] = int;
+            using mac [[maybe_unused]] = int;
             
-            using mac_poly_1305_type [[maybe_unused]] = int;
+            using mac_poly_1305 [[maybe_unused]] = int;
         };
     
     public:

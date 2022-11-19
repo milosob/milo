@@ -25,11 +25,11 @@ namespace milo::detail
         
         struct properties
         {
-            using mac_type [[maybe_unused]] = int;
+            using mac [[maybe_unused]] = int;
             
-            using mac_hmac_type [[maybe_unused]] = int;
+            using mac_hmac [[maybe_unused]] = int;
             
-            using prf_type [[maybe_unused]] = int;
+            using prf [[maybe_unused]] = int;
         };
     
     public:

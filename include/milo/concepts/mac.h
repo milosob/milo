@@ -21,7 +21,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::mac_type;
+        typename t_0::properties::mac;
     } &&
     requires
     {
@@ -89,7 +89,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::mac_hmac_type;
+        typename t_0::properties::mac_hmac;
     };
     
     template<typename t_0>
@@ -100,7 +100,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::mac_poly_1305_type;
+        typename t_0::properties::mac_poly_1305;
     };
     
     /*
