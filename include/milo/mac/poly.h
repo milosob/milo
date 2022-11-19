@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/detail/mac/poly/poly_1305.h>
+#include <milo/detail/mac/poly.h>
 
 
 namespace milo::mac
