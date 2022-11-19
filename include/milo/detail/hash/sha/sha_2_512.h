@@ -61,7 +61,13 @@ namespace milo::detail
         constexpr size_t block_size = impl_type::block_size;
         
         static
-        constexpr size_t digest_size = options::query::digest_size<options::digest_size<bits / 8>, t_options...>;
+        constexpr size_t digest_size =
+            option_digest_size_query<
+                option_digest_size<
+                    bits / 8
+                >,
+                t_options...
+            >::value;
     
     private:
         

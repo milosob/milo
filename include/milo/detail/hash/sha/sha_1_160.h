@@ -29,7 +29,7 @@ namespace milo::detail
     class hash_sha_1_160
     {
     public:
-    
+        
         struct impl_type
             : milo::impl::proxy<
                 milo::impl::scope::runtime,
@@ -44,13 +44,13 @@ namespace milo::detail
             static
             constexpr auto block_size = hash_sha_1_160_impl_sw::block_size;
         };
-
-    public:
     
+    public:
+        
         struct properties
         {
             using hash [[maybe_unused]] = int;
-        
+            
             using hash_sha_1 [[maybe_unused]] = int;
         };
     
@@ -63,7 +63,13 @@ namespace milo::detail
         constexpr size_t block_size = impl_type::block_size;
         
         static
-        constexpr size_t digest_size = options::query::digest_size<options::digest_size<bits / 8>, t_options...>;
+        constexpr size_t digest_size =
+            option_digest_size_query<
+                option_digest_size<
+                    bits / 8
+                >,
+                t_options...
+            >::value;
     
     private:
         
@@ -76,13 +82,13 @@ namespace milo::detail
         size_t m_buffer_size = 0;
     
     public:
-    
+        
         constexpr hash_sha_1_160() noexcept(true) = default;
-    
+        
         constexpr hash_sha_1_160(hash_sha_1_160&& object) noexcept(true) = default;
-    
+        
         constexpr hash_sha_1_160(const hash_sha_1_160& object) noexcept(true) = default;
-    
+        
         constexpr ~hash_sha_1_160() noexcept(true)
         {
             memory::erase(m_h);
@@ -92,7 +98,7 @@ namespace milo::detail
         }
     
     public:
-    
+        
         constexpr auto
         operator =(
             const hash_sha_1_160& object
@@ -140,7 +146,7 @@ namespace milo::detail
         ) noexcept(true) -> void
         {
             m_processed_bytes += a_message_size;
-    
+            
             m_buffer_size = update::block_soak_candidate<
                 impl_type
             >(
@@ -163,18 +169,18 @@ namespace milo::detail
             size_t last_size = size_t(block_size) << size_t(left_size >= 56);
             
             m_buffer[left_size] = 128;
-    
+            
             for (auto i = left_size + 1; i < last_size - 8; i += 1)
             {
                 m_buffer[i] = 0;
             }
-    
+            
             memory::stor_be<uint64_t>(
                 m_buffer + last_size - 8,
                 0,
                 m_processed_bytes << 3
             );
-    
+            
             impl_type::template invoke<
                 0
             >(
