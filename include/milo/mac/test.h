@@ -22,14 +22,11 @@ namespace milo::mac
         concepts::mac t_impl
     >
     class test
+        : private common::disabled
     {
     public:
         
         using impl_type = t_impl;
-    
-    public:
-        
-        constexpr test() noexcept(true) = delete;
     
     public:
         
@@ -71,12 +68,12 @@ namespace milo::mac
                     return false;
                 }
             }
-    
+            
             auto digest = mac::digest<impl_type>(
                 a_key,
                 a_message
             );
-    
+            
             if (!memory::equal(
                 digest,
                 a_digest
@@ -84,7 +81,7 @@ namespace milo::mac
             {
                 return false;
             }
-    
+            
             return true;
         }
     };
