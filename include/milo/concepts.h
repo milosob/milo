@@ -12,4 +12,3 @@
 #include <milo/concepts/kdf.h>
 #include <milo/concepts/mac.h>
 #include <milo/concepts/prf.h>
-#include <milo/concepts/option.h>
