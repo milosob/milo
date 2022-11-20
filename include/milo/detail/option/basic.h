@@ -121,11 +121,11 @@ namespace milo::detail
         struct option_impl
             : option_ofvalue<t_type, t_value>
         {
-            /*            struct properties
-                            : t_properties,
-                              option_ofvalue<t_type, t_value>::properties
-                        {
-                        };*/
+            struct properties
+                : t_properties,
+                  option_ofvalue<t_type, t_value>::properties
+            {
+            };
         };
     
     public:
@@ -189,11 +189,11 @@ namespace milo::detail
         struct option_impl
             : option_oftype<t_type>
         {
-            /*            struct properties
-                            : t_properties,
-                              option_oftype<t_type>::properties
-                        {
-                        };*/
+            struct properties
+                : t_properties,
+                  option_oftype<t_type>::properties
+            {
+            };
         };
     
     public:
