@@ -159,21 +159,20 @@ namespace milo::detail
         >;
         
         template<
-            typename t_default,
             typename... t_options
         >
         using query = typename option_query<
             solver,
-            t_default,
             t_options...
         >::type;
         
         template<
-            typename t_default,
             typename... t_options
         >
         static
-        constexpr auto query_v = query<t_default, t_options...>::value;
+        constexpr auto query_v = query<
+            t_options...
+        >::value;
     };
     
     template<
@@ -221,19 +220,18 @@ namespace milo::detail
         >;
         
         template<
-            typename t_default,
             typename... t_options
         >
         using query = typename option_query<
             solver,
-            t_default,
             t_options...
         >::type;
         
         template<
-            typename t_default,
             typename... t_options
         >
-        using query_t = typename query<t_default, t_options...>::type;
+        using query_t = typename query<
+            t_options...
+        >::type;
     };
 }
