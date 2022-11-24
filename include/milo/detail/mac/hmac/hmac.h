@@ -39,10 +39,8 @@ namespace milo::detail
         
         static
         constexpr size_t digest_size =
-            option_digest_size_suite::query_v<
-                option::digest_size<
-                    hash_type::digest_size
-                >,
+            option_digest_size_suite::query_default_v<
+                hash_type::digest_size,
                 t_options...
             >;
     
