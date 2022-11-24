@@ -38,12 +38,12 @@ namespace milo::traits
         using type = decltype(
         []<typename... t_args>(
         args<t_args...>
-        ) constexpr noexcept(true) ->
-        t_reader<
-            t_reader_args...,
-            t_args...
-        >
+        ) constexpr noexcept(true) -> auto
         {
+            return t_reader<
+                t_reader_args...,
+                t_args...
+            >();
         }
         (
         t_input()
