@@ -9,10 +9,6 @@
 
 namespace milo::traits
 {
-    using true_type = std::true_type;
-    
-    using false_type = std::false_type;
-    
     template<
         typename t_type,
         bool t_value = t_type::value
@@ -23,6 +19,36 @@ namespace milo::traits
         
         static
         constexpr bool value = t_value;
+    };
+    
+    template<
+        typename... t_args
+    >
+    struct args
+    {
+    };
+    
+    template<
+        typename t_input,
+        template<typename ...> typename t_reader,
+        typename... t_reader_args
+    >
+    struct args_reader
+    {
+        using type = decltype(
+        []<typename... t_args>(
+        args<t_args...>
+        ) constexpr noexcept(true) ->
+        t_reader<
+            t_reader_args...,
+            t_args...
+        >
+        {
+        }
+        (
+        t_input()
+        )
+        );
     };
     
     template<bool t_cond, typename t_0, typename t_1>
