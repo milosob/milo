@@ -289,6 +289,14 @@ namespace milo::detail
      * Start of impl options.
      */
     
+    struct option_impl_domain_id
+    {
+    };
+    
+    using option_impl_domain_suite = option_oftype_suite<
+        option_impl_domain_id
+    >;
+    
     struct option_impl_chooser_id
     {
     };
@@ -303,14 +311,6 @@ namespace milo::detail
     
     using option_impl_invoker_suite = option_oftype_suite<
         option_impl_invoker_id
-    >;
-    
-    struct option_impl_domain_id
-    {
-    };
-    
-    using option_impl_domain_suite = option_oftype_suite<
-        option_impl_domain_id
     >;
     
     struct option_impl_cpltime_id
