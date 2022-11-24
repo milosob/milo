@@ -10,7 +10,7 @@
 
 namespace milo::detail
 {
-    struct hash_impl_selector
+    struct hash_impl_chooser
     {
         template<
             typename t_impl

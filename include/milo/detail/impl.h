@@ -6,27 +6,28 @@
 #include <milo/arch.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
+#include <milo/option.h>
 #include <milo/traits.h>
 #include <milo/utility.h>
 
 
 namespace milo::detail
 {
-    using impl_scope_strict = arch::active::ise::strict;
+    using impl_domain_strict = arch::active::ise::strict;
     
-    using impl_scope_native = arch::active::ise::native;
+    using impl_domain_native = arch::active::ise::native;
     
-    using impl_scope_runtime = arch::active::ise::runtime;
+    using impl_domain_runtime = arch::active::ise::runtime;
     
     template<
-        typename t_scope,
-        typename t_selector,
+        typename t_domain,
+        typename t_chooser,
         typename t_impl,
         typename... t_impls
     >
     static
     constexpr auto
-    impl_select_hook_basic(
+    impl_choose_hook(
     ) noexcept(true)
     {
         if constexpr (concepts::differ<t_impl, void>)
@@ -38,22 +39,22 @@ namespace milo::detail
                     })
                 )
             {
-                return t_selector::template hook<t_impl>();
+                return t_chooser::template hook<t_impl>();
             }
             else
             {
-                if (t_scope::template impl<t_impl>())
+                if (t_domain::template impl<t_impl>())
                 {
-                    return t_selector::template hook<t_impl>();
+                    return t_chooser::template hook<t_impl>();
                 }
             }
         }
         
         if constexpr (sizeof...(t_impls) > 0)
         {
-            return impl_select_hook_basic<
-                t_scope,
-                t_selector,
+            return impl_choose_hook<
+                t_domain,
+                t_chooser,
                 t_impls...
             >();
         }
@@ -64,15 +65,15 @@ namespace milo::detail
     }
     
     template<
-        typename t_scope,
-        typename t_selector,
+        typename t_domain,
+        typename t_chooser,
         typename... t_impls
     >
-    struct impl_select_type_basic
+    struct impl_choose_type
         :
             traits::disjunction<
                 traits::boolean<
-                    typename t_selector::template type<t_impls>,
+                    typename t_chooser::template type<t_impls>,
                     []() constexpr noexcept(true)
                     {
                         if constexpr (concepts::differ<t_impls, void>)
@@ -88,7 +89,7 @@ namespace milo::detail
                             }
                             else
                             {
-                                return t_scope::template impl<t_impls>();
+                                return t_domain::template impl<t_impls>();
                             }
                         }
                         
@@ -100,162 +101,127 @@ namespace milo::detail
     };
     
     template<
-        typename t_scope,
-        typename t_selector,
+        typename t_domain,
+        typename t_chooser,
         typename... t_impls
     >
-    concept impl_select_assert =
+    concept impl_choose_assert =
     requires
     {
         requires sizeof...(t_impls) > 0;
         requires concepts::same<
-            t_scope,
-            impl_scope_strict,
-            impl_scope_native,
-            impl_scope_runtime
+            t_domain,
+            impl_domain_strict,
+            impl_domain_native,
+            impl_domain_runtime
         >;
-        requires impl_select_type_basic<
-            impl_scope_strict,
-            t_selector,
+        requires impl_choose_type<
+            impl_domain_strict,
+            t_chooser,
             t_impls...
         >::value;
     };
     
     template<
-        typename t_scope,
-        typename t_selector,
         typename... t_impls
     >
-    requires
-    requires
+    using impl_cpltime = traits::args<t_impls...>;
+    
+    template<
+        typename t_domain,
+        typename t_chooser,
+        typename t_impl,
+        typename... t_impls
+    >
+    struct impl_cpltime_reader
     {
-        requires impl_select_assert<
-            t_scope,
-            t_selector,
-            t_impls...
-        >;
-    }
-    struct impl_select_type
-        : impl_select_type_basic<
-            t_scope,
-            t_selector,
-            t_impls...
-        >
-    {
+        using impl = t_impl;
     };
     
     template<
-        typename t_scope,
-        typename t_selector,
         typename... t_impls
     >
-    static
-    constexpr auto
-    impl_select_hook(
-    ) noexcept(true)
+    using impl_runtime = traits::args<t_impls...>;
+    
+    template<
+        typename t_domain,
+        typename t_chooser,
+        typename... t_impls
+    >
     requires
     requires
     {
-        requires impl_select_assert<
-            t_scope,
-            t_selector,
+        requires impl_choose_assert<
+            impl_domain_strict,
+            t_chooser,
             t_impls...
         >;
     }
+    struct impl_runtime_reader
     {
-        return impl_select_hook_basic<
-            t_scope,
-            t_selector,
-            t_impls...
-        >();
-    }
-    
-    template<
-        typename t_scope,
-        typename t_selector,
-        typename... t_impls
-    >
-    struct impl_select;
-    
-    template<
-        typename t_selector,
-        typename... t_impls
-    >
-    struct impl_select<
-        impl_scope_strict,
-        t_selector,
-        t_impls...
-    >
-    {
-        using impl = typename impl_select_type_basic<
-            impl_scope_strict,
-            t_selector,
+        using impl = typename impl_choose_type<
+            t_domain,
+            t_chooser,
             t_impls...
         >::type;
     };
     
     template<
-        typename t_selector,
+        typename t_chooser,
         typename... t_impls
     >
-    struct impl_select<
-        impl_scope_native,
-        t_selector,
-        t_impls...
-    >
+    requires
+    requires
     {
-        using impl = typename impl_select_type_basic<
-            impl_scope_native,
-            t_selector,
+        requires impl_choose_assert<
+            impl_domain_strict,
+            t_chooser,
             t_impls...
-        >::type;
-    };
-    
-    template<
-        typename t_selector,
-        typename... t_impls
-    >
-    struct impl_select<
-        impl_scope_runtime,
-        t_selector,
+        >;
+    }
+    struct impl_runtime_reader<
+        impl_domain_runtime,
+        t_chooser,
         t_impls...
     >
     {
         inline
         static
-        const auto impl = impl_select_hook_basic<
-            impl_scope_runtime,
-            t_selector,
+        const auto impl = impl_choose_hook<
+            impl_domain_runtime,
+            t_chooser,
             t_impls...
         >();
     };
     
     template<
-        typename t_scope,
-        typename t_selector,
+        typename t_domain,
+        typename t_chooser,
         typename t_invoker,
-        typename t_constexpr,
-        typename t_enforced,
-        typename... t_impls
+        typename t_cpltime,
+        typename t_runtime,
+        typename... t_options
     >
-    requires
-    requires
-    {
-        requires impl_select_assert<
-            t_scope,
-            t_selector,
-            t_impls...,
-            t_constexpr
-        >;
-    }
     struct impl_proxy
     {
-        using im_selected = impl_select<t_scope, t_selector, t_impls..., t_constexpr>;
+    private:
+        
+        using domain = option_impl_domain_suite::query_default_t<t_domain, t_options...>;
+        
+        using chooser = option_impl_chooser_suite::query_default_t<t_chooser, t_options...>;
+        
+        using invoker = option_impl_invoker_suite::query_default_t<t_invoker, t_options...>;
+        
+        using cpltime_override = option_impl_cpltime_suite::query_default_t<void, t_options...>;
+        
+        using runtime_override = option_impl_runtime_suite::query_default_t<void, t_options...>;
+        
+        using cpltime_selected = typename traits::args_reader<t_cpltime, impl_cpltime_reader, domain, chooser>::type;
+        
+        using runtime_selected = typename traits::args_reader<t_runtime, impl_runtime_reader, domain, chooser>::type;
     
-        using im_constexpr = t_constexpr;
-    
-        using im_enforced = t_enforced; // TODO Forcing implementation is not implemented.
-    
+    public:
+        
         template<
             unsigned t_id,
             typename... t_args
@@ -268,38 +234,80 @@ namespace milo::detail
         {
             if MILO_CONSTEVAL
             {
-                return t_invoker::template type<
-                    t_id,
-                    im_constexpr
-                >(
-                    utility::forward<t_args>(
-                        a_args
-                    )...
-                );
-            }
-            else
-            {
-                if constexpr (concepts::same<t_scope, impl_scope_strict, impl_scope_native>)
+                if constexpr (concepts::differ<cpltime_override, void>)
                 {
-                    return t_invoker::template type<
+                    return invoker::template type<
                         t_id,
-                        typename im_selected::type
+                        cpltime_override
                     >(
-                        utility::forward<t_args>(
+                        utility::forward<
+                            t_args
+                        >(
                             a_args
                         )...
                     );
                 }
                 else
                 {
-                    return t_invoker::template hook<
-                        t_id
+                    return invoker::template type<
+                        t_id,
+                        typename cpltime_selected::impl
                     >(
-                        im_selected::impl,
-                        utility::forward<t_args>(
+                        utility::forward<
+                            t_args
+                        >(
                             a_args
                         )...
                     );
+                }
+            }
+            else
+            {
+                if constexpr (concepts::differ<runtime_override, void>)
+                {
+                    return invoker::template type<
+                        t_id,
+                        runtime_override
+                    >(
+                        utility::forward<
+                            t_args
+                        >(
+                            a_args
+                        )...
+                    );
+                }
+                else
+                {
+                    if constexpr (concepts::same<
+                        domain,
+                        impl_domain_strict,
+                        impl_domain_native
+                    >)
+                    {
+                        return invoker::template type<
+                            t_id,
+                            typename runtime_selected::impl
+                        >(
+                            utility::forward<
+                                t_args
+                            >(
+                                a_args
+                            )...
+                        );
+                    }
+                    else
+                    {
+                        return invoker::template hook<
+                            t_id
+                        >(
+                            runtime_selected::impl,
+                            utility::forward<
+                                t_args
+                            >(
+                                a_args
+                            )...
+                        );
+                    }
                 }
             }
         }

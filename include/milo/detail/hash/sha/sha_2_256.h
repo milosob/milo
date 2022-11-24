@@ -5,7 +5,6 @@
 
 #include <milo/common.h>
 #include <milo/concepts.h>
-#include <milo/impl.h>
 #include <milo/memory.h>
 #include <milo/option.h>
 #include <milo/update.h>
@@ -13,6 +12,7 @@
 #include <milo/detail/hash/impl.h>
 #include <milo/detail/hash/sha/sha_2_256_impl_sw.h>
 #include <milo/detail/hash/sha/sha_2_256_impl_hw_x86_sha_2.h>
+#include <milo/detail/impl.h>
 
 
 namespace milo::detail
@@ -31,14 +31,17 @@ namespace milo::detail
     public:
         
         struct impl_type
-            : milo::impl::proxy<
-                milo::impl::scope::runtime,
-                hash_impl_selector,
+            : impl_proxy<
+                impl_domain_runtime,
+                hash_impl_chooser,
                 hash_impl_invoker,
-                hash_sha_2_256_impl_sw,
-                void, // TODO Forcing implementation is not implemented.
-                hash_sha_2_256_impl_hw_x86_sha2,
-                hash_sha_2_256_impl_sw
+                impl_cpltime<
+                    hash_sha_2_256_impl_sw
+                >,
+                impl_runtime<
+                    hash_sha_2_256_impl_sw
+                >,
+                t_options...
             >
         {
             static
@@ -64,10 +67,8 @@ namespace milo::detail
         
         static
         constexpr size_t digest_size =
-            option_digest_size_suite::query_v<
-                option::digest_size<
-                    bits / 8
-                >,
+            option_digest_size_suite::query_default_v<
+                bits / 8,
                 t_options...
             >;
     

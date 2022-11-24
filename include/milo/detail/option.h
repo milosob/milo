@@ -48,11 +48,11 @@ namespace milo::detail
             t_option,
             (
                 requires
-                    {
-                        typename t_option::properties::option;
+                {
+                    typename t_option::properties::option;
                     typename t_option::properties::option_oftype;
                     typename t_option::type;
-                    }
+                }
             )
         >
     {
@@ -71,11 +71,11 @@ namespace milo::detail
             t_option,
             (
                 requires
-                    {
-                        typename t_option::properties::option;
+                {
+                    typename t_option::properties::option;
                     typename t_option::properties::option_ofvalue;
                     t_option::value;
-                    }
+                }
             )
         >
     {
@@ -142,19 +142,19 @@ namespace milo::detail
             t_option,
             (
                 requires
-                    {
-                        requires option_ofvalue_is_v<t_option>;
+                {
+                    requires option_ofvalue_is_v<t_option>;
                     requires traits::is_same_v<
-                    traits::del_constant_t<
-                    decltype(t_option::value)
-                    >,
-                    t_type
+                        traits::del_constant_t<
+                            decltype(t_option::value)
+                        >,
+                        t_type
                     >;
                     requires traits::is_same_v<
-                    t_option,
-                    option<t_option::value>
+                        t_option,
+                        option<t_option::value>
                     >;
-                    }
+                }
             )
         >;
         
@@ -228,13 +228,13 @@ namespace milo::detail
             t_option,
             (
                 requires
-                    {
-                        requires option_oftype_is_v<t_option>;
+                {
+                    requires option_oftype_is_v<t_option>;
                     requires traits::is_same_v<
-                    t_option,
-                    option<typename t_option::type>
+                        t_option,
+                        option<typename t_option::type>
                     >;
-                    }
+                }
             )
         >;
         
@@ -288,7 +288,7 @@ namespace milo::detail
     /*
      * Start of impl options.
      */
-    
+
     struct option_impl_domain_id
     {
     };

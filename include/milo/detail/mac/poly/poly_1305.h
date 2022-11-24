@@ -5,13 +5,13 @@
 
 #include <milo/common.h>
 #include <milo/concepts.h>
-#include <milo/impl.h>
 #include <milo/memory.h>
 #include <milo/option.h>
 #include <milo/update.h>
 
 #include <milo/detail/mac/poly/poly_1305_impl.h>
 #include <milo/detail/mac/poly/poly_1305_impl_sw.h>
+#include <milo/detail/impl.h>
 
 
 namespace milo::detail
@@ -24,13 +24,16 @@ namespace milo::detail
     private:
         
         struct impl_type
-            : milo::impl::proxy<
-                milo::impl::scope::runtime,
-                mac_poly_1305_impl_selector,
+            : impl_proxy<
+                impl_domain_runtime,
+                mac_poly_1305_impl_chooser,
                 mac_poly_1305_impl_invoker,
-                mac_poly_1305_impl_sw,
-                void,
-                mac_poly_1305_impl_sw
+                impl_cpltime<
+                    mac_poly_1305_impl_sw
+                >,
+                impl_runtime<
+                    mac_poly_1305_impl_sw
+                >
             >
         {
             static
@@ -53,10 +56,8 @@ namespace milo::detail
         
         static
         constexpr size_t digest_size =
-            option_digest_size_suite::query_v<
-                option::digest_size<
-                    16
-                >,
+            option_digest_size_suite::query_default_v<
+                16,
                 t_options...
             >;
     

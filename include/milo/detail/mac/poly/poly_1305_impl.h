@@ -10,7 +10,7 @@
 
 namespace milo::detail
 {
-    struct mac_poly_1305_impl_selector
+    struct mac_poly_1305_impl_chooser
     {
         template<
             typename t_impl
