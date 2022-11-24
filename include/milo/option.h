@@ -18,7 +18,7 @@ namespace milo::option
     using impl_invoker = detail::option_impl_invoker_suite::option<t_type>;
     
     template<typename t_type>
-    using impl_scope = milo::detail::option_impl_scope_suite::option<t_type>;
+    using impl_domain = milo::detail::option_impl_domain_suite::option<t_type>;
     
     template<typename t_type>
     using impl_cpltime = milo::detail::option_impl_cpltime_suite::option<t_type>;

@@ -305,12 +305,12 @@ namespace milo::detail
         option_impl_invoker_id
     >;
     
-    struct option_impl_scope_id
+    struct option_impl_domain_id
     {
     };
     
-    using option_impl_scope_suite = option_oftype_suite<
-        option_impl_scope_id
+    using option_impl_domain_suite = option_oftype_suite<
+        option_impl_domain_id
     >;
     
     struct option_impl_cpltime_id
