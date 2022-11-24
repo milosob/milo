@@ -172,7 +172,7 @@ namespace milo::detail
         static
         constexpr auto query_v = query<
             t_options...
-        >::type::value;
+        >::value;
         
         template<
             t_type t_default,
