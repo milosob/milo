@@ -68,11 +68,11 @@ namespace milo::concepts
     template<typename t_0>
     concept integral_u = traits::is_integral_unsigned_v<t_0>;
     
-    template<typename t_0, typename ...t_pack>
-    concept same = traits::is_same_v<t_0, t_pack...>;
+    template<typename t_0, typename... t_args>
+    concept same = traits::is_same_v<t_0, t_args...>;
     
-    template<typename t_0, typename ...t_pack>
-    concept differ = !traits::is_same_v<t_0, t_pack...>;
+    template<typename t_0, typename... t_args>
+    concept differ = !traits::is_same_v<t_0, t_args...>;
     
     template<typename t_0>
     concept byte = same<t_0, char, signed char, unsigned char>;

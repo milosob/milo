@@ -37,7 +37,7 @@ namespace milo::traits
     {
         using type = decltype(
         []<typename... t_args>(
-        args<t_args...>
+            args<t_args...>
         ) constexpr noexcept(true) -> auto
         {
             return t_reader<
@@ -45,17 +45,17 @@ namespace milo::traits
                 t_args...
             >();
         }
-        (
-        t_input()
-        )
+            (
+                t_input()
+            )
         );
     };
     
     template<bool t_cond, typename t_0, typename t_1>
     using conditional = std::conditional<t_cond, t_0, t_1>;
     
-    template<typename...t_pack>
-    using disjunction = std::disjunction<t_pack...>;
+    template<typename... t_args>
+    using disjunction = std::disjunction<t_args...>;
     
     template<typename t_0>
     using is_assignable_bycopy = std::is_copy_assignable<t_0>;
@@ -165,11 +165,11 @@ namespace milo::traits
     template<typename t_0>
     constexpr auto is_integral_unsigned_v = is_integral_unsigned<t_0>::value;
     
-    template<typename t_0, typename... t_pack>
-    using is_same = std::disjunction<std::is_same<t_0, t_pack>...>;
+    template<typename t_0, typename... t_args>
+    using is_same = std::disjunction<std::is_same<t_0, t_args>...>;
     
-    template<typename t_0, typename... t_pack>
-    constexpr auto is_same_v = is_same<t_0, t_pack...>::value;
+    template<typename t_0, typename... t_args>
+    constexpr auto is_same_v = is_same<t_0, t_args...>::value;
     
     template<typename t_0>
     using add_constant = std::add_const<t_0>;
