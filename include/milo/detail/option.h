@@ -48,11 +48,11 @@ namespace milo::detail
             t_option,
             (
                 requires
-                {
-                    typename t_option::properties::option;
+                    {
+                        typename t_option::properties::option;
                     typename t_option::properties::option_oftype;
                     typename t_option::type;
-                }
+                    }
             )
         >
     {
@@ -71,11 +71,11 @@ namespace milo::detail
             t_option,
             (
                 requires
-                {
-                    typename t_option::properties::option;
+                    {
+                        typename t_option::properties::option;
                     typename t_option::properties::option_ofvalue;
                     t_option::value;
-                }
+                    }
             )
         >
     {
@@ -142,19 +142,19 @@ namespace milo::detail
             t_option,
             (
                 requires
-                {
-                    requires option_ofvalue_is_v<t_option>;
+                    {
+                        requires option_ofvalue_is_v<t_option>;
                     requires traits::is_same_v<
-                        traits::del_constant_t<
-                            decltype(t_option::value)
-                        >,
-                        t_type
+                    traits::del_constant_t<
+                    decltype(t_option::value)
+                    >,
+                    t_type
                     >;
                     requires traits::is_same_v<
-                        t_option,
-                        option<t_option::value>
+                    t_option,
+                    option<t_option::value>
                     >;
-                }
+                    }
             )
         >;
         
@@ -172,7 +172,26 @@ namespace milo::detail
         static
         constexpr auto query_v = query<
             t_options...
-        >::value;
+        >::type::value;
+        
+        template<
+            t_type t_default,
+            typename... t_options
+        >
+        using query_default = query<
+            t_options...,
+            option<t_default>
+        >;
+        
+        template<
+            t_type t_default,
+            typename... t_options
+        >
+        static
+        constexpr auto query_default_v = query_v<
+            t_options...,
+            option<t_default>
+        >;
     };
     
     template<
@@ -209,13 +228,13 @@ namespace milo::detail
             t_option,
             (
                 requires
-                {
-                    requires option_oftype_is_v<t_option>;
+                    {
+                        requires option_oftype_is_v<t_option>;
                     requires traits::is_same_v<
-                        t_option,
-                        option<typename t_option::type>
+                    t_option,
+                    option<typename t_option::type>
                     >;
-                }
+                    }
             )
         >;
         
@@ -233,7 +252,29 @@ namespace milo::detail
         using query_t = typename query<
             t_options...
         >::type;
+        
+        template<
+            typename t_default,
+            typename... t_options
+        >
+        using query_default = query<
+            t_options...,
+            option<t_default>
+        >;
+        
+        template<
+            typename t_default,
+            typename... t_options
+        >
+        using query_default_t = query_t<
+            t_options...,
+            option<t_default>
+        >;
     };
+    
+    /*
+     * Start of digest options.
+     */
     
     struct option_digest_size_id
     {
@@ -244,6 +285,26 @@ namespace milo::detail
         size_t
     >;
     
+    /*
+     * Start of impl options.
+     */
+    
+    struct option_impl_chooser_id
+    {
+    };
+    
+    using option_impl_chooser_suite = option_oftype_suite<
+        option_impl_chooser_id
+    >;
+    
+    struct option_impl_invoker_id
+    {
+    };
+    
+    using option_impl_invoker_suite = option_oftype_suite<
+        option_impl_invoker_id
+    >;
+    
     struct option_impl_scope_id
     {
     };
@@ -252,12 +313,12 @@ namespace milo::detail
         option_impl_scope_id
     >;
     
-    struct option_impl_constexpr_id
+    struct option_impl_cpltime_id
     {
     };
     
-    using option_impl_constexpr_suite = option_oftype_suite<
-        option_impl_constexpr_id
+    using option_impl_cpltime_suite = option_oftype_suite<
+        option_impl_cpltime_id
     >;
     
     struct option_impl_runtime_id
