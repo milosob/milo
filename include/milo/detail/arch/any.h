@@ -41,7 +41,7 @@ namespace milo::detail
          */
     };
     
-    struct ise
+    struct arch_any_ise
         : private common::disabled
     {
         using strict = arch_any_ise_strict;
@@ -57,6 +57,6 @@ namespace milo::detail
         static
         constexpr bool value = true;
         
-        using ise = ise;
+        using ise = arch_any_ise;
     };
 }
