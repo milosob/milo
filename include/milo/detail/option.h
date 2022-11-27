@@ -88,7 +88,6 @@ namespace milo::detail
     
     template<
         template<typename> typename t_solver,
-        typename t_default,
         typename... t_options
     >
     struct option_query
@@ -96,8 +95,7 @@ namespace milo::detail
     private:
         
         using expression_type = traits::disjunction<
-            t_solver<t_options>...,
-            t_solver<t_default>
+            t_solver<t_options>...
         >;
         
         static_assert(expression_type::value);
