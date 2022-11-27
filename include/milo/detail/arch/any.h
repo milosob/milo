@@ -16,13 +16,15 @@ namespace milo::detail
         >
         static
         constexpr auto
-        impl(
+        check(
         ) noexcept(true) -> bool
         requires
         (!
-            requires{
+            requires
+            {
                 typename t_impl::requirements::arch;
-            })
+            }
+        )
         {
             return true;
         }
@@ -36,9 +38,6 @@ namespace milo::detail
     struct arch_any_ise_runtime
         : arch_any_ise_strict
     {
-        /*
-         *  This is compile-time ise.
-         */
     };
     
     struct arch_any_ise

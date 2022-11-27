@@ -231,123 +231,132 @@ namespace milo::detail
     } arch_x86_cpuid;
     
     template<
-        typename t_impl,
-        typename t_mode
+        typename t_mode,
+        typename t_impl
     >
     static
     constexpr auto
     arch_x86_ise_check(
     ) noexcept(true) -> bool
-    requires
-    requires
     {
-        typename t_impl::requirements::arch::x86;
-    }
-    {
-        using mode_type = t_mode;
-        using impl_type = typename t_impl::requirements::arch::x86::ise;
+        if constexpr (requires{
+            typename t_impl::requirements::arch::x86;
+        })
+        {
+            if constexpr (requires{
+                typename t_impl::requirements::arch::x86::ise;
+            })
+            {
+                using mode_type = t_mode;
+                using impl_type = typename t_impl::requirements::arch::x86::ise;
     
-        if constexpr (requires {
-            typename impl_type::sse_1;
-        })
-        {
-            if (!mode_type::sse_1)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::sse_2;
-        })
-        {
-            if (!mode_type::sse_2)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::sse_3;
-        })
-        {
-            if (!mode_type::sse_3)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::ssse_3;
-        })
-        {
-            if (!mode_type::ssse_3)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::sse_4_1;
-        })
-        {
-            if (!mode_type::sse_4_1)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::sse_4_2;
-        })
-        {
-            if (!mode_type::sse_4_2)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::avx_1;
-        })
-        {
-            if (!mode_type::avx_1)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::avx_2;
-        })
-        {
-            if (!mode_type::avx_2)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::sha_1;
-        })
-        {
-            if (!mode_type::sha_1)
-            {
-                return false;
-            }
-        }
-        
-        if constexpr (requires {
-            typename impl_type::sha_2;
-        })
-        {
-            if (!mode_type::sha_2)
-            {
-                return false;
-            }
-        }
+                if constexpr (requires {
+                    typename impl_type::sse_1;
+                })
+                {
+                    if (!mode_type::sse_1)
+                    {
+                        return false;
+                    }
+                }
     
-        return true;
+                if constexpr (requires {
+                    typename impl_type::sse_2;
+                })
+                {
+                    if (!mode_type::sse_2)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::sse_3;
+                })
+                {
+                    if (!mode_type::sse_3)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::ssse_3;
+                })
+                {
+                    if (!mode_type::ssse_3)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::sse_4_1;
+                })
+                {
+                    if (!mode_type::sse_4_1)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::sse_4_2;
+                })
+                {
+                    if (!mode_type::sse_4_2)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::avx_1;
+                })
+                {
+                    if (!mode_type::avx_1)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::avx_2;
+                })
+                {
+                    if (!mode_type::avx_2)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::sha_1;
+                })
+                {
+                    if (!mode_type::sha_1)
+                    {
+                        return false;
+                    }
+                }
+    
+                if constexpr (requires {
+                    typename impl_type::sha_2;
+                })
+                {
+                    if (!mode_type::sha_2)
+                    {
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     struct arch_x86_ise_strict
@@ -388,10 +397,10 @@ namespace milo::detail
         >
         static
         constexpr auto
-        impl(
+        check(
         ) noexcept(true) -> bool
         {
-            return arch_x86_ise_check<t_impl, arch_x86_ise_strict>();
+            return arch_x86_ise_check<arch_x86_ise_strict, t_impl>();
         }
     };
     
@@ -433,10 +442,10 @@ namespace milo::detail
         >
         static
         constexpr auto
-        impl(
+        check(
         ) noexcept(true) -> bool
         {
-            return arch_x86_ise_check<t_impl, arch_x86_ise_native>();
+            return arch_x86_ise_check<arch_x86_ise_native, t_impl>();
         }
     };
     
@@ -488,10 +497,10 @@ namespace milo::detail
         >
         static
         constexpr auto
-        impl(
+        check(
         ) noexcept(true) -> bool
         {
-            return arch_x86_ise_check<t_impl, arch_x86_ise_runtime>();
+            return arch_x86_ise_check<arch_x86_ise_runtime, t_impl>();
         }
     };
     
