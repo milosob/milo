@@ -18,15 +18,8 @@ namespace milo::detail
         constexpr auto
         check(
         ) noexcept(true) -> bool
-        requires
-        (!
-            requires
-            {
-                typename t_impl::requirements::arch;
-            }
-        )
         {
-            return true;
+            return false;
         }
     };
     
