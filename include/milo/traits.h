@@ -172,6 +172,12 @@ namespace milo::traits
     constexpr auto is_same_v = is_same<t_0, t_args...>::value;
     
     template<typename t_0>
+    using is_class = std::is_class<t_0>;
+    
+    template<typename t_0>
+    constexpr auto is_class_v = is_class<t_0>::value;
+    
+    template<typename t_0>
     using add_constant = std::add_const<t_0>;
     
     template<typename t_0>
