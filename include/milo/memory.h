@@ -8,8 +8,9 @@
 #include <milo/bits.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
-#include <milo/endian.h>
 #include <milo/traits.h>
+
+#include <milo/detail/endian.h>
 
 
 namespace milo::memory
@@ -59,7 +60,7 @@ namespace milo::memory
                 {
                     auto bits = bits::width(off);
                     
-                    if constexpr (endian::big)
+                    if constexpr (detail::endian_big)
                     {
                         bits = ptr_bits - bits - val_bits;
                     }
@@ -70,20 +71,20 @@ namespace milo::memory
                 if constexpr (full_size > 0)
                 {
                     constexpr auto todo_size = full_size;
-                    constexpr auto i_beg = endian::little ? todo_size - 1 : 0;
-                    constexpr auto i_end = endian::little ? size_t(-1) : todo_size;
+                    constexpr auto i_beg = detail::endian_little ? todo_size - 1 : 0;
+                    constexpr auto i_end = detail::endian_little ? size_t(-1) : todo_size;
                     
                     for (size_t i = i_beg; i != i_end;)
                     {
                         val <<= ptr_bits;
                         val |= val_type(a_ptr[seg + i]) & val_type(ptr_type(-1));
                         
-                        if constexpr (endian::little)
+                        if constexpr (detail::endian_little)
                         {
                             i -= 1;
                         }
                         
-                        if constexpr (endian::big)
+                        if constexpr (detail::endian_big)
                         {
                             i += 1;
                         }
@@ -157,7 +158,7 @@ namespace milo::memory
             {
                 auto bits = bits::width(off);
                 
-                if constexpr (endian::big)
+                if constexpr (detail::endian_big)
                 {
                     bits = ptr_bits - bits - val_bits;
                 }
@@ -171,26 +172,26 @@ namespace milo::memory
                     a_size,
                     full_size
                 );
-                auto i_beg = endian::little ? todo_size - 1 : 0;
-                auto i_end = endian::little ? size_t(-1) : todo_size;
+                auto i_beg = detail::endian_little ? todo_size - 1 : 0;
+                auto i_end = detail::endian_little ? size_t(-1) : todo_size;
                 
                 for (size_t i = i_beg; i != i_end;)
                 {
                     val <<= ptr_bits;
                     val |= val_type(a_ptr[seg + i]) & val_type(ptr_type(-1));
                     
-                    if constexpr (endian::little)
+                    if constexpr (detail::endian_little)
                     {
                         i -= 1;
                     }
                     
-                    if constexpr (endian::big)
+                    if constexpr (detail::endian_big)
                     {
                         i += 1;
                     }
                 }
                 
-                if constexpr (endian::big)
+                if constexpr (detail::endian_big)
                 {
                     val <<= bits::width(ptr_size * (full_size - todo_size));
                 }
@@ -225,7 +226,7 @@ namespace milo::memory
         size_t a_off
     ) noexcept(true) -> t_val
     {
-        return endian::bigof(
+        return detail::endian_bigof(
             load<
                 t_val,
                 t_ptr
@@ -247,7 +248,7 @@ namespace milo::memory
         size_t a_size
     ) noexcept(true) -> t_val
     {
-        return endian::bigof(
+        return detail::endian_bigof(
             load<
                 t_val,
                 t_ptr
@@ -269,7 +270,7 @@ namespace milo::memory
         size_t a_off
     ) noexcept(true) -> t_val
     {
-        return endian::littleof(
+        return detail::endian_littleof(
             load<
                 t_val,
                 t_ptr
@@ -291,7 +292,7 @@ namespace milo::memory
         size_t a_size
     ) noexcept(true) -> t_val
     {
-        return endian::littleof(
+        return detail::endian_littleof(
             load<
                 t_val,
                 t_ptr
@@ -349,7 +350,7 @@ namespace milo::memory
                 {
                     auto bits = bits::width(off);
                     
-                    if constexpr (endian::big)
+                    if constexpr (detail::endian_big)
                     {
                         bits = ptr_bits - bits - val_bits;
                     }
@@ -360,20 +361,20 @@ namespace milo::memory
                 if constexpr (full_size > 0)
                 {
                     constexpr auto todo_size = full_size;
-                    constexpr auto i_beg = endian::little ? 0 : todo_size - 1;
-                    constexpr auto i_end = endian::little ? todo_size : size_t(-1);
+                    constexpr auto i_beg = detail::endian_little ? 0 : todo_size - 1;
+                    constexpr auto i_end = detail::endian_little ? todo_size : size_t(-1);
                     
                     for (size_t i = i_beg; i != i_end;)
                     {
                         a_ptr[seg + i] = job_type(val);
                         val >>= ptr_bits;
                         
-                        if constexpr (endian::little)
+                        if constexpr (detail::endian_little)
                         {
                             i += 1;
                         }
                         
-                        if constexpr (endian::big)
+                        if constexpr (detail::endian_big)
                         {
                             i -= 1;
                         }
@@ -444,7 +445,7 @@ namespace milo::memory
             {
                 auto bits = bits::width(off);
                 
-                if constexpr (endian::big)
+                if constexpr (detail::endian_big)
                 {
                     bits = ptr_bits - bits - val_bits;
                 }
@@ -458,10 +459,10 @@ namespace milo::memory
                     a_size,
                     full_size
                 );
-                auto i_beg = endian::little ? 0 : todo_size - 1;
-                auto i_end = endian::little ? todo_size : size_t(-1);
+                auto i_beg = detail::endian_little ? 0 : todo_size - 1;
+                auto i_end = detail::endian_little ? todo_size : size_t(-1);
                 
-                if constexpr (endian::big)
+                if constexpr (detail::endian_big)
                 {
                     val >>= bits::width(ptr_size * (full_size - todo_size));
                 }
@@ -471,12 +472,12 @@ namespace milo::memory
                     a_ptr[seg + i] = job_type(val);
                     val >>= ptr_bits;
                     
-                    if constexpr (endian::little)
+                    if constexpr (detail::endian_little)
                     {
                         i += 1;
                     }
                     
-                    if constexpr (endian::big)
+                    if constexpr (detail::endian_big)
                     {
                         i -= 1;
                     }
@@ -510,7 +511,7 @@ namespace milo::memory
         stor(
             a_ptr,
             a_off,
-            endian::bigof(a_val)
+            detail::endian_bigof(a_val)
         );
     }
     
@@ -529,7 +530,7 @@ namespace milo::memory
         stor(
             a_ptr,
             a_off,
-            endian::bigof(a_val),
+            detail::endian_bigof(a_val),
             a_size
         );
     }
@@ -548,7 +549,7 @@ namespace milo::memory
         stor(
             a_ptr,
             a_off,
-            endian::littleof(a_val)
+            detail::endian_littleof(a_val)
         );
     }
     
@@ -567,7 +568,7 @@ namespace milo::memory
         stor(
             a_ptr,
             a_off,
-            endian::littleof(a_val),
+            detail::endian_littleof(a_val),
             a_size
         );
     }
@@ -1025,11 +1026,11 @@ namespace milo::memory
             a_src_size
         );
         
-        if constexpr (sizeof(t_dst) != 1 && !endian::big)
+        if constexpr (sizeof(t_dst) != 1 && !detail::endian_big)
         {
             for (size_t i = 0; i < a_dst_size; i += 1)
             {
-                a_dst_ptr[i] = endian::bigof(a_dst_ptr[i]);
+                a_dst_ptr[i] = detail::endian_bigof(a_dst_ptr[i]);
             }
         }
     }
@@ -1073,11 +1074,11 @@ namespace milo::memory
             a_src_size
         );
         
-        if constexpr (sizeof(t_dst) != 1 && !endian::little)
+        if constexpr (sizeof(t_dst) != 1 && !detail::endian_little)
         {
             for (size_t i = 0; i < a_dst_size; i += 1)
             {
-                a_dst_ptr[i] = endian::littleof(a_dst_ptr[i]);
+                a_dst_ptr[i] = detail::endian_littleof(a_dst_ptr[i]);
             }
         }
     }
