@@ -4,7 +4,8 @@
 
 
 #include <milo/common.h>
-#include <milo/config.h>
+
+#include <milo/detail/config.h>
 
 
 namespace milo::version
