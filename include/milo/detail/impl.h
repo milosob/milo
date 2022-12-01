@@ -30,20 +30,20 @@ namespace milo::detail
     impl_choose_hook(
     ) noexcept(true)
     {
-        if constexpr (concepts::differ<t_impl, void>)
+        if constexpr (traits::is_class_v<t_impl>)
         {
-            if constexpr (
-                (!
-                    requires{
-                        typename t_impl::requirements::arch;
-                    })
-                )
+            if constexpr ((!
+                requires
+                {
+                    typename t_impl::requirements::arch;
+                }
+            ))
             {
                 return t_chooser::template hook<t_impl>();
             }
             else
             {
-                if (t_domain::template impl<t_impl>())
+                if (t_domain::template check<t_impl>())
                 {
                     return t_chooser::template hook<t_impl>();
                 }
@@ -74,27 +74,16 @@ namespace milo::detail
             traits::disjunction<
                 traits::boolean<
                     typename t_chooser::template type<t_impls>,
-                    []() constexpr noexcept(true)
-                    {
-                        if constexpr (concepts::differ<t_impls, void>)
-                        {
-                            if constexpr (
-                                (!
-                                    requires{
-                                        typename t_impls::requirements::arch;
-                                    })
-                                )
+                    traits::is_class_v<t_impls> &&
+                    (
+                        (!
+                            requires
                             {
-                                return true;
+                                typename t_impls::requirements::arch;
                             }
-                            else
-                            {
-                                return t_domain::template impl<t_impls>();
-                            }
-                        }
-                        
-                        return false;
-                    }()
+                        ) ||
+                        t_domain::template check<t_impls>()
+                    )
                 >...
             >
     {
@@ -234,7 +223,7 @@ namespace milo::detail
         {
             if MILO_CONSTEVAL
             {
-                if constexpr (concepts::differ<cpltime_override, void>)
+                if constexpr (traits::is_class_v<cpltime_override>)
                 {
                     return invoker::template type<
                         t_id,
@@ -263,7 +252,7 @@ namespace milo::detail
             }
             else
             {
-                if constexpr (concepts::differ<runtime_override, void>)
+                if constexpr (traits::is_class_v<runtime_override>)
                 {
                     return invoker::template type<
                         t_id,
