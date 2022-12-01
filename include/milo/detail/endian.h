@@ -124,17 +124,17 @@ namespace milo::detail
     {
         if MILO_CONSTEVAL
         {
-            return swap_sw(a_int);
+            return endian_swap_sw(a_int);
         }
         else
         {
             if constexpr (compiler::has_builtin_bswap)
             {
-                return swap_bi(a_int);
+                return endian_swap_bi(a_int);
             }
             else
             {
-                return swap_sw(a_int);
+                return endian_swap_sw(a_int);
             }
         }
     }
