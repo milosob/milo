@@ -514,7 +514,7 @@ namespace milo::detail
         using runtime = arch_x86_ise_runtime;
     };
     
-    struct arch_x86_impl
+    struct arch_x86
         : private common::disabled
     {
         static

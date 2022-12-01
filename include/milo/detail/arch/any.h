@@ -43,7 +43,7 @@ namespace milo::detail
         using runtime = arch_any_ise_runtime;
     };
     
-    struct arch_any_impl
+    struct arch_any
         : private common::disabled
     {
         static

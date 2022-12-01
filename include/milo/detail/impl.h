@@ -3,21 +3,22 @@
 #pragma once
 
 
-#include <milo/arch.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/option.h>
 #include <milo/traits.h>
 #include <milo/utility.h>
 
+#include <milo/detail/arch.h>
+
 
 namespace milo::detail
 {
-    using impl_domain_strict = arch::active::ise::strict;
+    using impl_domain_strict = arch_active::ise::strict;
     
-    using impl_domain_native = arch::active::ise::native;
+    using impl_domain_native = arch_active::ise::native;
     
-    using impl_domain_runtime = arch::active::ise::runtime;
+    using impl_domain_runtime = arch_active::ise::runtime;
     
     template<
         typename t_domain,

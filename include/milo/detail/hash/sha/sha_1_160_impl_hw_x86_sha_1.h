@@ -3,11 +3,12 @@
 #pragma once
 
 
-#include <milo/arch.h>
 #include <milo/bits.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
+
+#include <milo/detail/arch.h>
 
 
 #if MILO_ARCH_X86_ISE_SSE_1 && \
@@ -67,19 +68,19 @@ namespace milo::detail
             using load_type = __m128i_u;
             using stor_type = __m128i_u;
             using vect_type = __m128i;
-    
+            
             vect_type schedule[20];
             vect_type state_0;
             vect_type state_1;
             vect_type state_t;
-    
+            
             /*
              * State copying is avoided.
              *
              * state_0 - a b c d
              * state_1 - e
              */
-    
+            
             state_0 = _mm_shuffle_epi32(
                 _mm_loadu_si128(
                     reinterpret_cast<const load_type*>(a_h_ptr)
@@ -127,7 +128,7 @@ namespace milo::detail
              * [0] = 0x08090a0b0c0d0e0f
              * [1] = 0x0001020304050607
              */
-    
+            
             constexpr auto shuffle_mask = vect_type{0x08090a0b0c0d0e0f, 0x0001020304050607};
             
             for (size_t i = 0; i < a_blocks; i += 1)
