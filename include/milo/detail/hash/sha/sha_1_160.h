@@ -115,6 +115,10 @@ namespace milo::detail
         initialize(
         ) noexcept(true) -> void
         {
+            static_assert(
+                t_bits == 160
+            );
+            
             if constexpr (bits == 160)
             {
                 m_h[0] = 0x67452301;

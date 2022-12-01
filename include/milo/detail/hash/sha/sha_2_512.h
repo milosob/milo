@@ -20,11 +20,6 @@ namespace milo::detail
         size_t t_bits,
         typename... t_options
     >
-    requires
-    requires
-    {
-        requires t_bits == 224 || t_bits == 256 || t_bits == 384 || t_bits == 512;
-    }
     class hash_sha_2_512
     {
     public:
@@ -113,6 +108,13 @@ namespace milo::detail
         initialize(
         ) noexcept(true) -> void
         {
+            static_assert(
+                t_bits == 224 ||
+                t_bits == 256 ||
+                t_bits == 384 ||
+                t_bits == 512
+            );
+            
             if constexpr (bits == 224)
             {
                 m_h[0] = 0x8c3d37c819544da2;
