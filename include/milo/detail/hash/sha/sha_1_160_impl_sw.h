@@ -3,10 +3,11 @@
 #pragma once
 
 
-#include <milo/bits.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
+
+#include <milo/detail/bit.h>
 
 
 namespace milo::detail
@@ -99,7 +100,7 @@ namespace milo::detail
                     );
                     
                     uint32_t t_1 =
-                        bits::rotl(
+                        bit_rotl(
                             a,
                             5
                         ) +
@@ -114,7 +115,7 @@ namespace milo::detail
                     
                     e = d;
                     d = c;
-                    c = bits::rotr(
+                    c = bit_rotr(
                         b,
                         2
                     );
@@ -125,7 +126,7 @@ namespace milo::detail
                 for (size_t j = 16; j < 20; j += 1)
                 {
                     schedule[j] =
-                        bits::rotl(
+                        bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -134,7 +135,7 @@ namespace milo::detail
                         );
                     
                     uint32_t t_1 =
-                        bits::rotl(
+                        bit_rotl(
                             a,
                             5
                         ) +
@@ -149,7 +150,7 @@ namespace milo::detail
                     
                     e = d;
                     d = c;
-                    c = bits::rotr(
+                    c = bit_rotr(
                         b,
                         2
                     );
@@ -160,7 +161,7 @@ namespace milo::detail
                 for (size_t j = 20; j < 40; j += 1)
                 {
                     schedule[j] =
-                        bits::rotl(
+                        bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -169,7 +170,7 @@ namespace milo::detail
                         );
                     
                     uint32_t t_1 =
-                        bits::rotl(
+                        bit_rotl(
                             a,
                             5
                         ) +
@@ -184,7 +185,7 @@ namespace milo::detail
                     
                     e = d;
                     d = c;
-                    c = bits::rotr(
+                    c = bit_rotr(
                         b,
                         2
                     );
@@ -195,7 +196,7 @@ namespace milo::detail
                 for (size_t j = 40; j < 60; j += 1)
                 {
                     schedule[j] =
-                        bits::rotl(
+                        bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -204,7 +205,7 @@ namespace milo::detail
                         );
                     
                     uint32_t t_1 =
-                        bits::rotl(
+                        bit_rotl(
                             a,
                             5
                         ) +
@@ -219,7 +220,7 @@ namespace milo::detail
                     
                     e = d;
                     d = c;
-                    c = bits::rotr(
+                    c = bit_rotr(
                         b,
                         2
                     );
@@ -230,7 +231,7 @@ namespace milo::detail
                 for (size_t j = 60; j < 80; j += 1)
                 {
                     schedule[j] =
-                        bits::rotl(
+                        bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -239,7 +240,7 @@ namespace milo::detail
                         );
                     
                     uint32_t t_1 =
-                        bits::rotl(
+                        bit_rotl(
                             a,
                             5
                         ) +
@@ -254,7 +255,7 @@ namespace milo::detail
                     
                     e = d;
                     d = c;
-                    c = bits::rotr(
+                    c = bit_rotr(
                         b,
                         2
                     );

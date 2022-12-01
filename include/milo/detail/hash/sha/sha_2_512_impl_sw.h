@@ -3,10 +3,11 @@
 #pragma once
 
 
-#include <milo/bits.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
+
+#include <milo/detail/bit.h>
 
 
 namespace milo::detail
@@ -75,11 +76,11 @@ namespace milo::detail
         ) noexcept(true) -> uint64_t
         {
             return
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     1
                 ) ^
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     8
                 ) ^
@@ -93,11 +94,11 @@ namespace milo::detail
         ) noexcept(true) -> uint64_t
         {
             return
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     19
                 ) ^
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     61
                 ) ^
@@ -111,15 +112,15 @@ namespace milo::detail
         ) noexcept(true) -> uint64_t
         {
             return
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     28
                 ) ^
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     34
                 ) ^
-                bits::rotr(
+                bit_rotr(
                     a_0,
                     39
                 );
@@ -132,15 +133,15 @@ namespace milo::detail
         ) noexcept(true) -> uint64_t
         {
             return
-                bits::rotr(
+                bit_rotr(
                     a_w_0,
                     14
                 ) ^
-                bits::rotr(
+                bit_rotr(
                     a_w_0,
                     18
                 ) ^
-                bits::rotr(
+                bit_rotr(
                     a_w_0,
                     41
                 );

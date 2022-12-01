@@ -3,9 +3,10 @@
 #pragma once
 
 
-#include <milo/bits.h>
 #include <milo/common.h>
 #include <milo/memory.h>
+
+#include <milo/detail/bit.h>
 
 
 namespace milo::cipher
@@ -43,25 +44,25 @@ namespace milo::cipher
             auto s_3 = a_state_ptr[a_3];
             
             s_0 = s_0 + s_1;
-            s_3 = bits::rotl(
+            s_3 = detail::bit_rotl(
                 s_3 ^ s_0,
                 16
             );
             
             s_2 = s_2 + s_3;
-            s_1 = bits::rotl(
+            s_1 = detail::bit_rotl(
                 s_1 ^ s_2,
                 12
             );
             
             s_0 = s_0 + s_1;
-            s_3 = bits::rotl(
+            s_3 = detail::bit_rotl(
                 s_3 ^ s_0,
                 8
             );
             
             s_2 = s_2 + s_3;
-            s_1 = bits::rotl(
+            s_1 = detail::bit_rotl(
                 s_1 ^ s_2,
                 7
             );

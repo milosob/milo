@@ -5,11 +5,11 @@
 
 #include <new>
 
-#include <milo/bits.h>
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/traits.h>
 
+#include <milo/detail/bit.h>
 #include <milo/detail/endian.h>
 
 
@@ -32,8 +32,8 @@ namespace milo::memory
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
-        constexpr auto val_bits = bits::width<val_type>();
-        constexpr auto ptr_bits = bits::width<ptr_type>();
+        constexpr auto val_bits = detail::bit_width<val_type>();
+        constexpr auto ptr_bits = detail::bit_width<ptr_type>();
         
         constexpr auto full_size = val_size / ptr_size;
         constexpr auto part_size = val_size % ptr_size;
@@ -58,7 +58,7 @@ namespace milo::memory
                 
                 if constexpr (part_size > 0)
                 {
-                    auto bits = bits::width(off);
+                    auto bits = detail::bit_width(off);
                     
                     if constexpr (detail::endian_big)
                     {
@@ -126,8 +126,8 @@ namespace milo::memory
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
-        constexpr auto val_bits = bits::width<val_type>();
-        constexpr auto ptr_bits = bits::width<ptr_type>();
+        constexpr auto val_bits = detail::bit_width<val_type>();
+        constexpr auto ptr_bits = detail::bit_width<ptr_type>();
         
         constexpr auto full_size = val_size / ptr_size;
         constexpr auto part_size = val_size % ptr_size;
@@ -156,7 +156,7 @@ namespace milo::memory
             
             if constexpr (part_size > 0 && val_size != ptr_size)
             {
-                auto bits = bits::width(off);
+                auto bits = detail::bit_width(off);
                 
                 if constexpr (detail::endian_big)
                 {
@@ -193,7 +193,7 @@ namespace milo::memory
                 
                 if constexpr (detail::endian_big)
                 {
-                    val <<= bits::width(ptr_size * (full_size - todo_size));
+                    val <<= detail::bit_width(ptr_size * (full_size - todo_size));
                 }
             }
             
@@ -322,8 +322,8 @@ namespace milo::memory
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
-        constexpr auto val_bits = bits::width<val_type>();
-        constexpr auto ptr_bits = bits::width<ptr_type>();
+        constexpr auto val_bits = detail::bit_width<val_type>();
+        constexpr auto ptr_bits = detail::bit_width<ptr_type>();
         
         constexpr auto full_size = val_size / ptr_size;
         constexpr auto part_size = val_size % ptr_size;
@@ -348,7 +348,7 @@ namespace milo::memory
                 
                 if constexpr (part_size > 0)
                 {
-                    auto bits = bits::width(off);
+                    auto bits = detail::bit_width(off);
                     
                     if constexpr (detail::endian_big)
                     {
@@ -411,8 +411,8 @@ namespace milo::memory
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
-        constexpr auto val_bits = bits::width<val_type>();
-        constexpr auto ptr_bits = bits::width<ptr_type>();
+        constexpr auto val_bits = detail::bit_width<val_type>();
+        constexpr auto ptr_bits = detail::bit_width<ptr_type>();
         
         constexpr auto full_size = val_size / ptr_size;
         constexpr auto part_size = val_size % ptr_size;
@@ -443,7 +443,7 @@ namespace milo::memory
             
             if constexpr (part_size > 0 && val_size != ptr_size)
             {
-                auto bits = bits::width(off);
+                auto bits = detail::bit_width(off);
                 
                 if constexpr (detail::endian_big)
                 {
@@ -464,7 +464,7 @@ namespace milo::memory
                 
                 if constexpr (detail::endian_big)
                 {
-                    val >>= bits::width(ptr_size * (full_size - todo_size));
+                    val >>= detail::bit_width(ptr_size * (full_size - todo_size));
                 }
                 
                 for (size_t i = i_beg; i != i_end;)
