@@ -249,7 +249,7 @@ namespace milo::detail
             {
                 using mode_type = t_mode;
                 using impl_type = typename t_impl::requirements::arch::x86::ise;
-    
+                
                 if constexpr (requires {
                     typename impl_type::sse_1;
                 })
@@ -259,7 +259,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::sse_2;
                 })
@@ -269,7 +269,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::sse_3;
                 })
@@ -279,7 +279,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::ssse_3;
                 })
@@ -289,7 +289,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::sse_4_1;
                 })
@@ -299,7 +299,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::sse_4_2;
                 })
@@ -309,7 +309,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::avx_1;
                 })
@@ -319,7 +319,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::avx_2;
                 })
@@ -329,7 +329,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::sha_1;
                 })
@@ -339,7 +339,7 @@ namespace milo::detail
                         return false;
                     }
                 }
-    
+                
                 if constexpr (requires {
                     typename impl_type::sha_2;
                 })
@@ -360,7 +360,6 @@ namespace milo::detail
     }
     
     struct arch_x86_ise_strict
-        : private common::disabled
     {
         static
         constexpr bool sse_1 = false;
@@ -405,7 +404,6 @@ namespace milo::detail
     };
     
     struct arch_x86_ise_native
-        : private common::disabled
     {
         static
         constexpr bool sse_1 = MILO_ARCH_X86_ISE_SSE_1;
@@ -450,7 +448,6 @@ namespace milo::detail
     };
     
     struct arch_x86_ise_runtime
-        : private common::disabled
     {
         inline
         static
@@ -505,7 +502,6 @@ namespace milo::detail
     };
     
     struct arch_x86_ise
-        : private common::disabled
     {
         using strict = arch_x86_ise_strict;
         
@@ -515,7 +511,6 @@ namespace milo::detail
     };
     
     struct arch_x86
-        : private common::disabled
     {
         static
         constexpr bool value = MILO_ARCH_X86;

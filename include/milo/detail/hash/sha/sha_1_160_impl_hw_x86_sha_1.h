@@ -23,7 +23,6 @@
 namespace milo::detail
 {
     class hash_sha_1_160_impl_hw_x86_sha_1
-        : private common::disabled
     {
     public:
         

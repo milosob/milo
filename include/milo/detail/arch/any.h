@@ -9,7 +9,6 @@
 namespace milo::detail
 {
     struct arch_any_ise_strict
-        : private common::disabled
     {
         template<
             typename t_impl
@@ -34,7 +33,6 @@ namespace milo::detail
     };
     
     struct arch_any_ise
-        : private common::disabled
     {
         using strict = arch_any_ise_strict;
         
@@ -44,7 +42,6 @@ namespace milo::detail
     };
     
     struct arch_any
-        : private common::disabled
     {
         static
         constexpr bool value = true;

@@ -22,7 +22,6 @@ namespace milo::mac
         concepts::mac t_impl
     >
     class test
-        : private common::disabled
     {
     public:
         

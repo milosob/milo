@@ -22,7 +22,6 @@ namespace milo::hash
         concepts::hash t_impl
     >
     class test
-        : private common::disabled
     {
     public:
         

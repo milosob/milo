@@ -12,15 +12,14 @@
 namespace milo::detail
 {
     class hash_sha_2_256_impl_sw
-        : private common::disabled
     {
     public:
-    
+        
         static
         constexpr size_t block_size = 64;
-
-    private:
     
+    private:
+        
         static
         constexpr uint32_t k[64] = {
             0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,

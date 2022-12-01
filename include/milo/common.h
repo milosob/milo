@@ -14,7 +14,7 @@
  */
 
 #define MILO_CONSTEVAL                                              \
-    (std::is_constant_evaluated())                                      \
+    (std::is_constant_evaluated())                                  \
     
 /*
  * @formatter:on
@@ -22,17 +22,6 @@
 
 namespace milo::common
 {
-    /**
-     * Inheriting from this class disables it.
-     */
-    struct disabled
-    {
-        constexpr ~disabled() noexcept(true) = delete;
-        
-        constexpr auto
-        operator =(const disabled&) noexcept(true) -> disabled& = delete;
-    };
-    
     /**
      * This function selects maximum.
      *

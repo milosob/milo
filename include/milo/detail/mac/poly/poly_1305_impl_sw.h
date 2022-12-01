@@ -11,7 +11,6 @@
 namespace milo::detail
 {
     class mac_poly_1305_impl_sw
-        : private common::disabled
     {
     public:
         
