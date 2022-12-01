@@ -45,7 +45,7 @@ test_case(
             c += 1;
         }
         
-        datas[i] = milo::endian::bigof(data);
+        datas[i] = milo::detail::endian_bigof(data);
     }
     
     for (size_t i = 0, c = 0; i < loads_size; i += 1)
