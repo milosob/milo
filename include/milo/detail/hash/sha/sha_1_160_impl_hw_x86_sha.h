@@ -22,7 +22,7 @@
 
 namespace milo::detail
 {
-    class hash_sha_1_160_impl_hw_x86_sha_1
+    class hash_sha_1_160_impl_hw_x86_sha
     {
     public:
         
@@ -321,7 +321,7 @@ namespace milo::detail
 
 namespace milo::detail
 {
-    using hash_sha_1_160_impl_hw_x86_sha_1 = void;
+    using hash_sha_1_160_impl_hw_x86_sha = void;
 }
 
 
