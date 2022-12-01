@@ -72,13 +72,6 @@ namespace milo::detail
             vect_type state_1;
             vect_type state_t;
             
-            /*
-             * State copying is avoided.
-             *
-             * state_0 - a b c d
-             * state_1 - e
-             */
-            
             state_0 = _mm_shuffle_epi32(
                 _mm_loadu_si128(
                     reinterpret_cast<const load_type*>(a_h_ptr)
@@ -86,20 +79,11 @@ namespace milo::detail
                 0b00011011
             );
             
-            /*
-            state_0 = _mm_set_epi32(
-                int(a_h_ptr[0]),
-                int(a_h_ptr[1]),
-                int(a_h_ptr[2]),
-                int(a_h_ptr[3])
-            );
-            */
-            
-            state_1 = _mm_set_epi32(
+            state_1 = _mm_setzero_si128();
+            state_1 = _mm_insert_epi32(
+                state_1,
                 int(a_h_ptr[4]),
-                0,
-                0,
-                0
+                3
             );
             
             /*
@@ -127,7 +111,11 @@ namespace milo::detail
              * [1] = 0x0001020304050607
              */
             
-            constexpr auto shuffle_mask = vect_type{0x08090a0b0c0d0e0f, 0x0001020304050607};
+            constexpr auto shuffle_mask = vect_type
+                {
+                    0x08090a0b0c0d0e0f,
+                    0x0001020304050607
+                };
             
             for (size_t i = 0; i < a_blocks; i += 1)
             {
@@ -288,29 +276,6 @@ namespace milo::detail
                 state_1,
                 3
             );
-            
-            /*
-            a_h_ptr[0] = _mm_extract_epi32(
-                state_0,
-                3
-            );
-            a_h_ptr[1] = _mm_extract_epi32(
-                state_0,
-                2
-            );
-            a_h_ptr[2] = _mm_extract_epi32(
-                state_0,
-                1
-            );
-            a_h_ptr[3] = _mm_extract_epi32(
-                state_0,
-                0
-            );
-            a_h_ptr[4] = _mm_extract_epi32(
-                state_1,
-                3
-            );
-            */
         }
     };
 }
