@@ -149,7 +149,7 @@ namespace milo::detail
         {
             m_processed_bytes += a_message_size;
             
-            m_buffer_size = update::block_soak_candidate<
+            m_buffer_size = update::block_soak<
                 impl_type
             >(
                 m_buffer,

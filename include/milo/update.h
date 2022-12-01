@@ -42,7 +42,7 @@ namespace milo::update
         typename... t_args
     >
     constexpr auto
-    block_soak_candidate(
+    block_soak(
         t_buf* a_buf_ptr,
         size_t a_buf_size,
         const t_src* a_src_ptr,
@@ -109,109 +109,6 @@ namespace milo::update
                 >(
                     a_args
                 )...
-            );
-        }
-        
-        if (last_size)
-        {
-            a_src_ptr += full_size * block_size;
-            
-            memory::copy(
-                a_buf_ptr,
-                a_src_ptr,
-                last_size
-            );
-        }
-        
-        return last_size;
-    }
-    
-    /**
-     * This function updates with block-soak function.
-     *
-     * @tparam t_block
-     * Block type.
-     * @tparam t_buf
-     * Buffer type.
-     * @tparam t_src
-     * Source type.
-     * @tparam t_args
-     * Args types.
-     * @param a_buf_ptr
-     * Buffer pointer.
-     * @param a_buf_size
-     * Buffer size.
-     * @param a_src_ptr
-     * Source pointer.
-     * @param a_src_size
-     * Source size.
-     * @param a_args
-     * Args.
-     * @return
-     * Buffer size.
-     */
-    template<
-        typename t_block,
-        concepts::byte t_buf,
-        concepts::byte t_src,
-        typename... t_args
-    >
-    constexpr auto
-    block_soak(
-        t_buf* a_buf_ptr,
-        size_t a_buf_size,
-        const t_src* a_src_ptr,
-        size_t a_src_size,
-        t_args&& ... a_args
-    ) noexcept(true) -> size_t
-    requires
-    requires
-    {
-        requires concepts::block_soak<t_block, t_args...>;
-    }
-    {
-        using block_type = t_block;
-        
-        constexpr auto block_size = block_type::block_size;
-        
-        if (a_buf_size > 0)
-        {
-            auto left_size = block_size - a_buf_size;
-            auto todo_size = common::min(
-                left_size,
-                a_src_size
-            );
-            
-            memory::copy(
-                a_buf_ptr + a_buf_size,
-                a_src_ptr,
-                todo_size
-            );
-            
-            if (todo_size < left_size)
-            {
-                return a_buf_size + todo_size;
-            }
-            
-            block_type::process(
-                a_buf_ptr,
-                1,
-                utility::forward<t_args>(a_args)...
-            );
-            
-            a_src_ptr += todo_size;
-            a_src_size -= todo_size;
-        }
-        
-        auto full_size = a_src_size / block_size;
-        auto last_size = a_src_size % block_size;
-        
-        if (full_size)
-        {
-            block_type::process(
-                a_src_ptr,
-                full_size,
-                utility::forward<t_args>(a_args)...
             );
         }
         

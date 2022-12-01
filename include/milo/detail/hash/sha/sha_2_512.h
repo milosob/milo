@@ -188,7 +188,7 @@ namespace milo::detail
             m_processed_bytes[1] += m_processed_bytes[0] > (UINT64_MAX - a_message_size);
             m_processed_bytes[0] += a_message_size;
             
-            m_buffer_size = update::block_soak_candidate<
+            m_buffer_size = update::block_soak<
                 impl_type
             >(
                 m_buffer,

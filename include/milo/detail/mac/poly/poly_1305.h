@@ -168,7 +168,7 @@ namespace milo::detail
             size_t a_message_size
         ) noexcept(true) -> void
         {
-            m_buffer_size = update::block_soak_candidate<
+            m_buffer_size = update::block_soak<
                 impl_type
             >(
                 m_buffer,
