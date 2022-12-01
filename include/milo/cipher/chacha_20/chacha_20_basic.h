@@ -6,7 +6,8 @@
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
-#include <milo/update.h>
+
+#include <milo/detail/update.h>
 
 
 namespace milo::cipher
@@ -157,7 +158,7 @@ namespace milo::cipher
             t_ciphertext* a_ciphertext_ptr
         ) noexcept(true) -> size_t
         {
-            m_buffer_size = update::block_prod_xor<block_type>(
+            m_buffer_size = detail::update_block_prod_xor<block_type>(
                 m_buffer,
                 m_buffer_size,
                 a_ciphertext_ptr,
@@ -221,7 +222,7 @@ namespace milo::cipher
             t_plaintext* a_plaintext_ptr
         ) noexcept(true) -> size_t
         {
-            m_buffer_size = update::block_prod_xor<block_type>(
+            m_buffer_size = detail::update_block_prod_xor<block_type>(
                 m_buffer,
                 m_buffer_size,
                 a_plaintext_ptr,

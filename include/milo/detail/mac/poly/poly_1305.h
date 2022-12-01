@@ -6,12 +6,12 @@
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
-#include <milo/update.h>
 
 #include <milo/detail/mac/poly/poly_1305_impl.h>
 #include <milo/detail/mac/poly/poly_1305_impl_sw.h>
 #include <milo/detail/impl.h>
 #include <milo/detail/option.h>
+#include <milo/detail/update.h>
 
 
 namespace milo::detail
@@ -168,7 +168,7 @@ namespace milo::detail
             size_t a_message_size
         ) noexcept(true) -> void
         {
-            m_buffer_size = update::block_soak<
+            m_buffer_size = update_block_soak<
                 impl_type
             >(
                 m_buffer,

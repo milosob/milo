@@ -9,7 +9,7 @@
 #include <milo/utility.h>
 
 
-namespace milo::update
+namespace milo::detail
 {
     /**
      * This function updates with block-soak function.
@@ -42,18 +42,13 @@ namespace milo::update
         typename... t_args
     >
     constexpr auto
-    block_soak(
+    update_block_soak(
         t_buf* a_buf_ptr,
         size_t a_buf_size,
         const t_src* a_src_ptr,
         size_t a_src_size,
         t_args&& ... a_args
     ) noexcept(true) -> size_t
-    requires
-    requires
-    {
-        requires true;
-    }
     {
         using impl_type = t_impl;
         
@@ -162,7 +157,7 @@ namespace milo::update
         typename... t_args
     >
     constexpr auto
-    block_prod_xor(
+    update_block_prod_xor(
         t_buf* a_buf_ptr,
         size_t a_buf_size,
         t_dst* a_dst_ptr,
@@ -187,7 +182,7 @@ namespace milo::update
                 left_size,
                 a_src_size
             );
-    
+            
             memory::xorr(
                 a_dst_ptr,
                 a_src_ptr,
@@ -204,19 +199,19 @@ namespace milo::update
             a_src_ptr += todo_size;
             a_src_size -= todo_size;
         }
-    
+        
         uint8_t block[block_size];
-    
+        
         auto full_size = a_src_size / block_size;
         auto last_size = a_src_size % block_size;
-    
+        
         for (size_t i = 0; i < full_size; i += 1)
         {
             block_type::process(
                 block,
                 utility::forward<t_args>(a_args)...
             );
-    
+            
             memory::xorr(
                 a_dst_ptr,
                 a_src_ptr,

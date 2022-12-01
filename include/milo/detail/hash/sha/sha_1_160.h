@@ -6,13 +6,13 @@
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
-#include <milo/update.h>
 
 #include <milo/detail/hash/impl.h>
 #include <milo/detail/hash/sha/sha_1_160_impl_sw.h>
 #include <milo/detail/hash/sha/sha_1_160_impl_hw_x86_sha.h>
 #include <milo/detail/impl.h>
 #include <milo/detail/option.h>
+#include <milo/detail/update.h>
 
 
 namespace milo::detail
@@ -149,7 +149,7 @@ namespace milo::detail
         {
             m_processed_bytes += a_message_size;
             
-            m_buffer_size = update::block_soak<
+            m_buffer_size = update_block_soak<
                 impl_type
             >(
                 m_buffer,
