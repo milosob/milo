@@ -6,12 +6,12 @@
 #include <milo/common.h>
 #include <milo/concepts.h>
 #include <milo/memory.h>
-#include <milo/option.h>
 #include <milo/update.h>
 
 #include <milo/detail/hash/impl.h>
 #include <milo/detail/hash/sha/sha_2_512_impl_sw.h>
 #include <milo/detail/impl.h>
+#include <milo/detail/option.h>
 
 
 namespace milo::detail

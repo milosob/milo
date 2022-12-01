@@ -5,8 +5,9 @@
 
 #include <milo/common.h>
 #include <milo/concepts.h>
-#include <milo/option.h>
 #include <milo/memory.h>
+
+#include <milo/detail/option.h>
 
 
 namespace milo::detail
