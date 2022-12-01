@@ -21,11 +21,6 @@ namespace milo::detail
         size_t t_bits,
         typename... t_options
     >
-    requires
-    requires
-    {
-        requires t_bits == 160;
-    }
     class hash_sha_1_160
     {
     public:
