@@ -10,7 +10,7 @@
 
 #include <milo/detail/hash/impl.h>
 #include <milo/detail/hash/sha/sha_2_256_impl_sw.h>
-#include <milo/detail/hash/sha/sha_2_256_impl_hw_x86_sha_2.h>
+#include <milo/detail/hash/sha/sha_2_256_impl_hw_x86_sha.h>
 #include <milo/detail/impl.h>
 #include <milo/detail/option.h>
 
@@ -39,6 +39,7 @@ namespace milo::detail
                     hash_sha_2_256_impl_sw
                 >,
                 impl_runtime<
+                    hash_sha_2_256_impl_hw_x86_sha,
                     hash_sha_2_256_impl_sw
                 >,
                 t_options...
