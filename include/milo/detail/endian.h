@@ -6,9 +6,10 @@
 #include <bit>
 
 #include <milo/common.h>
-#include <milo/compiler.h>
 #include <milo/concepts.h>
 #include <milo/traits.h>
+
+#include <milo/detail/compiler.h>
 
 
 namespace milo::detail
@@ -77,7 +78,7 @@ namespace milo::detail
         
         if constexpr (concepts::same<t_int, uint16_t>)
         {
-            if constexpr (compiler::msvc)
+            if constexpr (compiler_msvc)
             {
                 return _byteswap_ushort(a_int);
             }
@@ -89,7 +90,7 @@ namespace milo::detail
         
         if constexpr (concepts::same<t_int, uint32_t>)
         {
-            if constexpr (compiler::msvc)
+            if constexpr (compiler_msvc)
             {
                 return _byteswap_ulong(a_int);
             }
@@ -101,7 +102,7 @@ namespace milo::detail
         
         if constexpr (concepts::same<t_int, uint64_t>)
         {
-            if constexpr (compiler::msvc)
+            if constexpr (compiler_msvc)
             {
                 return _byteswap_uint64(a_int);
             }
@@ -128,7 +129,7 @@ namespace milo::detail
         }
         else
         {
-            if constexpr (compiler::has_builtin_bswap)
+            if constexpr (compiler_has_builtin_bswap)
             {
                 return endian_swap_bi(a_int);
             }
