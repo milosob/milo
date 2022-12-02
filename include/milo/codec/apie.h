@@ -25,8 +25,6 @@ namespace milo::codec
     {
     public:
         
-        using type = apie;
-        
         using impl_type = t_impl;
     
     public:

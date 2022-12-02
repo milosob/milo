@@ -17,10 +17,6 @@ namespace milo::detail
     {
     public:
         
-        using type = codec_base_16;
-    
-    public:
-        
         struct properties
         {
             using codec [[maybe_unused]] = int;
