@@ -16,13 +16,6 @@ namespace milo::detail
      *  Use std::numeric_limits or CHAR_BIT.
      */
     
-    /**
-     * This function calculates bit size of byte size.
-     * @param a_size
-     * Size.
-     * @return
-     * Bits.
-     */
     constexpr auto
     bit_width(
         size_t a_size
@@ -31,14 +24,6 @@ namespace milo::detail
         return a_size * 8;
     }
     
-    /**
-     * This function calculates bit size of type.
-     *
-     * @tparam t_value
-     * Value type.
-     * @return
-     * Bits.
-     */
     template<
         typename t_value
     >
@@ -49,18 +34,6 @@ namespace milo::detail
         return sizeof(t_value) * 8;
     }
     
-    /**
-     * This function performs circular bitwise left rotation.
-     *
-     * @tparam t_value
-     * Value type.
-     * @param a_value
-     * Value.
-     * @param a_by
-     * By.
-     * @return
-     * Value << By | Value >> (width(Value) - By).
-     */
     template<
         concepts::integral_u t_value
     >
@@ -75,18 +48,6 @@ namespace milo::detail
         return a_value << a_by | a_value >> (bits - a_by);
     }
     
-    /**
-     * This function performs circular bitwise right rotation.
-     *
-     * @tparam t_value
-     * Value type.
-     * @param a_value
-     * Value.
-     * @param a_by
-     * By.
-     * @return
-     * Value >> By | Value << (width(Value) - By).
-     */
     template<
         concepts::integral_u t_value
     >

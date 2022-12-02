@@ -105,9 +105,6 @@ namespace milo::detail
     
     public:
         
-        /**
-         * This function initializes the computation.
-         */
         constexpr auto
         initialize(
         ) noexcept(true) -> void
@@ -128,17 +125,7 @@ namespace milo::detail
             m_processed_bytes = 0;
             m_buffer_size = 0;
         }
-        
-        /**
-         * This function updates the message.
-         *
-         * @tparam t_message
-         * Message type.
-         * @param a_message_ptr
-         * Message pointer.
-         * @param a_message_size
-         * Message size.
-         */
+
         template<
             concepts::byte t_message
         >
@@ -160,10 +147,7 @@ namespace milo::detail
                 m_h
             );
         }
-        
-        /**
-         * This function completes the computation.
-         */
+
         constexpr auto
         finalize(
         ) noexcept(true) -> void
@@ -192,19 +176,7 @@ namespace milo::detail
                 m_h
             );
         }
-        
-        /**
-         * This function extracts digest.
-         *
-         * @tparam t_digest
-         * Digest type.
-         * @param a_digest_ptr
-         * Digest pointer.
-         * @param a_digest_size
-         * Digest size.
-         * @return
-         * Digest size.
-         */
+
         template<
             concepts::byte t_digest
         >

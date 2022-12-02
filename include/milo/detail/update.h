@@ -11,30 +11,6 @@
 
 namespace milo::detail
 {
-    /**
-     * This function updates with block-soak function.
-     *
-     * @tparam t_impl
-     * Implementation type.
-     * @tparam t_buf
-     * Buffer type.
-     * @tparam t_src
-     * Source type.
-     * @tparam t_args
-     * Args types.
-     * @param a_buf_ptr
-     * Buffer pointer.
-     * @param a_buf_size
-     * Buffer size.
-     * @param a_src_ptr
-     * Source pointer.
-     * @param a_src_size
-     * Source size.
-     * @param a_args
-     * Args.
-     * @return
-     * Buffer size.
-     */
     template<
         typename t_impl,
         concepts::byte t_buf,
@@ -121,34 +97,6 @@ namespace milo::detail
         return last_size;
     }
     
-    /**
-     * This function updates with block-prod-xor function.
-     *
-     * @tparam t_block
-     * Block type.
-     * @tparam t_buf
-     * Buffer type.
-     * @tparam t_dst
-     * Destination type.
-     * @tparam t_src
-     * Source type.
-     * @tparam t_args
-     * Args types.
-     * @param a_buf_ptr
-     * Buffer pointer.
-     * @param a_buf_size
-     * Buffer size.
-     * @param a_dst_ptr
-     * Destination pointer.
-     * @param a_src_ptr
-     * Source pointer.
-     * @param a_src_size
-     * Source size.
-     * @param a_args
-     * Args.
-     * @return
-     * Buffer size.
-     */
     template<
         typename t_block,
         concepts::byte t_buf,

@@ -78,16 +78,6 @@ namespace milo::detail
     
     public:
         
-        /**
-         * This function initializes context.
-         *
-         * @tparam t_key
-         * Key type.
-         * @param a_key_ptr
-         * Key pointer.
-         * @param a_key_size
-         * Key size.
-         */
         template<
             concepts::byte t_key
         >
@@ -157,16 +147,6 @@ namespace milo::detail
             );
         }
         
-        /**
-         * This function updates the message.
-         *
-         * @tparam t_message
-         * Message type.
-         * @param a_message_ptr
-         * Message pointer.
-         * @param a_message_size
-         * Message size.
-         */
         template<
             concepts::byte t_message
         >
@@ -182,9 +162,6 @@ namespace milo::detail
             );
         }
         
-        /**
-         * This function completes the computation.
-         */
         constexpr auto
         finalize(
         ) noexcept(true) -> void
@@ -202,18 +179,6 @@ namespace milo::detail
             m_hash.finalize();
         }
         
-        /**
-         * This function extracts digest.
-         *
-         * @tparam t_digest
-         * Digest type.
-         * @param a_digest_ptr
-         * Digest pointer.
-         * @param a_digest_size
-         * Digest size.
-         * @return
-         * Digest size.
-         */
         template<
             concepts::byte t_digest
         >
