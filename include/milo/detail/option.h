@@ -3,6 +3,7 @@
 #pragma once
 
 
+#include <milo/common.h>
 #include <milo/traits.h>
 
 
@@ -286,7 +287,7 @@ namespace milo::detail
     /*
      * Start of impl options.
      */
-
+    
     struct option_impl_domain_id
     {
     };
