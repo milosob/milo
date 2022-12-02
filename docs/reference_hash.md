@@ -85,7 +85,7 @@ milo::hash::sha_2_512_256   sha_2_512_256;
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/sha.h>
 
 int main()
@@ -149,10 +149,10 @@ int main()
      */
     auto digest_d_size = hash.digest(digest_d, 100);
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_b, digest_b_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_c, digest_c_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_d, digest_d_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -173,7 +173,7 @@ int main()
 #include <vector>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/apie.h>
 #include <milo/hash/sha.h>
 
@@ -263,13 +263,13 @@ int main()
      */
     auto digest_returned_by_reference_2_size = hash.digest(digest_returned_by_reference_2);
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_2) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_3) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_4) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_reference_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_reference_2) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -287,7 +287,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/apie.h>
 #include <milo/hash/sha.h>
 
@@ -300,10 +300,10 @@ int main()
      */
     using hash_type = milo::hash::sha_2_256;
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::hash::digest<hash_type>("message"sv)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::hash::digest<hash_type>("message"sv, 16)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::hash::digest<hash_type>("hello world"sv)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::hash::digest<hash_type>("hello world"sv, 8)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("message"sv)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("message"sv, 16)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("hello world"sv)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("hello world"sv, 8)) << "\n";
     
     return 0;
 }

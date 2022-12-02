@@ -8,28 +8,24 @@
 #include <milo/error.h>
 
 
-namespace milo::codec
+namespace milo::detail
 {
-    /**
-     * Base64 coder.
-     * @tparam t_options
-     */
     template<
         typename... t_options
     >
-    class base_64_basic
+    class codec_base_64
     {
     public:
         
-        using type = base_64_basic;
+        using type = codec_base_64;
     
     public:
         
         struct properties
         {
-            using codec_type [[maybe_unused]] = type;
+            using codec [[maybe_unused]] = int;
             
-            using codec_base_64_type [[maybe_unused]] = type;
+            using codec_base_64 [[maybe_unused]] = int;
         };
     
     public:
@@ -82,22 +78,6 @@ namespace milo::codec
     
     public:
         
-        /**
-         * This function encodes bytes.
-         *
-         * @tparam t_from
-         * From type.
-         * @tparam t_to
-         * To type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @param a_to_ptr
-         * To pointer.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from,
             concepts::byte t_to
@@ -159,18 +139,6 @@ namespace milo::codec
             return full_size * 4;
         }
         
-        /**
-         * This function calculates minimum bytes size after encoding.
-         *
-         * @tparam t_from
-         * From type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from
         >
@@ -185,24 +153,6 @@ namespace milo::codec
             return (a_from_size * 4 / 3 + 3) & ~0b11;
         }
         
-        /**
-         * This function decodes bytes.
-         *
-         * @tparam t_from
-         * From type.
-         * @tparam t_to
-         * To type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @param a_to_ptr
-         * To pointer.
-         * @param a_error
-         * Error.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from,
             concepts::byte t_to
@@ -304,18 +254,6 @@ namespace milo::codec
             return 0;
         }
         
-        /**
-         * This function calculates minimum bytes size after decoding.
-         *
-         * @tparam t_from
-         * From type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from
         >
@@ -338,9 +276,4 @@ namespace milo::codec
             return size;
         }
     };
-    
-    /**
-     * Base64 coder.
-     */
-    using base_64 = base_64_basic<>;
 }

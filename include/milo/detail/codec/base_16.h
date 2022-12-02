@@ -8,28 +8,24 @@
 #include <milo/error.h>
 
 
-namespace milo::codec
+namespace milo::detail
 {
-    /**
-     * Hex coder.
-     * @tparam t_options
-     */
     template<
         typename... t_options
     >
-    class hex_basic
+    class codec_base_16
     {
     public:
         
-        using type = hex_basic;
+        using type = codec_base_16;
     
     public:
         
         struct properties
         {
-            using codec_type [[maybe_unused]] = type;
+            using codec [[maybe_unused]] = int;
             
-            using codec_hex_type [[maybe_unused]] = type;
+            using codec_base_16 [[maybe_unused]] = int;
         };
     
     public:
@@ -72,22 +68,6 @@ namespace milo::codec
     
     public:
         
-        /**
-         * This function encodes bytes.
-         *
-         * @tparam t_from
-         * From type.
-         * @tparam t_to
-         * To type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @param a_to_ptr
-         * To pointer.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from,
             concepts::byte t_to
@@ -116,18 +96,6 @@ namespace milo::codec
             return a_from_size * 2;
         }
         
-        /**
-         * This function calculates minimum bytes size after encoding.
-         *
-         * @tparam t_from
-         * From type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from
         >
@@ -142,24 +110,6 @@ namespace milo::codec
             return a_from_size * 2;
         }
         
-        /**
-         * This function decodes bytes.
-         *
-         * @tparam t_from
-         * From type.
-         * @tparam t_to
-         * To type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @param a_to_ptr
-         * To pointer.
-         * @param a_error
-         * Error.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from,
             concepts::byte t_to
@@ -189,7 +139,7 @@ namespace milo::codec
                 [[unlikely]]
                 if (c_0 == b_0)
                 {
-                    a_error = error::codec_hex_decode;
+                    a_error = error::codec_base_16_decode;
                     return 0;
                 }
                 
@@ -209,7 +159,7 @@ namespace milo::codec
                 [[unlikely]]
                 if (c_0 == b_0 || c_1 == b_1)
                 {
-                    a_error = error::codec_hex_decode;
+                    a_error = error::codec_base_16_decode;
                     return from_ptr - a_from_ptr;
                 }
                 
@@ -221,18 +171,6 @@ namespace milo::codec
             return full_size + last_size;
         }
         
-        /**
-         * This function calculates minimum bytes size after decoding.
-         *
-         * @tparam t_from
-         * From type.
-         * @param a_from_ptr
-         * From pointer.
-         * @param a_from_size
-         * From size.
-         * @return
-         * To size.
-         */
         template<
             concepts::byte t_from
         >
@@ -247,9 +185,4 @@ namespace milo::codec
             return (a_from_size >> 1) + (a_from_size & 1);
         }
     };
-    
-    /**
-     * Hex coder.
-     */
-    using hex = hex_basic<>;
 }

@@ -6,7 +6,7 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/codec/test.h>
 
 
@@ -509,7 +509,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::codec::test<milo::codec::hex>::decode(
+        auto result = milo::codec::test<milo::codec::base_16>::decode(
             test_vectors[i].from,
             test_vectors[i].to
         );

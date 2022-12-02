@@ -91,7 +91,7 @@ milo::mac::poly_1305 poly_1305;
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
 
@@ -158,10 +158,10 @@ int main()
     auto digest_d_size = mac.digest(digest_d, 100);
     
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_b, digest_b_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_c, digest_c_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_d, digest_d_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -182,7 +182,7 @@ int main()
 #include <vector>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/mac/apie.h>
 #include <milo/mac/poly.h>
 
@@ -273,13 +273,13 @@ int main()
      */
     auto digest_returned_by_reference_2_size = mac.digest(digest_returned_by_reference_2);
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_2) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_3) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_value_4) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_reference_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(digest_returned_by_reference_2) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -297,7 +297,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/sha.h>
 #include <milo/mac/apie.h>
 #include <milo/mac/hmac.h>
@@ -311,10 +311,10 @@ int main()
      */
     using mac_type = milo::mac::hmac<milo::hash::sha_2_384>;
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::mac::digest<mac_type>("first key"sv,"message"sv)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::mac::digest<mac_type>("first key"sv,"message"sv, 16)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::mac::digest<mac_type>("second key"sv, "hello world"sv)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::mac::digest<mac_type>("second key"sv, "hello world"sv, 8)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::mac::digest<mac_type>("first key"sv,"message"sv)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::mac::digest<mac_type>("first key"sv,"message"sv, 16)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::mac::digest<mac_type>("second key"sv, "hello world"sv)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::mac::digest<mac_type>("second key"sv, "hello world"sv, 8)) << "\n";
     
     return 0;
 }

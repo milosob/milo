@@ -4,7 +4,7 @@ This file list algorithms supported by the library.
 
 ### Codecs
 
-- `hex`
+- `base-16`
 - `base-64`
 
 ### Hashing functions

@@ -4,8 +4,7 @@
 
 
 #include <milo/codec/apie.h>
-#include <milo/codec/base_64.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/common.h>
 #include <milo/container.h>
 
@@ -61,12 +60,12 @@ namespace milo::literals
     }
     
     constexpr auto
-    operator "" _hex(
+    operator "" _base_16(
         const char* a_ptr,
         size_t a_size
     ) noexcept(false) -> container::bytes_dynamic
     {
-        return codec::apie<codec::hex>::decode<container::bytes_dynamic>(
+        return codec::apie<codec::base_16>::decode<container::bytes_dynamic>(
             container::chars_const_view_dynamic(
                 a_ptr,
                 a_size
@@ -75,7 +74,7 @@ namespace milo::literals
     }
     
     constexpr auto
-    operator "" _b64(
+    operator "" _base_64(
         const char* a_ptr,
         size_t a_size
     ) noexcept(false) -> container::bytes_dynamic

@@ -108,7 +108,7 @@ pbkdf_2.initialize(
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
 #include <milo/kdf/hkdf.h>
@@ -127,8 +127,8 @@ void derive_example(t_kdf& a_kdf)
     auto key_a_size = a_kdf.derive(key_a, 32);
     auto key_b_size = a_kdf.derive(key_b, 32);
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(key_a, key_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(std::span(key_b, key_b_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(key_a, key_a_size)) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(key_b, key_b_size)) << "\n";
 }
 
 int main()
@@ -172,7 +172,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
 #include <milo/kdf/apie.h>
@@ -206,10 +206,10 @@ void derive_example(t_kdf& a_kdf)
      */
     auto key_returned_by_value_2 = a_kdf.template derive<std::array<char, 32>>();
     
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(key_array) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(key_vector) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(key_returned_by_value_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(key_returned_by_value_2) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_array) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_vector) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_returned_by_value_1) << "\n";
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_returned_by_value_2) << "\n";
 }
 
 int main()
@@ -229,10 +229,9 @@ int main()
         
         /*
          * Derive example uses streaming derivation.
-         * This call gets the same ikm to one container and prints it as hex.
          */
         std::cout << "Key:\n";
-        std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<hkdf_type::impl_type>(ikm, salt, info, 224)) << "\n\n" ;
+        std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type::impl_type>(ikm, salt, info, 224)) << "\n\n" ;
     }
     
     std::cout << "Derive with pbkdf-2:\n";
@@ -248,10 +247,9 @@ int main()
         
         /*
          * Derive example uses streaming derivation.
-         * This call gets the same ikm to one container and prints it as hex.
          */
         std::cout << "Key:\n";
-        std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<pbkdf_2_type::impl_type>(ikm, salt, iterations, 224)) << "\n" ;
+        std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type::impl_type>(ikm, salt, iterations, 224)) << "\n" ;
         
         return 0;
     }
@@ -265,7 +263,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
 #include <milo/kdf/apie.h>
@@ -280,14 +278,14 @@ int main()
     using pbkdf_2_type = milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_256>>;
     
     std::cout << "Derive with hkdf:\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 64)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 32)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "hello"sv, "world"sv, 32)) << "\n" ;
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 64)) << "\n" ;
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 32)) << "\n" ;
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "hello"sv, "world"sv, 32)) << "\n" ;
     
     std::cout << "Derive with pbkdf-2:\n";
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 100, 64)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 1000, 32)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::hex, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "hello"sv, 5000, 32)) << "\n" ;
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 100, 64)) << "\n" ;
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 1000, 32)) << "\n" ;
+    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "hello"sv, 5000, 32)) << "\n" ;
     
     return 0;
 }

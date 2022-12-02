@@ -40,7 +40,7 @@ try
     using namespace std::literals;
     
     using aead_type  = milo::aead::chacha_20_poly_1305;
-    using codec_type = milo::codec::hex;
+    using codec_type = milo::codec::base_16;
     
     auto key = milo::codec::decode<codec_type>("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"sv);
     auto iv  = milo::codec::decode<codec_type>("000102030405060708090a0b"sv);

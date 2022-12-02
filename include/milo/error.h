@@ -21,8 +21,8 @@ namespace milo
             aead_verify,
             codec_base_64_encode,
             codec_base_64_decode,
-            codec_hex_encode,
-            codec_hex_decode
+            codec_base_16_encode,
+            codec_base_16_decode
         };
     
     private:

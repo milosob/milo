@@ -3,7 +3,7 @@
     "payload": {
         "impl": "milo::codec::base_64",
         "include": [
-            "<milo/codec/base_64.h>"
+            "<milo/codec/base.h>"
         ],
         "vectors": [
             {

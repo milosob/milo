@@ -16,8 +16,7 @@ namespace milo::concepts
     concept codec =
     requires
     {
-        typename t_0::type;
-        typename t_0::properties::codec_type;
+        typename t_0::properties::codec;
     } &&
     requires
     {
@@ -132,6 +131,17 @@ namespace milo::concepts
         )
         } noexcept -> same<size_t>;
     };
+
+    template<typename t_0>
+    concept codec_base_16 =
+    requires
+    {
+        requires codec<t_0>;
+    } &&
+    requires
+    {
+        typename t_0::properties::codec_base_16;
+    };
     
     template<typename t_0>
     concept codec_base_64 =
@@ -141,18 +151,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::codec_base_64_type;
-    };
-    
-    template<typename t_0>
-    concept codec_hex =
-    requires
-    {
-        requires codec<t_0>;
-    } &&
-    requires
-    {
-        typename t_0::properties::codec_hex_type;
+        typename t_0::properties::codec_base_64;
     };
 
     /*

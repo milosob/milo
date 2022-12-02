@@ -80,7 +80,7 @@ milo::aead::chacha_20_poly_1305 chacha_20_poly_1305;
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/hex.h>
+#include <milo/codec/base.h>
 #include <milo/aead/chacha_20_poly_1305.h>
 
 int main()
@@ -157,8 +157,8 @@ int main()
      * Here, the default comparison is used without such security guarantees.
      */
     
-    std::cout << "Encryption mac: " << milo::codec::encode<milo::codec::hex, std::string>(digest_enc) << "\n";
-    std::cout << "Decryption mac: " << milo::codec::encode<milo::codec::hex, std::string>(digest_dec) << "\n";
+    std::cout << "Encryption mac: " << milo::codec::encode<milo::codec::base_16, std::string>(digest_enc) << "\n";
+    std::cout << "Decryption mac: " << milo::codec::encode<milo::codec::base_16, std::string>(digest_dec) << "\n";
     std::cout << "Authentication: " << std::boolalpha << (digest_enc == digest_dec) << "\n";
     
     return 0;

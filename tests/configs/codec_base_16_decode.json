@@ -1,9 +1,9 @@
 {
     "scheme": "test-codec-decode",
     "payload": {
-        "impl": "milo::codec::hex",
+        "impl": "milo::codec::base_16",
         "include": [
-            "<milo/codec/hex.h>"
+            "<milo/codec/base.h>"
         ],
         "vectors": [
             {

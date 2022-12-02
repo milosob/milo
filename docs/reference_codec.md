@@ -6,12 +6,12 @@ This file describes codec algorithms.
 
 - [Index](#index)
 - [Algorithms](#algorithms)
-  - [Base-64](#algorithms-base-64)
-  - [Hex](#algorithms-hex)
+    - [Base-16](#algorithms-base-16)
+    - [Base-64](#algorithms-base-64)
 - [Encoding](#encoding)
-  - [Using pointers](#encoding-using-pointers)
-  - [Using containers](#encoding-using-containers)
-  - [Using oneliners](#encoding-using-oneliners)
+    - [Using pointers](#encoding-using-pointers)
+    - [Using containers](#encoding-using-containers)
+    - [Using oneliners](#encoding-using-oneliners)
 - [Decoding](#decoding)
     - [Using pointers](#decoding-using-pointers)
     - [Using containers](#decoding-using-containers)
@@ -22,17 +22,16 @@ This file describes codec algorithms.
 
 Supported:
 
+- `base-16`
 - `base-64`
-- `hex`
 
 Headers and types:
 
 - `<milo/codec/apie.h>`
     - `milo::codec::apie<codec_type>`
-- `<milo/codec/base_64.h>`
-  - `milo::codec::base_64`
-- `<milo/codec/hex.h>`
-  - `milo::codec::hex`
+- `<milo/codec/base.h>`
+    - `milo::codec::base_16`
+    - `milo::codec::base_64`
 
 All implementations of the algorithms share the same interface.
 
@@ -59,20 +58,20 @@ constexpr auto ratio_bytes_size = alg_type::ratio_bytes_size;
 constexpr auto ratio_chars_size = alg_type::ratio_chars_size;
 ```
 
+#### Algorithms Base-16
+
+```c++
+#include <milo/codec/base.h>
+
+using codec_type = milo::codec::base_16;
+```
+
 #### Algorithms Base-64
 
 ```c++
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 using codec_type = milo::codec::base_64;
-```
-
-#### Algorithms Hex
-
-```c++
-#include <milo/codec/hex.h>
-
-using codec_type = milo::codec::hex;
 ```
 
 ### Encoding
@@ -86,7 +85,7 @@ Encoding is an operation that transforms a given input into a different represen
 #include <string>
 #include <string_view>
 
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 int main()
 {
@@ -138,7 +137,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 int main()
 {
@@ -186,7 +185,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 int main()
 {
@@ -239,7 +238,7 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 int main()
 {
@@ -302,7 +301,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 int main()
 {
@@ -388,7 +387,7 @@ int main()
 #include <string_view>
 
 #include <milo/codec/apie.h>
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 
 int main()
 {

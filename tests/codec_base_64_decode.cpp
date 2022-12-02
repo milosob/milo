@@ -6,7 +6,7 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/codec/base_64.h>
+#include <milo/codec/base.h>
 #include <milo/codec/test.h>
 
 
