@@ -27,7 +27,7 @@ Headers and types:
     - `milo::kdf::apie<hkdf_type>`
 - `<milo/kdf/hkdf.h>`
     - `milo::kdf::hkdf<hmac_type>`
-- `<milo/mac/pbkdf_2.h>`
+- `<milo/mac/pbkdf.h>`
     - `milo::kdf::pbkdf_2<prf_type>`
 
 All implementations of the algorithms share the same interface.
@@ -82,7 +82,7 @@ hkdf.initialize(
 ```c++
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
-#include <milo/kdf/pbkdf_2.h>
+#include <milo/kdf/pbkdf.h>
 
 /*
  * Pbkdf-2 class template requires a pseudo random function type as the template parameter.
@@ -112,7 +112,7 @@ pbkdf_2.initialize(
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
 #include <milo/kdf/hkdf.h>
-#include <milo/kdf/pbkdf_2.h>
+#include <milo/kdf/pbkdf.h>
 
 
 template<typename t_kdf>
@@ -177,7 +177,7 @@ int main()
 #include <milo/mac/hmac.h>
 #include <milo/kdf/apie.h>
 #include <milo/kdf/hkdf.h>
-#include <milo/kdf/pbkdf_2.h>
+#include <milo/kdf/pbkdf.h>
 
 
 template<typename t_kdf>
@@ -268,7 +268,7 @@ int main()
 #include <milo/mac/hmac.h>
 #include <milo/kdf/apie.h>
 #include <milo/kdf/hkdf.h>
-#include <milo/kdf/pbkdf_2.h>
+#include <milo/kdf/pbkdf.h>
 
 int main()
 {

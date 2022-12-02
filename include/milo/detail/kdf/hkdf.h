@@ -8,17 +8,15 @@
 #include <milo/memory.h>
 
 
-namespace milo::kdf
+namespace milo::detail
 {
     template<
         concepts::mac_hmac t_hmac,
         typename... t_options
     >
-    class hkdf_basic
+    class kdf_hkdf
     {
     public:
-        
-        using type = hkdf_basic;
         
         using hmac_type = t_hmac;
     
@@ -26,39 +24,39 @@ namespace milo::kdf
         
         struct properties
         {
-            using kdf_type [[maybe_unused]] = type;
+            using kdf [[maybe_unused]] = int;
             
-            using kdf_hkdf_type [[maybe_unused]] = type;
+            using kdf_hkdf [[maybe_unused]] = int;
         };
-
-    private:
     
+    private:
+        
         static
         constexpr size_t expand_size = hmac_type::digest_size;
-
+    
     private:
-    
+        
         hmac_type m_hmac;
-    
+        
         memory::detail::bytes_const_view m_info;
-    
+        
         uint8_t m_counter = 1;
-    
+        
         uint8_t m_prk[expand_size]{};
-    
+        
         uint8_t m_buffer[expand_size]{};
-    
+        
         size_t m_buffer_size = 0;
-
-    public:
     
-        constexpr hkdf_basic() noexcept(true) = default;
+    public:
         
-        constexpr hkdf_basic(type&& object) noexcept(true) = default;
+        constexpr kdf_hkdf() noexcept(true) = default;
         
-        constexpr hkdf_basic(const type& object) noexcept(true) = default;
+        constexpr kdf_hkdf(kdf_hkdf&& object) noexcept(true) = default;
         
-        constexpr ~hkdf_basic() noexcept(true)
+        constexpr kdf_hkdf(const kdf_hkdf& object) noexcept(true) = default;
+        
+        constexpr ~kdf_hkdf() noexcept(true)
         {
             memory::erase(m_counter);
             memory::erase(m_prk);
@@ -69,7 +67,7 @@ namespace milo::kdf
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(const kdf_hkdf& object) noexcept(true) -> kdf_hkdf& = default;
     
     private:
         
@@ -109,29 +107,6 @@ namespace milo::kdf
     
     public:
         
-        /**
-         * This function initializes context.
-         *
-         * @tparam t_ikm
-         * Ikm type.
-         * @tparam t_salt
-         * Salt type.
-         * @tparam t_info
-         * Info type.
-         * @param a_ikm_ptr
-         * Ikm pointer.
-         * @param a_ikm_size
-         * Ikm size.
-         * @param a_salt_ptr
-         * Salt pointer.
-         * @param a_salt_size
-         * Salt size.
-         * @param a_info_ptr
-         * Info ptr.
-         * Must be a valid pointer as long as methods of this class are invoked.
-         * @param a_info_size
-         * Info size.
-         */
         template<
             concepts::byte t_ikm,
             concepts::byte t_salt,
@@ -151,10 +126,10 @@ namespace milo::kdf
                 a_info_ptr,
                 a_info_size
             );
-    
+            
             m_counter = 1;
             m_buffer_size = 0;
-    
+            
             m_hmac.initialize(
                 a_salt_ptr,
                 a_salt_size
@@ -169,18 +144,6 @@ namespace milo::kdf
             );
         }
         
-        /**
-         * This function derives key.
-         *
-         * @tparam t_key
-         * Key type.
-         * @param a_key_ptr
-         * Key pointer.
-         * @param a_key_size
-         * Key size.
-         * @return
-         * Key size.
-         */
         template<
             concepts::byte t_key
         >
@@ -273,16 +236,16 @@ namespace milo::kdf
                 
                 counter += 1;
             }
-    
+            
             memory::copy(
                 key_ptr,
                 m_buffer,
                 last_size
             );
-    
+            
             m_buffer_size = expand_size - last_size;
             m_counter = counter;
-    
+            
             return a_key_size;
         }
     };

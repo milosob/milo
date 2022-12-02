@@ -8,17 +8,15 @@
 #include <milo/memory.h>
 
 
-namespace milo::kdf
+namespace milo::detail
 {
     template<
         concepts::prf_kdf_pbkdf_2 t_prf,
         typename... t_options
     >
-    class pbkdf_2_basic
+    class kdf_pbkdf_2
     {
     public:
-        
-        using type = pbkdf_2_basic;
         
         using prf_type = t_prf;
     
@@ -26,9 +24,9 @@ namespace milo::kdf
         
         struct properties
         {
-            using kdf_type [[maybe_unused]] = type;
+            using kdf [[maybe_unused]] = int;
             
-            using kdf_pbkdf_2_type [[maybe_unused]] = type;
+            using kdf_pbkdf_2 [[maybe_unused]] = int;
         };
     
     private:
@@ -37,30 +35,30 @@ namespace milo::kdf
         constexpr size_t expand_size = prf_type::digest_size;
     
     private:
-    
+        
         prf_type m_prf;
-    
+        
         memory::detail::bytes_const_view m_ikm;
-    
+        
         memory::detail::bytes_const_view m_salt;
-    
+        
         uint32_t m_iterations = 0;
-    
+        
         uint32_t m_counter = 1;
-    
+        
         uint8_t m_buffer[expand_size]{};
-    
+        
         size_t m_buffer_size = 0;
-
+    
     public:
-    
-        constexpr pbkdf_2_basic() noexcept(true) = default;
-    
-        constexpr pbkdf_2_basic(type&& object) noexcept(true) = default;
-    
-        constexpr pbkdf_2_basic(const type& object) noexcept(true) = default;
-    
-        constexpr ~pbkdf_2_basic() noexcept(true)
+        
+        constexpr kdf_pbkdf_2() noexcept(true) = default;
+        
+        constexpr kdf_pbkdf_2(kdf_pbkdf_2&& object) noexcept(true) = default;
+        
+        constexpr kdf_pbkdf_2(const kdf_pbkdf_2& object) noexcept(true) = default;
+        
+        constexpr ~kdf_pbkdf_2() noexcept(true)
         {
             memory::erase(m_iterations);
             memory::erase(m_counter);
@@ -71,7 +69,9 @@ namespace milo::kdf
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(
+            const kdf_pbkdf_2& object
+        ) noexcept(true) -> kdf_pbkdf_2& = default;
     
     private:
         
@@ -86,13 +86,13 @@ namespace milo::kdf
         {
             uint8_t buffer[expand_size * 2];
             uint8_t buffer_counter[sizeof(uint32_t)];
-    
+            
             memory::stor_be<uint32_t>(
                 buffer_counter,
                 0,
                 a_counter
             );
-    
+            
             m_prf.initialize(
                 m_ikm.data(),
                 m_ikm.size()
@@ -162,27 +162,6 @@ namespace milo::kdf
     
     public:
         
-        /**
-         * This function initializes the context.
-         *
-         *
-         * @tparam t_ikm
-         * Ikm type.
-         * @tparam t_salt
-         * Salt type.
-         * @param a_ikm_ptr
-         * Ikm pointer.
-         * Must be a valid pointer as long as methods of this class are invoked.
-         * @param a_ikm_size
-         * Ikm size.
-         * @param a_salt_ptr
-         * Salt pointer.
-         * Must be a valid pointer as long as methods of this class are invoked.
-         * @param a_salt_size
-         * Salt size.
-         * @param a_iterations
-         * Iterations.
-         */
         template<
             concepts::byte t_ikm,
             concepts::byte t_salt
@@ -204,24 +183,12 @@ namespace milo::kdf
                 a_salt_ptr,
                 a_salt_size
             );
-    
+            
             m_iterations = a_iterations;
             m_counter = 1;
             m_buffer_size = 0;
         }
         
-        /**
-         * This function derives key.
-         *
-         * @tparam t_key
-         * Key type.
-         * @param a_key_ptr
-         * Key pointer.
-         * @param a_key_size
-         * Key size.
-         * @return
-         * Key size.
-         */
         template<
             concepts::byte t_key
         >
@@ -288,16 +255,16 @@ namespace milo::kdf
                     m_buffer,
                     last_size
                 );
-    
+                
                 m_buffer_size = expand_size - last_size;
             }
             else
             {
                 m_buffer_size = 0;
             }
-    
+            
             m_counter = counter;
-    
+            
             return a_key_size;
         }
     };

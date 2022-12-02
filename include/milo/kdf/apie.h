@@ -25,8 +25,6 @@ namespace milo::kdf
     {
     public:
         
-        using type = apie;
-        
         using impl_type = t_impl;
     
     private:
@@ -37,19 +35,21 @@ namespace milo::kdf
         
         constexpr apie() noexcept(true) = default;
         
-        constexpr apie(type&& object) noexcept(true) = default;
-    
-        constexpr apie(const type& object) noexcept(true) = default;
-    
+        constexpr apie(apie&& object) noexcept(true) = default;
+        
+        constexpr apie(const apie& object) noexcept(true) = default;
+        
         constexpr ~apie() noexcept(true) = default;
-
-    public:
     
+    public:
+        
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
-
-    public:
+        operator =(
+            const apie& object
+        ) noexcept(true) -> apie& = default;
     
+    public:
+        
         /**
          * Constructs object.
          *
@@ -102,7 +102,7 @@ namespace milo::kdf
                 a_info_size
             );
         }
-    
+        
         /**
          * Constructs object.
          *
@@ -144,7 +144,7 @@ namespace milo::kdf
                 a_info
             );
         }
-    
+        
         /**
          * Constructs object.
          *
@@ -191,7 +191,7 @@ namespace milo::kdf
                 a_iterations
             );
         }
-    
+        
         /**
          * Constructs object.
          *
@@ -449,7 +449,7 @@ namespace milo::kdf
                 a_key_size
             );
         }
-    
+        
         /**
          * This function derives key.
          *
@@ -475,13 +475,13 @@ namespace milo::kdf
                 a_key,
                 a_key_size
             );
-    
+            
             return derive(
                 a_key.data(),
                 a_key_size
             );
         }
-    
+        
         /**
          * This function derives key.
          *
@@ -506,15 +506,15 @@ namespace milo::kdf
         }
         {
             t_key result;
-    
+            
             derive(
                 result,
                 a_key_size
             );
-    
+            
             return result;
         }
-    
+        
         /**
          * This function derives key.
          *
@@ -536,12 +536,12 @@ namespace milo::kdf
         }
         {
             t_key result;
-    
+            
             derive(
                 result,
                 result.size()
             );
-    
+            
             return result;
         }
     };
@@ -659,7 +659,7 @@ namespace milo::kdf
             a_salt,
             a_info
         );
-    
+        
         return apie.template derive<t_key>(
             a_key,
             a_key_size
@@ -757,7 +757,7 @@ namespace milo::kdf
             a_salt,
             a_info
         );
-    
+        
         return apie.template derive<t_key>();
     }
     
@@ -813,7 +813,7 @@ namespace milo::kdf
             a_salt_size,
             a_iterations
         );
-    
+        
         return apie.template derive<t_key>(
             a_key_ptr,
             a_key_size
@@ -864,7 +864,7 @@ namespace milo::kdf
             a_salt,
             a_iterations
         );
-    
+        
         return apie.template derive<t_key>(
             a_key,
             a_key_size

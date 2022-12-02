@@ -3,11 +3,11 @@
 #pragma once
 
 
-#include <milo/kdf/hkdf/hkdf_basic.h>
+#include <milo/detail/kdf/hkdf.h>
 
 
 namespace milo::kdf
 {
     template<typename t_hmac>
-    using hkdf = hkdf_basic<t_hmac>;
+    using hkdf = detail::kdf_hkdf<t_hmac>;
 }

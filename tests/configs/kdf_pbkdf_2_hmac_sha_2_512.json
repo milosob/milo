@@ -5,7 +5,7 @@
         "include": [
             "<milo/hash/sha.h>",
             "<milo/mac/hmac.h>",
-            "<milo/kdf/pbkdf_2.h>"
+            "<milo/kdf/pbkdf.h>"
         ],
         "vectors": [
             {

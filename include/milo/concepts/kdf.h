@@ -21,8 +21,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::type;
-        typename t_0::properties::kdf_type;
+        typename t_0::properties::kdf;
     } &&
     requires(t_0 impl)
     {
@@ -48,7 +47,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::kdf_pbkdf_2_type;
+        typename t_0::properties::kdf_pbkdf_2;
     } &&
     requires(t_0 impl)
     {
@@ -80,7 +79,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::kdf_hkdf_type;
+        typename t_0::properties::kdf_hkdf;
     } &&
     requires(t_0 impl)
     {

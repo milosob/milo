@@ -8,7 +8,7 @@
 
 #include <milo/hash/sha.h>
 #include <milo/mac/hmac.h>
-#include <milo/kdf/pbkdf_2.h>
+#include <milo/kdf/pbkdf.h>
 #include <milo/kdf/test.h>
 
 
