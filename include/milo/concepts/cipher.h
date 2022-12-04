@@ -21,8 +21,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::type;
-        typename t_0::properties::cipher_type;
+        typename t_0::properties::cipher;
     } &&
     requires
     {
@@ -110,7 +109,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::cipher_block_type;
+        typename t_0::properties::cipher_block;
     };
     
     template<typename t_0>
@@ -121,7 +120,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::cipher_stream_type;
+        typename t_0::properties::cipher_stream;
     };
     
     template<typename t_0>
@@ -132,7 +131,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::cipher_chacha_20_type;
+        typename t_0::properties::cipher_chacha_20;
     } &&
     requires
     {

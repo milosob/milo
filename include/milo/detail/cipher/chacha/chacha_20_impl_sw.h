@@ -9,22 +9,14 @@
 #include <milo/detail/bit.h>
 
 
-namespace milo::cipher
+namespace milo::detail
 {
-    class chacha_20_block_sw
+    class cipher_chacha_20_impl_sw
     {
-    public:
-        
-        using type = chacha_20_block_sw;
-    
     public:
         
         static
         constexpr size_t block_size = 64;
-    
-    public:
-        
-        constexpr chacha_20_block_sw() noexcept(true) = delete;
     
     private:
         
@@ -44,25 +36,25 @@ namespace milo::cipher
             auto s_3 = a_state_ptr[a_3];
             
             s_0 = s_0 + s_1;
-            s_3 = detail::bit_rotl(
+            s_3 = bit_rotl(
                 s_3 ^ s_0,
                 16
             );
             
             s_2 = s_2 + s_3;
-            s_1 = detail::bit_rotl(
+            s_1 = bit_rotl(
                 s_1 ^ s_2,
                 12
             );
             
             s_0 = s_0 + s_1;
-            s_3 = detail::bit_rotl(
+            s_3 = bit_rotl(
                 s_3 ^ s_0,
                 8
             );
             
             s_2 = s_2 + s_3;
-            s_1 = detail::bit_rotl(
+            s_1 = bit_rotl(
                 s_1 ^ s_2,
                 7
             );

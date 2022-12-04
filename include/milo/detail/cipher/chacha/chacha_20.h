@@ -7,37 +7,49 @@
 #include <milo/concepts.h>
 #include <milo/memory.h>
 
+#include <milo/detail/cipher/chacha/chacha_20_impl.h>
+#include <milo/detail/cipher/chacha/chacha_20_impl_sw.h>
+#include <milo/detail/impl.h>
+#include <milo/detail/option.h>
 #include <milo/detail/update.h>
 
 
-namespace milo::cipher
+namespace milo::detail
 {
     template<
-        typename t_block,
         typename... t_options
     >
-    requires
-    requires
-    {
-        requires concepts::block_prod<t_block, uint32_t*>;
-    }
-    class chacha_20_basic
+    class cipher_chacha_20
     {
     public:
         
-        using type = chacha_20_basic;
-        
-        using block_type = t_block;
+        struct impl_type
+            : impl_proxy<
+                impl_domain_runtime,
+                cipher_chacha_20_impl_chooser,
+                cipher_chacha_20_impl_invoker,
+                impl_cpltime<
+                    cipher_chacha_20_impl_sw
+                >,
+                impl_runtime<
+                    cipher_chacha_20_impl_sw
+                >,
+                t_options...
+            >
+        {
+            static
+            constexpr auto block_size = cipher_chacha_20_impl_sw::block_size;
+        };
     
     public:
         
         struct properties
         {
-            using cipher_type [[maybe_unused]] = type;
+            using cipher [[maybe_unused]] = int;
             
-            using cipher_stream_type [[maybe_unused]] = type;
+            using cipher_stream [[maybe_unused]] = int;
             
-            using cipher_chacha_20_type [[maybe_unused]] = type;
+            using cipher_chacha_20 [[maybe_unused]] = int;
         };
     
     public:
@@ -49,7 +61,7 @@ namespace milo::cipher
         constexpr size_t iv_size = 16;
         
         static
-        constexpr size_t block_size = block_type::block_size;
+        constexpr size_t block_size = impl_type::block_size;
     
     private:
         
@@ -61,13 +73,13 @@ namespace milo::cipher
     
     public:
         
-        constexpr chacha_20_basic() noexcept(true) = default;
+        constexpr cipher_chacha_20() noexcept(true) = default;
         
-        constexpr chacha_20_basic(type&& object) noexcept(true) = default;
+        constexpr cipher_chacha_20(cipher_chacha_20&& object) noexcept(true) = default;
         
-        constexpr chacha_20_basic(const type& object) noexcept(true) = default;
+        constexpr cipher_chacha_20(const cipher_chacha_20& object) noexcept(true) = default;
         
-        constexpr ~chacha_20_basic() noexcept(true)
+        constexpr ~cipher_chacha_20() noexcept(true)
         {
             memory::erase(m_state);
             memory::erase(m_buffer);
@@ -77,26 +89,12 @@ namespace milo::cipher
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(
+            const cipher_chacha_20& object
+        ) noexcept(true) -> cipher_chacha_20& = default;
     
     public:
-        
-        /**
-         * This function initializes context.
-         *
-         * @tparam t_key
-         * Key type.
-         * @tparam t_iv
-         * Iv type.
-         * @param a_key_ptr
-         * Key pointer.
-         * @param a_key_size
-         * Key size.
-         * @param a_iv_ptr
-         * Iv pointer.
-         * @param a_iv_size
-         * Iv size.
-         */
+
         template<
             concepts::byte t_key,
             concepts::byte t_iv
@@ -130,23 +128,7 @@ namespace milo::cipher
             
             m_buffer_size = 0;
         }
-        
-        /**
-         * This function encrypts plaintext.
-         *
-         * @tparam t_plaintext
-         * Plaintext type.
-         * @tparam t_ciphertext
-         * Ciphertext type.
-         * @param a_plaintext_ptr
-         * Plaintext pointer.
-         * @param a_plaintext_size
-         * Plaintext size.
-         * @param a_ciphertext_ptr
-         * Ciphertext pointer.
-         * @return
-         * Ciphertext size.
-         */
+
         template<
             concepts::byte t_plaintext,
             concepts::byte t_ciphertext
@@ -158,7 +140,9 @@ namespace milo::cipher
             t_ciphertext* a_ciphertext_ptr
         ) noexcept(true) -> size_t
         {
-            m_buffer_size = detail::update_block_prod_xor<block_type>(
+            m_buffer_size = update_block_prod_xor<
+                impl_type
+            >(
                 m_buffer,
                 m_buffer_size,
                 a_ciphertext_ptr,
@@ -169,19 +153,7 @@ namespace milo::cipher
             
             return a_plaintext_size;
         }
-        
-        /**
-         * This function calculates maximum ciphertext size.
-         *
-         * @tparam t_plaintext
-         * Plaintext type.
-         * @param a_plaintext_ptr
-         * Plaintext pointer.
-         * @param a_plaintext_size
-         * Plaintext size.
-         * @return
-         * Ciphertext size.
-         */
+
         template<
             concepts::byte t_plaintext
         >
@@ -194,23 +166,7 @@ namespace milo::cipher
         {
             return a_plaintext_size;
         }
-        
-        /**
-         * This function decrypts ciphertext.
-         *
-         * @tparam t_ciphertext
-         * Ciphertext type.
-         * @tparam t_plaintext
-         * Plaintext type.
-         * @param a_ciphertext_ptr
-         * Ciphertext pointer.
-         * @param a_ciphertext_size
-         * Ciphertext size.
-         * @param a_plaintext_ptr
-         * Plaintext pointer.
-         * @return
-         * Plaintext size.
-         */
+
         template<
             concepts::byte t_ciphertext,
             concepts::byte t_plaintext
@@ -222,7 +178,9 @@ namespace milo::cipher
             t_plaintext* a_plaintext_ptr
         ) noexcept(true) -> size_t
         {
-            m_buffer_size = detail::update_block_prod_xor<block_type>(
+            m_buffer_size = update_block_prod_xor<
+                impl_type
+            >(
                 m_buffer,
                 m_buffer_size,
                 a_plaintext_ptr,
@@ -234,18 +192,6 @@ namespace milo::cipher
             return a_ciphertext_size;
         }
         
-        /**
-         * This function calculates maximum plaintext size.
-         *
-         * @tparam t_ciphertext
-         * Ciphertext type.
-         * @param a_ciphertext_ptr
-         * Ciphertext pointer.
-         * @param a_ciphertext_size
-         * Ciphertext size.
-         * @return
-         * Plaintext size.
-         */
         template<
             concepts::byte t_ciphertext
         >

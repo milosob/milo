@@ -7,7 +7,7 @@
 #include <milo/concepts.h>
 #include <milo/memory.h>
 
-#include <milo/cipher/chacha_20.h>
+#include <milo/cipher/chacha.h>
 #include <milo/mac/poly.h>
 
 

@@ -98,7 +98,7 @@ namespace milo::detail
     }
     
     template<
-        typename t_block,
+        typename t_impl,
         concepts::byte t_buf,
         concepts::byte t_dst,
         concepts::byte t_src,
@@ -113,15 +113,10 @@ namespace milo::detail
         size_t a_src_size,
         t_args&& ... a_args
     ) noexcept(true) -> size_t
-    requires
-    requires
     {
-        requires concepts::block_prod<t_block, t_args...>;
-    }
-    {
-        using block_type = t_block;
+        using impl_type = t_impl;
         
-        constexpr auto block_size = block_type::block_size;
+        constexpr auto block_size = impl_type::block_size;
         
         if (a_buf_size > 0)
         {
@@ -155,9 +150,15 @@ namespace milo::detail
         
         for (size_t i = 0; i < full_size; i += 1)
         {
-            block_type::process(
+            impl_type::template invoke<
+                0
+            >(
                 block,
-                utility::forward<t_args>(a_args)...
+                utility::forward<
+                    t_args
+                >(
+                    a_args
+                )...
             );
             
             memory::xorr(
@@ -173,9 +174,15 @@ namespace milo::detail
         
         if (last_size)
         {
-            block_type::process(
+            impl_type::template invoke<
+                0
+            >(
                 a_buf_ptr,
-                utility::forward<t_args>(a_args)...
+                utility::forward<
+                    t_args
+                >(
+                    a_args
+                )...
             );
             
             memory::xorr(

@@ -23,7 +23,7 @@ Headers and types:
 
 - `<milo/cipher/apie.h>`
     - `milo::cipher::apie<impl_type>`
-- `<milo/cipher/chacha_20.h>`
+- `<milo/cipher/chacha.h>`
   - `milo::cipher::chacha_20`
 
 All implementations of the algorithms share the same interface.
@@ -54,7 +54,7 @@ constexpr auto iv_size = alg_type::iv_size;
 #### Algorithms Chacha-20
 
 ```c++
-#include <milo/cipher/chacha_20.h>
+#include <milo/cipher/chacha.h>
 
 milo::cipher::chacha_20 chacha_20;
 ```
@@ -73,7 +73,7 @@ milo::cipher::chacha_20 chacha_20;
 #include <string>
 #include <string_view>
 
-#include <milo/cipher/chacha_20.h>
+#include <milo/cipher/chacha.h>
 
 int main()
 {
@@ -130,7 +130,7 @@ int main()
 #include <string_view>
 
 #include <milo/cipher/apie.h>
-#include <milo/cipher/chacha_20.h>
+#include <milo/cipher/chacha.h>
 
 int main()
 {
@@ -212,7 +212,7 @@ int main()
 #include <string_view>
 
 #include <milo/cipher/apie.h>
-#include <milo/cipher/chacha_20.h>
+#include <milo/cipher/chacha.h>
 
 int main()
 {

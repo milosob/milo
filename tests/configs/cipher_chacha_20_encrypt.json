@@ -3,7 +3,7 @@
     "payload": {
         "impl": "milo::cipher::chacha_20",
         "include": [
-            "<milo/cipher/chacha_20.h>"
+            "<milo/cipher/chacha.h>"
         ],
         "vectors": [
             {

@@ -6,7 +6,7 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/cipher/chacha_20.h>
+#include <milo/cipher/chacha.h>
 #include <milo/cipher/test.h>
 
 
