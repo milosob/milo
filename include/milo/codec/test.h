@@ -29,10 +29,6 @@ namespace milo::codec
     
     public:
         
-        constexpr test() noexcept(true) = delete;
-    
-    public:
-        
         /**
          * This function performs encoding test.
          *

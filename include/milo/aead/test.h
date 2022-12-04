@@ -29,10 +29,6 @@ namespace milo::aead
     
     public:
         
-        constexpr test() noexcept(true) = delete;
-    
-    public:
-        
         /**
          * This function performs encryption test.
          *

@@ -29,10 +29,6 @@ namespace milo::kdf
     
     public:
         
-        constexpr test() noexcept(true) = delete;
-    
-    public:
-        
         /**
          * This function performs derive test.
          *
