@@ -23,7 +23,7 @@ Headers and types:
 
 - `<milo/aead/apie.h>`
   - `milo::aead::apie<impl_type>`
-- `<milo/aead/chacha_20_poly_1305.h>`
+- `<milo/aead/chacha.h>`
   - `milo::aead::chacha_20_poly_1305`
 
 All implementations of the algorithms share the same interface.
@@ -60,7 +60,7 @@ constexpr auto iv_size = alg_type::iv_size;
 #### Algorithms chacha-20-poly-1305
 
 ```c++
-#include <milo/aead/chacha_20_poly_1305.h>
+#include <milo/aead/chacha.h>
 
 milo::aead::chacha_20_poly_1305 chacha_20_poly_1305;
 ```
@@ -81,7 +81,7 @@ milo::aead::chacha_20_poly_1305 chacha_20_poly_1305;
 
 #include <milo/codec/apie.h>
 #include <milo/codec/base.h>
-#include <milo/aead/chacha_20_poly_1305.h>
+#include <milo/aead/chacha.h>
 
 int main()
 {
@@ -174,7 +174,7 @@ int main()
 #include <string_view>
 
 #include <milo/aead/apie.h>
-#include <milo/aead/chacha_20_poly_1305.h>
+#include <milo/aead/chacha.h>
 
 int main()
 {
@@ -281,7 +281,7 @@ int main()
 #include <string_view>
 
 #include <milo/aead/apie.h>
-#include <milo/aead/chacha_20_poly_1305.h>
+#include <milo/aead/chacha.h>
 
 int main()
 {

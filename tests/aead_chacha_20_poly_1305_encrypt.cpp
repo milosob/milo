@@ -6,7 +6,7 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/aead/chacha_20_poly_1305.h>
+#include <milo/aead/chacha.h>
 #include <milo/aead/test.h>
 
 

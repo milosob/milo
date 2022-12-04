@@ -11,18 +11,16 @@
 #include <milo/mac/poly.h>
 
 
-namespace milo::aead
+namespace milo::detail
 {
     template<
         concepts::cipher_chacha_20 t_cipher,
         concepts::mac_poly_1305 t_mac,
         typename... t_options
     >
-    class chacha_20_poly_1305_basic
+    class aead_chacha_20_poly_1305
     {
     public:
-        
-        using type = chacha_20_poly_1305_basic;
         
         using cipher_type = t_cipher;
         
@@ -32,9 +30,9 @@ namespace milo::aead
         
         struct properties
         {
-            using aead_type [[maybe_unused]] = type;
+            using aead [[maybe_unused]] = int;
             
-            using aead_chacha_20_poly_1305_type [[maybe_unused]] = type;
+            using aead_chacha_20_poly_1305 [[maybe_unused]] = int;
         };
     
     public:
@@ -60,37 +58,23 @@ namespace milo::aead
     
     public:
         
-        constexpr chacha_20_poly_1305_basic() noexcept(true) = default;
+        constexpr aead_chacha_20_poly_1305() noexcept(true) = default;
         
-        constexpr chacha_20_poly_1305_basic(type&& object) noexcept(true) = default;
+        constexpr aead_chacha_20_poly_1305(aead_chacha_20_poly_1305&& object) noexcept(true) = default;
         
-        constexpr chacha_20_poly_1305_basic(const type& object) noexcept(true) = default;
+        constexpr aead_chacha_20_poly_1305(const aead_chacha_20_poly_1305& object) noexcept(true) = default;
         
-        constexpr ~chacha_20_poly_1305_basic() noexcept(true) = default;
+        constexpr ~aead_chacha_20_poly_1305() noexcept(true) = default;
     
     public:
         
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
+        operator =(
+            const aead_chacha_20_poly_1305& object
+        ) noexcept(true) -> aead_chacha_20_poly_1305& = default;
     
     public:
         
-        /**
-         * This function initializes context.
-         *
-         * @tparam t_key
-         * Key type.
-         * @tparam t_iv
-         * Iv type.
-         * @param a_key_ptr
-         * Key pointer.
-         * @param a_key_size
-         * Key size.
-         * @param a_iv_ptr
-         * Iv pointer.
-         * @param a_iv_size
-         * Iv size.
-         */
         template<
             concepts::byte t_key,
             concepts::byte t_iv
@@ -142,16 +126,6 @@ namespace milo::aead
             m_edd_processed_size = 0;
         }
         
-        /**
-         * This function authenticates additional data.
-         *
-         * @tparam t_aad
-         * Aad type.
-         * @param a_aad_ptr
-         * Aad ptr.
-         * @param a_aad_size
-         * Aad size.
-         */
         template<
             concepts::byte t_aad
         >
@@ -168,10 +142,7 @@ namespace milo::aead
             
             m_aad_processed_size += a_aad_size;
         }
-        
-        /**
-         * This function signalizes additional authenticated data is over.
-         */
+
         constexpr auto
         aadover(
         ) noexcept(true) -> void
@@ -185,22 +156,6 @@ namespace milo::aead
             );
         }
         
-        /**
-         * This function encrypts plaintext.
-         *
-         * @tparam t_plaintext
-         * Plaintext type.
-         * @tparam t_ciphertext
-         * Ciphertext type.
-         * @param a_plaintext_ptr
-         * Plaintext pointer.
-         * @param a_plaintext_size
-         * Plaintext size.
-         * @param a_ciphertext_ptr
-         * Ciphertext pointer.
-         * @return
-         * Ciphertext size.
-         */
         template<
             concepts::byte t_plaintext,
             concepts::byte t_ciphertext
@@ -226,19 +181,7 @@ namespace milo::aead
             m_edd_processed_size += ciphertext_size;
             return ciphertext_size;
         }
-        
-        /**
-         * This function calculates maximum ciphertext size.
-         *
-         * @tparam t_plaintext
-         * Plaintext type.
-         * @param a_plaintext_ptr
-         * Plaintext pointer.
-         * @param a_plaintext_size
-         * Plaintext size.
-         * @return
-         * Ciphertext size.
-         */
+
         template<
             concepts::byte t_plaintext
         >
@@ -253,23 +196,7 @@ namespace milo::aead
                 a_plaintext_size
             );
         }
-        
-        /**
-         * This function decrypts ciphertext.
-         *
-         * @tparam t_ciphertext
-         * Ciphertext type.
-         * @tparam t_plaintext
-         * Plaintext type.
-         * @param a_ciphertext_ptr
-         * Ciphertext pointer.
-         * @param a_ciphertext_size
-         * Ciphertext size.
-         * @param a_plaintext_ptr
-         * Plaintext pointer.
-         * @return
-         * Plaintext size.
-         */
+
         template<
             concepts::byte t_ciphertext,
             concepts::byte t_plaintext
@@ -295,19 +222,7 @@ namespace milo::aead
             m_edd_processed_size += plaintext_size;
             return plaintext_size;
         }
-        
-        /**
-         * This function calculates maximum plaintext size.
-         *
-         * @tparam t_ciphertext
-         * Ciphertext type.
-         * @param a_ciphertext_ptr
-         * Ciphertext pointer.
-         * @param a_ciphertext_size
-         * Ciphertext size.
-         * @return
-         * Plaintext size.
-         */
+
         template<
             concepts::byte t_ciphertext
         >
@@ -322,37 +237,34 @@ namespace milo::aead
                 a_ciphertext_size
             );
         }
-        
-        /**
-         * This function finalizes context.
-         */
+
         constexpr auto
         finalize(
         ) noexcept(true) -> void
         {
             constexpr size_t buffer_zero_size = 16;
             constexpr uint8_t buffer_zero[buffer_zero_size]{};
-    
+            
             m_mac.update(
                 buffer_zero,
                 (buffer_zero_size - m_edd_processed_size % buffer_zero_size) & 0b1111
             );
-    
+            
             constexpr size_t buffer_last_size = 16;
             uint8_t buffer_last[buffer_last_size];
-    
+            
             memory::stor_le<uint64_t>(
                 buffer_last,
                 0,
                 m_aad_processed_size
             );
-    
+            
             memory::stor_le<uint64_t>(
                 buffer_last,
                 1,
                 m_edd_processed_size
             );
-    
+            
             m_mac.update(
                 buffer_last,
                 buffer_last_size
@@ -360,18 +272,6 @@ namespace milo::aead
             m_mac.finalize();
         }
         
-        /**
-         * This function extracts digest.
-         *
-         * @tparam t_digest
-         * Digest type.
-         * @param a_digest_ptr
-         * Digest pointer.
-         * @param a_digest_size
-         * Digest size.
-         * @return
-         * Digest size.
-         */
         template<
             concepts::byte t_digest
         >
@@ -387,6 +287,4 @@ namespace milo::aead
             );
         }
     };
-    
-    using chacha_20_poly_1305 = chacha_20_poly_1305_basic<cipher::chacha_20, mac::poly_1305>;
 }

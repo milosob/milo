@@ -23,9 +23,8 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::type;
         typename t_0::properties;
-        typename t_0::properties::aead_type;
+        typename t_0::properties::aead;
     } &&
     requires
     {
@@ -167,7 +166,7 @@ namespace milo::concepts
     } &&
     requires
     {
-        typename t_0::properties::aead_chacha_20_poly_1305_type;
+        typename t_0::properties::aead_chacha_20_poly_1305;
     } &&
     requires
     {

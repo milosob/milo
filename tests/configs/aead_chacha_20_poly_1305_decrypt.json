@@ -3,7 +3,7 @@
     "payload": {
         "impl": "milo::aead::chacha_20_poly_1305",
         "include": [
-            "<milo/aead/chacha_20_poly_1305.h>"
+            "<milo/aead/chacha.h>"
         ],
         "vectors": [
             {
