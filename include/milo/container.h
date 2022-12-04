@@ -9,7 +9,8 @@
 #include <tuple>
 
 #include <milo/common.h>
-#include <milo/memory.h>
+#include <milo/concepts.h>
+#include <milo/inner/memory.h>
 
 
 namespace milo::container
@@ -53,4 +54,43 @@ namespace milo::container
     using chars_const_view_static = view_static<const char, t_size>;
     
     using chars_const_view_dynamic = view_dynamic<const char>;
+    
+    /**
+     * This function resizes container.
+     *
+     * @tparam t_container
+     * Container type.
+     * @param a_container
+     * Container.
+     * @param a_size
+     * Size.
+     * @return
+     * Size.
+     */
+    template<
+        typename t_container
+    >
+    constexpr auto
+    resize(
+        t_container& a_container,
+        size_t a_size
+    ) noexcept(concepts::container_static<t_container>) -> size_t
+    {
+        if constexpr (concepts::container_dynamic<t_container>)
+        {
+            a_container.resize(
+                a_size,
+                typename t_container::value_type()
+            );
+            
+            return a_size;
+        }
+        else
+        {
+            return common::min(
+                a_size,
+                a_container.size()
+            );
+        }
+    }
 }

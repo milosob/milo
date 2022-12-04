@@ -6,8 +6,8 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/hash/sha.h>
-#include <milo/hash/test.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/hash/test.h>
 
 
 using namespace milo::literals;
@@ -715,7 +715,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::hash::test<milo::hash::sha_1_160>::digest(
+        auto result = milo::crypto::hash::test<milo::crypto::hash::sha_1_160>::digest(
             test_vectors[i].message,
             test_vectors[i].digest
         );

@@ -6,8 +6,8 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/codec/base.h>
-#include <milo/codec/test.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/codec/test.h>
 
 
 using namespace milo::literals;
@@ -486,7 +486,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::codec::test<milo::codec::base_64>::encode(
+        auto result = milo::crypto::codec::test<milo::crypto::codec::base_64>::encode(
             test_vectors[i].from,
             test_vectors[i].to
         );

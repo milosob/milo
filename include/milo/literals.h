@@ -3,8 +3,8 @@
 #pragma once
 
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
 #include <milo/common.h>
 #include <milo/container.h>
 
@@ -65,7 +65,7 @@ namespace milo::literals
         size_t a_size
     ) noexcept(false) -> container::bytes_dynamic
     {
-        return codec::apie<codec::base_16>::decode<container::bytes_dynamic>(
+        return crypto::codec::apie<crypto::codec::base_16>::decode<container::bytes_dynamic>(
             container::chars_const_view_dynamic(
                 a_ptr,
                 a_size
@@ -79,7 +79,7 @@ namespace milo::literals
         size_t a_size
     ) noexcept(false) -> container::bytes_dynamic
     {
-        return codec::apie<codec::base_64>::decode<container::bytes_dynamic>(
+        return crypto::codec::apie<crypto::codec::base_64>::decode<container::bytes_dynamic>(
             container::chars_const_view_dynamic(
                 a_ptr,
                 a_size

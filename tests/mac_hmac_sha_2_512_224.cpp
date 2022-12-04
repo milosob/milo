@@ -6,9 +6,9 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/mac/test.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/mac/test.h>
 
 
 using namespace milo::literals;
@@ -1369,7 +1369,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::mac::test<milo::mac::hmac<milo::hash::sha_2_512_224>>::digest(
+        auto result = milo::crypto::mac::test<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_512_224>>::digest(
             test_vectors[i].key,
             test_vectors[i].message,
             test_vectors[i].digest

@@ -6,8 +6,8 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/aead/chacha.h>
-#include <milo/aead/test.h>
+#include <milo/crypto/aead/chacha.h>
+#include <milo/crypto/aead/test.h>
 
 
 using namespace milo::literals;
@@ -122,7 +122,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::aead::test<milo::aead::chacha_20_poly_1305>::encrypt(
+        auto result = milo::crypto::aead::test<milo::crypto::aead::chacha_20_poly_1305>::encrypt(
             test_vectors[i].key,
             test_vectors[i].iv,
             test_vectors[i].aad,

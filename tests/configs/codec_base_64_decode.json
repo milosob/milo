@@ -1,9 +1,9 @@
 {
     "scheme": "test-codec-decode",
     "payload": {
-        "impl": "milo::codec::base_64",
+        "impl": "milo::crypto::codec::base_64",
         "include": [
-            "<milo/codec/base.h>"
+            "<milo/crypto/codec/base.h>"
         ],
         "vectors": [
             {

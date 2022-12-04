@@ -2,7 +2,8 @@
 
 #include <milo/concepts.h>
 #include <milo/container.h>
-#include <milo/memory.h>
+
+#include <milo/inner/memory.h>
 
 
 template<
@@ -44,13 +45,13 @@ test_case(
             c += 1;
         }
     
-        milo::memory::stor_le<stor_type>(
+        milo::inner::memory_stor_le<stor_type>(
             datas[0].data(),
             i,
             stor
         );
     
-        milo::memory::stor_be<stor_type>(
+        milo::inner::memory_stor_be<stor_type>(
             datas[1].data(),
             i,
             stor
@@ -58,14 +59,14 @@ test_case(
     
         for (size_t j = 0; j < stor_size + 1; j += 1)
         {
-            milo::memory::stor_le<stor_type>(
+            milo::inner::memory_stor_le<stor_type>(
                 datas[2 + j * 2].data(),
                 i,
                 stor,
                 j
             );
         
-            milo::memory::stor_be<stor_type>(
+            milo::inner::memory_stor_be<stor_type>(
                 datas[2 + j * 2 + 1].data(),
                 i,
                 stor,

@@ -6,10 +6,10 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/kdf/pbkdf.h>
-#include <milo/kdf/test.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/kdf/pbkdf.h>
+#include <milo/crypto/kdf/test.h>
 
 
 using namespace milo::literals;
@@ -822,7 +822,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::kdf::test<milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_512_256>>>::derive(
+        auto result = milo::crypto::kdf::test<milo::crypto::kdf::pbkdf_2<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_512_256>>>::derive(
             test_vectors[i].ikm,
             test_vectors[i].salt,
             test_vectors[i].iterations,

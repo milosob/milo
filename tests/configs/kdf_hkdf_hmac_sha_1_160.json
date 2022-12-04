@@ -1,11 +1,11 @@
 {
     "scheme": "test-kdf-hkdf",
     "payload": {
-        "impl": "milo::kdf::hkdf<milo::mac::hmac<milo::hash::sha_1_160>>",
+        "impl": "milo::crypto::kdf::hkdf<milo::crypto::mac::hmac<milo::crypto::hash::sha_1_160>>",
         "include": [
-            "<milo/hash/sha.h>",
-            "<milo/mac/hmac.h>",
-            "<milo/kdf/hkdf.h>"
+            "<milo/crypto/hash/sha.h>",
+            "<milo/crypto/mac/hmac.h>",
+            "<milo/crypto/kdf/hkdf.h>"
         ],
         "vectors": [
             {

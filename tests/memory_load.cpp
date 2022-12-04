@@ -2,7 +2,8 @@
 
 #include <milo/concepts.h>
 #include <milo/container.h>
-#include <milo/memory.h>
+
+#include <milo/inner/memory.h>
 
 
 template<
@@ -45,19 +46,19 @@ test_case(
             c += 1;
         }
         
-        datas[i] = milo::detail::endian_bigof(data);
+        datas[i] = milo::inner::endian_bigof(data);
     }
     
     for (size_t i = 0, c = 0; i < loads_size; i += 1)
     {
-        loads[c] = milo::memory::load_le<load_type>(
+        loads[c] = milo::inner::memory_load_le<load_type>(
             datas.data(),
             i
         );
     
         c += 1;
     
-        loads[c] = milo::memory::load_be<load_type>(
+        loads[c] = milo::inner::memory_load_be<load_type>(
             datas.data(),
             i
         );
@@ -66,7 +67,7 @@ test_case(
     
         for (size_t j = 0; j < load_size + 1; j += 1)
         {
-            loads[c] = milo::memory::load_le<load_type>(
+            loads[c] = milo::inner::memory_load_le<load_type>(
                 datas.data(),
                 i,
                 j
@@ -74,7 +75,7 @@ test_case(
         
             c += 1;
         
-            loads[c] = milo::memory::load_be<load_type>(
+            loads[c] = milo::inner::memory_load_be<load_type>(
                 datas.data(),
                 i,
                 j

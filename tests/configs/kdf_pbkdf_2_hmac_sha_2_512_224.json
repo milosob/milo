@@ -1,11 +1,11 @@
 {
     "scheme": "test-kdf-pbkdf-2",
     "payload": {
-        "impl": "milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_512_224>>",
+        "impl": "milo::crypto::kdf::pbkdf_2<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_512_224>>",
         "include": [
-            "<milo/hash/sha.h>",
-            "<milo/mac/hmac.h>",
-            "<milo/kdf/pbkdf.h>"
+            "<milo/crypto/hash/sha.h>",
+            "<milo/crypto/mac/hmac.h>",
+            "<milo/crypto/kdf/pbkdf.h>"
         ],
         "vectors": [
             {

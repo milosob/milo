@@ -1,9 +1,9 @@
 {
     "scheme": "test-cipher-encrypt",
     "payload": {
-        "impl": "milo::cipher::chacha_20",
+        "impl": "milo::crypto::cipher::chacha_20",
         "include": [
-            "<milo/cipher/chacha.h>"
+            "<milo/crypto/cipher/chacha.h>"
         ],
         "vectors": [
             {

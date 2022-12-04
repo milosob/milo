@@ -1,9 +1,9 @@
 {
     "scheme": "test-mac",
     "payload": {
-        "impl": "milo::mac::poly_1305",
+        "impl": "milo::crypto::mac::poly_1305",
         "include": [
-            "<milo/mac/poly.h>"
+            "<milo/crypto/mac/poly.h>"
         ],
         "vectors": [
             {

@@ -10,7 +10,7 @@ namespace milo
     class error
     {
     public:
-    
+        
         /**
          * Error code.
          */

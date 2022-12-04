@@ -6,8 +6,8 @@
 #include <milo/container.h>
 #include <milo/literals.h>
 
-#include <milo/cipher/chacha.h>
-#include <milo/cipher/test.h>
+#include <milo/crypto/cipher/chacha.h>
+#include <milo/crypto/cipher/test.h>
 
 
 using namespace milo::literals;
@@ -143,7 +143,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::cipher::test<milo::cipher::chacha_20>::decrypt(
+        auto result = milo::crypto::cipher::test<milo::crypto::cipher::chacha_20>::decrypt(
             test_vectors[i].key,
             test_vectors[i].iv,
             test_vectors[i].ciphertext,
