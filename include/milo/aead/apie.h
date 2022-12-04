@@ -25,8 +25,6 @@ namespace milo::aead
     {
     public:
         
-        using type = apie;
-        
         using impl_type = t_impl;
     
     public:
@@ -52,19 +50,21 @@ namespace milo::aead
         
         constexpr apie() noexcept(true) = default;
         
-        constexpr apie(type&& object) noexcept(true) = default;
+        constexpr apie(apie&& object) noexcept(true) = default;
         
-        constexpr apie(const type& object) noexcept(true) = default;
+        constexpr apie(const apie& object) noexcept(true) = default;
         
         constexpr ~apie() noexcept(true) = default;
-
-    public:
     
+    public:
+        
         constexpr auto
-        operator =(const type& object) noexcept(true) -> type& = default;
-
-    public:
+        operator =(
+            const apie& object
+        ) noexcept(true) -> apie& = default;
     
+    public:
+        
         /**
          * Constructs the object.
          *
@@ -100,7 +100,7 @@ namespace milo::aead
                 a_iv_size
             );
         }
-    
+        
         /**
          * Constructs the object.
          *
@@ -339,21 +339,21 @@ namespace milo::aead
                 a_ciphertext,
                 encrypt_size(a_plaintext)
             );
-    
+            
             auto size = encrypt(
                 a_plaintext.data(),
                 a_plaintext.size(),
                 a_ciphertext.data()
             );
-    
+            
             utility::resize(
                 a_ciphertext,
                 size
             );
-    
+            
             return size;
         }
-    
+        
         /**
          * This function encrypts plaintext.
          *
@@ -381,15 +381,15 @@ namespace milo::aead
         }
         {
             t_ciphertext result;
-    
+            
             encrypt(
                 a_plaintext,
                 result
             );
-    
+            
             return result;
         }
-    
+        
         /**
          * This function calculates maximum ciphertext size.
          *
@@ -476,7 +476,7 @@ namespace milo::aead
                 a_plaintext_ptr
             );
         }
-    
+        
         /**
          * This function decrypts ciphertext.
          *
@@ -505,21 +505,21 @@ namespace milo::aead
                 a_plaintext,
                 decrypt_size(a_ciphertext)
             );
-    
+            
             auto size = decrypt(
                 a_ciphertext.data(),
                 a_ciphertext.size(),
                 a_plaintext.data()
             );
-    
+            
             utility::resize(
                 a_plaintext,
                 size
             );
-    
+            
             return size;
         }
-    
+        
         /**
          * This function decrypts ciphertext.
          *
@@ -547,15 +547,15 @@ namespace milo::aead
         }
         {
             t_plaintext result;
-    
+            
             decrypt(
                 a_ciphertext,
                 result
             );
-    
+            
             return result;
         }
-    
+        
         /**
          * This function calculates maximum plaintext size.
          *
@@ -606,7 +606,7 @@ namespace milo::aead
                 a_ciphertext.size()
             );
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -629,13 +629,13 @@ namespace milo::aead
         ) noexcept(true) -> size_t
         {
             do_finalize();
-    
+            
             return m_impl.digest(
                 a_digest_ptr,
                 a_digest_size
             );
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -658,23 +658,23 @@ namespace milo::aead
         ) noexcept(concepts::container_static<t_digest>) -> size_t
         {
             do_finalize();
-    
+            
             a_digest_size = common::min(
                 a_digest_size,
                 digest_size
             );
-    
+            
             a_digest_size = utility::resize(
                 a_digest,
                 a_digest_size
             );
-    
+            
             return digest(
                 a_digest.data(),
                 a_digest_size
             );
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -699,15 +699,15 @@ namespace milo::aead
         }
         {
             t_digest result;
-    
+            
             digest(
                 result,
                 a_digest_size
             );
-    
+            
             return result;
         }
-    
+        
         /**
          * This function extracts digest.
          *
@@ -729,12 +729,12 @@ namespace milo::aead
         }
         {
             t_digest result;
-    
+            
             digest(
                 result,
                 result.size()
             );
-    
+            
             return result;
         }
         
@@ -928,13 +928,13 @@ namespace milo::aead
             a_aad_ptr,
             a_aad_size
         );
-    
+        
         auto ciphertext_size = apie.template encrypt<t_plaintext, t_ciphertext>(
             a_plaintext_ptr,
             a_plaintext_size,
             a_ciphertext_ptr
         );
-    
+        
         auto digest_size = apie.template digest<t_digest>(
             a_digest_ptr
         );
@@ -1005,16 +1005,16 @@ namespace milo::aead
             a_key,
             a_iv
         );
-    
+        
         apie.template aad<t_aad>(
             a_aad
         );
-    
+        
         auto ciphertext_size = apie.template encrypt<t_plaintext, t_ciphertext>(
             a_plaintext,
             a_ciphertext
         );
-    
+        
         auto digest_size = apie.template digest<t_digest>(
             a_digest
         );
@@ -1074,17 +1074,17 @@ namespace milo::aead
             a_key,
             a_iv
         );
-    
+        
         apie.template aad<t_aad>(
             a_aad
         );
-    
+        
         auto ciphertext = apie.template encrypt<t_ciphertext, t_plaintext>(
             a_plaintext
         );
-    
+        
         auto digest = apie.template digest<t_digest>();
-    
+        
         return container::tuple<t_ciphertext, t_digest>(
             utility::move(ciphertext),
             utility::move(digest)
@@ -1178,24 +1178,24 @@ namespace milo::aead
             a_iv_ptr,
             a_iv_size
         );
-    
+        
         apie.template aad<t_aad>(
             a_aad_ptr,
             a_aad_size
         );
-    
+        
         auto plaintext_size = apie.template decrypt<t_ciphertext, t_plaintext>(
             a_ciphertext_ptr,
             a_ciphertext_size,
             a_plaintext_ptr
         );
-    
+        
         apie.template verify<t_digest>(
             a_digest_ptr,
             a_digest_size,
             a_error...
         );
-    
+        
         return plaintext_size;
     }
     
@@ -1270,16 +1270,16 @@ namespace milo::aead
             a_key,
             a_iv
         );
-    
+        
         apie.template aad<t_aad>(
             a_aad
         );
-    
+        
         auto plaintext_size = apie.template decrypt<t_ciphertext, t_plaintext>(
             a_ciphertext,
             a_plaintext
         );
-    
+        
         apie.template verify<t_digest>(
             a_digest,
             a_error...
@@ -1351,15 +1351,15 @@ namespace milo::aead
             a_key,
             a_iv
         );
-    
+        
         apie.template aad<t_aad>(
             a_aad
         );
-    
+        
         auto plaintext = apie.template decrypt<t_plaintext, t_ciphertext>(
             a_ciphertext
         );
-    
+        
         apie.template verify<t_digest>(
             a_digest,
             a_error...
