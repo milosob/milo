@@ -9,6 +9,7 @@ This file list algorithms supported by the library.
 
 ### Hashing functions
 
+- `sha-1-160`
 - `sha-2-224`
 - `sha-2-256`
 - `sha-2-384`
@@ -18,6 +19,7 @@ This file list algorithms supported by the library.
 
 ### Message authentication codes
 
+- `hmac-sha-1-160`
 - `hmac-sha-2-224`
 - `hmac-sha-2-256`
 - `hmac-sha-2-384`
@@ -28,12 +30,14 @@ This file list algorithms supported by the library.
 
 ### Key derivation functions
 
+- `hkdf-hmac-sha-1-160`
 - `hkdf-hmac-sha-2-224`
 - `hkdf-hmac-sha-2-256`
 - `hkdf-hmac-sha-2-384`
 - `hkdf-hmac-sha-2-512`
 - `hkdf-hmac-sha-2-512-224`
 - `hkdf-hmac-sha-2-512-256`
+- `pbkdf-2-hmac-sha-1-160`
 - `pbkdf-2-hmac-sha-2-224`
 - `pbkdf-2-hmac-sha-2-256`
 - `pbkdf-2-hmac-sha-2-384`

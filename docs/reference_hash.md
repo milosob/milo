@@ -17,6 +17,7 @@ This file describes hashing algorithms.
 
 Supported:
 
+- `sha-1-160`
 - `sha-2-224`
 - `sha-2-256`
 - `sha-2-384`
