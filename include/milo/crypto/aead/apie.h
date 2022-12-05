@@ -8,7 +8,6 @@
 #include <milo/container.h>
 #include <milo/error.h>
 
-#include <milo/inner/forward.h>
 #include <milo/inner/move.h>
 
 
