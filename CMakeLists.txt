@@ -12,7 +12,7 @@ option(MILO_BUILD_TESTS_CONSTEXPR "Build tests constexpr." OFF)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/config.h
-        ${PROJECT_SOURCE_DIR}/include/milo/detail/config.h
+        ${PROJECT_SOURCE_DIR}/include/milo/inner/config.h
 )
 
 add_library(
