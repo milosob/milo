@@ -21,10 +21,10 @@ Supported:
 
 Headers and types:
 
-- `<milo/aead/apie.h>`
-  - `milo::aead::apie<impl_type>`
-- `<milo/aead/chacha.h>`
-  - `milo::aead::chacha_20_poly_1305`
+- `<milo/crypto/aead/apie.h>`
+  - `milo::crypto::aead::apie<impl_type>`
+- `<milo/crypto/aead/chacha.h>`
+  - `milo::crypto::aead::chacha_20_poly_1305`
 
 All implementations of the algorithms share the same interface.
 
@@ -60,9 +60,9 @@ constexpr auto iv_size = alg_type::iv_size;
 #### Algorithms chacha-20-poly-1305
 
 ```c++
-#include <milo/aead/chacha.h>
+#include <milo/crypto/aead/chacha.h>
 
-milo::aead::chacha_20_poly_1305 chacha_20_poly_1305;
+milo::crypto::aead::chacha_20_poly_1305 chacha_20_poly_1305;
 ```
 
 - `digest_size = 16 bytes`
@@ -79,15 +79,15 @@ milo::aead::chacha_20_poly_1305 chacha_20_poly_1305;
 #include <string>
 #include <string_view>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/aead/chacha.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/aead/chacha.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using aead_type = milo::aead::chacha_20_poly_1305;
+    using aead_type = milo::crypto::aead::chacha_20_poly_1305;
     
     auto key          = std::array<char, aead_type::key_size>{};
     auto iv           = std::array<char, aead_type::iv_size>{};
@@ -157,8 +157,8 @@ int main()
      * Here, the default comparison is used without such security guarantees.
      */
     
-    std::cout << "Encryption mac: " << milo::codec::encode<milo::codec::base_16, std::string>(digest_enc) << "\n";
-    std::cout << "Decryption mac: " << milo::codec::encode<milo::codec::base_16, std::string>(digest_dec) << "\n";
+    std::cout << "Encryption mac: " << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_enc) << "\n";
+    std::cout << "Decryption mac: " << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_dec) << "\n";
     std::cout << "Authentication: " << std::boolalpha << (digest_enc == digest_dec) << "\n";
     
     return 0;
@@ -173,14 +173,14 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/aead/apie.h>
-#include <milo/aead/chacha.h>
+#include <milo/crypto/aead/apie.h>
+#include <milo/crypto/aead/chacha.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using aead_type = milo::aead::apie<milo::aead::chacha_20_poly_1305>;
+    using aead_type = milo::crypto::aead::apie<milo::crypto::aead::chacha_20_poly_1305>;
     
     auto key     = std::array<char, aead_type::key_size>{};
     auto iv      = std::array<char, aead_type::iv_size>{};
@@ -280,14 +280,14 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/aead/apie.h>
-#include <milo/aead/chacha.h>
+#include <milo/crypto/aead/apie.h>
+#include <milo/crypto/aead/chacha.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using aead_type = milo::aead::chacha_20_poly_1305;
+    using aead_type = milo::crypto::aead::chacha_20_poly_1305;
     
     auto key     = std::array<char, aead_type::key_size>{};
     auto iv      = std::array<char, aead_type::iv_size>{};
@@ -306,8 +306,8 @@ int main()
         
         milo::error error;
         
-        auto [ciphertext, mac] = milo::aead::encrypt<aead_type>(key, iv, aad, message);
-        auto plaintext         = milo::aead::decrypt<aead_type>(key, iv, aad, ciphertext, mac, error);
+        auto [ciphertext, mac] = milo::crypto::aead::encrypt<aead_type>(key, iv, aad, message);
+        auto plaintext         = milo::crypto::aead::decrypt<aead_type>(key, iv, aad, ciphertext, mac, error);
         
         if (error)
         {
@@ -331,8 +331,8 @@ int main()
          * Encryption to variable of custom type is also possible, works the same way.
          */
         
-        auto [ciphertext, mac] = milo::aead::encrypt<aead_type, std::string>(key, iv, aad, message);
-        auto plaintext         = milo::aead::decrypt<aead_type, std::string>(key, iv, aad, ciphertext, mac);
+        auto [ciphertext, mac] = milo::crypto::aead::encrypt<aead_type, std::string>(key, iv, aad, message);
+        auto plaintext         = milo::crypto::aead::decrypt<aead_type, std::string>(key, iv, aad, ciphertext, mac);
     
         std::cout << "Reference message: " << message << "\n";
         std::cout << "Decrypted message: " << plaintext << "\n";
@@ -350,9 +350,9 @@ int main()
          * This time enforce decryption error.
          */
         
-        auto [ciphertext, mac] = milo::aead::encrypt<aead_type>(key, iv, aad, message);
+        auto [ciphertext, mac] = milo::crypto::aead::encrypt<aead_type>(key, iv, aad, message);
         mac[0]                += 1;
-        auto plaintext         = milo::aead::decrypt<aead_type, std::string>(key, iv, aad, ciphertext, mac);
+        auto plaintext         = milo::crypto::aead::decrypt<aead_type, std::string>(key, iv, aad, ciphertext, mac);
         
         std::cout << "Reference message: " << message << "\n";
         std::cout << "Decrypted message: " << plaintext << "\n";

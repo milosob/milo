@@ -53,12 +53,12 @@ The library consists of groups of cryptographic algorithms.
 Each group's algorithms are placed in a dedicated namespace.
 Currently, the following groups are defined:
 
-- codec - `milo::codec` - bytes encoding/decoding
-- hash - `milo::hash` - hashing functions
-- mac - `milo::mac` - message authentication codes
-- kdf - `milo::kdf` - key derivation functions
-- cipher - `milo::cipher` - ciphers
-- aead - `milo::aead` - authenticated encryption with associated data
+- codec - `milo::crypto::codec` - bytes encoding/decoding
+- hash - `milo::crypto::hash` - hashing functions
+- mac - `milo::crypto::mac` - message authentication codes
+- kdf - `milo::crypto::kdf` - key derivation functions
+- cipher - `milo::crypto::cipher` - ciphers
+- aead - `milo::crypto::aead` - authenticated encryption with associated data
 
 Each group has the following code component hierarchy:
 
@@ -87,7 +87,7 @@ Each group has the following code component hierarchy:
 Calculate message digest in one call without a single allocation:
 
 ```c++
-auto digest = milo::hash::digest<milo::hash::sha_2_256>("message"sv);
+auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256>("message"sv);
 ```
 
 Which not only looks better but is more handy and less error-prone.
@@ -104,8 +104,8 @@ The kinds of parameters that the library accepts as inputs or outputs are:
 
 When talking about inputs and outputs, the two most used concepts throughout the library have to be introduced:
 
-- `milo::concepts::byte` - signed or unsigned char.
-- `milo::concepts::bytes` - objective memory with `data() -> milo::concepts::byte*` and `size() -> size_t` methods.
+- `milo::crypto::concepts::byte` - signed or unsigned char.
+- `milo::crypto::concepts::bytes` - objective memory with `data() -> milo::crypto::concepts::byte*` and `size() -> size_t` methods.
 
 There are no direct overloads for char pointers, unsigned char pointers, strings, vectors of byte, etc.
 It would be hard to maintain and would introduce a lot of redundant code, instead concepts are used.
@@ -139,17 +139,17 @@ depending on whether the requested size was a template or a method argument.
 /*
  * Valid.
  */
-auto digest = milo::hash::digest<milo::hash::sha_2_256>("message"sv);
+auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256>("message"sv);
 
 /*
  * Valid.
  */
-auto digest = milo::hash::digest<milo::hash::sha_2_256, std::array<char, 32>>("message"sv);
+auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256, std::array<char, 32>>("message"sv);
 
 /*
  * Compile-time error. The maximum size of the digest is 32.
  */
-auto digest = milo::hash::digest<milo::hash::sha_2_256, std::array<char, 33>>("message"sv);
+auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256, std::array<char, 33>>("message"sv);
 ```
 
 ### Endianness

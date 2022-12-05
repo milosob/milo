@@ -26,16 +26,16 @@ Supported:
 
 Headers and types:
 
-- `<milo/hash/apie.h>`
-  - `milo::hash::apie<hash_type>`
-- `<milo/hash/sha.h>`
-  - `milo::hash::sha_1_160`
-  - `milo::hash::sha_2_224`
-  - `milo::hash::sha_2_256`
-  - `milo::hash::sha_2_384`
-  - `milo::hash::sha_2_512`
-  - `milo::hash::sha_2_512_224`
-  - `milo::hash::sha_2_512_256`
+- `<milo/crypto/hash/apie.h>`
+  - `milo::crypto::hash::apie<hash_type>`
+- `<milo/crypto/hash/sha.h>`
+  - `milo::crypto::hash::sha_1_160`
+  - `milo::crypto::hash::sha_2_224`
+  - `milo::crypto::hash::sha_2_256`
+  - `milo::crypto::hash::sha_2_384`
+  - `milo::crypto::hash::sha_2_512`
+  - `milo::crypto::hash::sha_2_512_224`
+  - `milo::crypto::hash::sha_2_512_256`
 
 All implementations of the algorithms share the same interface.
 
@@ -63,15 +63,15 @@ constexpr auto block_size = alg_type::block_size;
 #### Algorithms Sha-2
 
 ```c++
-#include <milo/hash/sha.h>
+#include <milo/crypto/hash/sha.h>
 
-milo::hash::sha_1_160       sha_1_160;
-milo::hash::sha_2_224       sha_2_224;
-milo::hash::sha_2_256       sha_2_256;
-milo::hash::sha_2_384       sha_2_384;
-milo::hash::sha_2_512       sha_2_512;
-milo::hash::sha_2_512_224   sha_2_512_224;
-milo::hash::sha_2_512_256   sha_2_512_256;
+milo::crypto::hash::sha_1_160       sha_1_160;
+milo::crypto::hash::sha_2_224       sha_2_224;
+milo::crypto::hash::sha_2_256       sha_2_256;
+milo::crypto::hash::sha_2_384       sha_2_384;
+milo::crypto::hash::sha_2_512       sha_2_512;
+milo::crypto::hash::sha_2_512_224   sha_2_512_224;
+milo::crypto::hash::sha_2_512_256   sha_2_512_256;
 ```
 
 ### Hash computation
@@ -84,9 +84,9 @@ milo::hash::sha_2_512_256   sha_2_512_256;
 #include <string>
 #include <string_view>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/hash/sha.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/hash/sha.h>
 
 int main()
 {
@@ -95,7 +95,7 @@ int main()
     /*
      * Declare alias.
      */
-    using hash_type = milo::hash::sha_2_256;
+    using hash_type = milo::crypto::hash::sha_2_256;
     
     auto message = "message"sv;
     
@@ -149,10 +149,10 @@ int main()
      */
     auto digest_d_size = hash.digest(digest_d, 100);
     
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -172,10 +172,10 @@ int main()
 #include <string_view>
 #include <vector>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/hash/apie.h>
-#include <milo/hash/sha.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/hash/apie.h>
+#include <milo/crypto/hash/sha.h>
 
 int main()
 {
@@ -184,7 +184,7 @@ int main()
     /*
      * Declare alias via apie wrapper.
      */
-    using hash_type = milo::hash::apie<milo::hash::sha_2_256>;
+    using hash_type = milo::crypto::hash::apie<milo::crypto::hash::sha_2_256>;
     
     auto message = "message"sv;
     
@@ -263,13 +263,13 @@ int main()
      */
     auto digest_returned_by_reference_2_size = hash.digest(digest_returned_by_reference_2);
     
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -286,10 +286,10 @@ int main()
 #include <iostream>
 #include <string_view>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/hash/apie.h>
-#include <milo/hash/sha.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/hash/apie.h>
+#include <milo/crypto/hash/sha.h>
 
 int main()
 {
@@ -298,12 +298,12 @@ int main()
     /*
      * Declare alias.
      */
-    using hash_type = milo::hash::sha_2_256;
+    using hash_type = milo::crypto::hash::sha_2_256;
     
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("message"sv)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("message"sv, 16)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("hello world"sv)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::hash::digest<hash_type>("hello world"sv, 8)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::hash::digest<hash_type>("message"sv)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::hash::digest<hash_type>("message"sv, 16)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::hash::digest<hash_type>("hello world"sv)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::hash::digest<hash_type>("hello world"sv, 8)) << "\n";
     
     return 0;
 }

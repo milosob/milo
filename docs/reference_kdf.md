@@ -23,12 +23,12 @@ Supported:
 
 Headers and types:
 
-- `<milo/kdf/apie.h>`
-    - `milo::kdf::apie<hkdf_type>`
-- `<milo/kdf/hkdf.h>`
-    - `milo::kdf::hkdf<hmac_type>`
-- `<milo/mac/pbkdf.h>`
-    - `milo::kdf::pbkdf_2<prf_type>`
+- `<milo/crypto/kdf/apie.h>`
+    - `milo::crypto::kdf::apie<hkdf_type>`
+- `<milo/crypto/kdf/hkdf.h>`
+    - `milo::crypto::kdf::hkdf<hmac_type>`
+- `<milo/crypto/mac/pbkdf.h>`
+    - `milo::crypto::kdf::pbkdf_2<prf_type>`
 
 All implementations of the algorithms share the same interface.
 
@@ -58,14 +58,14 @@ Pointers that must remain valid:
 #### Algorithms Hkdf
 
 ```c++
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/kdf/hkdf.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/kdf/hkdf.h>
 
 /*
  * Hkdf class template requires a hmac type as the template parameter.
  */
-milo::kdf::hkdf<milo::mac::hmac<milo::hash::sha_2_256>> hkdf;
+milo::crypto::kdf::hkdf<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>> hkdf;
 
 hkdf.initialize(
     ikm_ptr,
@@ -80,15 +80,15 @@ hkdf.initialize(
 #### Algorithms Pbkdf-2
 
 ```c++
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/kdf/pbkdf.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/kdf/pbkdf.h>
 
 /*
  * Pbkdf-2 class template requires a pseudo random function type as the template parameter.
  * Hmac is a compatible pseudo-random function.
  */
-milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_256>> pbkdf_2;
+milo::crypto::kdf::pbkdf_2<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>> pbkdf_2;
 
 pbkdf_2.initialize(
     ikm_ptr,
@@ -107,12 +107,12 @@ pbkdf_2.initialize(
 #include <iostream>
 #include <string_view>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/kdf/hkdf.h>
-#include <milo/kdf/pbkdf.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/kdf/hkdf.h>
+#include <milo/crypto/kdf/pbkdf.h>
 
 
 template<typename t_kdf>
@@ -127,8 +127,8 @@ void derive_example(t_kdf& a_kdf)
     auto key_a_size = a_kdf.derive(key_a, 32);
     auto key_b_size = a_kdf.derive(key_b, 32);
     
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(key_a, key_a_size)) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(std::span(key_b, key_b_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(key_a, key_a_size)) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(key_b, key_b_size)) << "\n";
 }
 
 int main()
@@ -137,7 +137,7 @@ int main()
     
     std::cout << "Derive with hkdf:\n";
     {
-        using hkdf_type = milo::kdf::hkdf<milo::mac::hmac<milo::hash::sha_2_256>>;
+        using hkdf_type = milo::crypto::kdf::hkdf<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>>;
         
         auto ikm  = "ikm"sv;
         auto salt = "salt"sv;
@@ -150,7 +150,7 @@ int main()
     
     std::cout << "Derive with pbkdf-2:\n";
     {
-        using pbkdf_2_type = milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_256>>;
+        using pbkdf_2_type = milo::crypto::kdf::pbkdf_2<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>>;
         
         auto ikm        = "ikm"sv;
         auto salt       = "salt"sv;
@@ -171,13 +171,13 @@ int main()
 #include <iostream>
 #include <string_view>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/kdf/apie.h>
-#include <milo/kdf/hkdf.h>
-#include <milo/kdf/pbkdf.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/kdf/apie.h>
+#include <milo/crypto/kdf/hkdf.h>
+#include <milo/crypto/kdf/pbkdf.h>
 
 
 template<typename t_kdf>
@@ -206,10 +206,10 @@ void derive_example(t_kdf& a_kdf)
      */
     auto key_returned_by_value_2 = a_kdf.template derive<std::array<char, 32>>();
     
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_array) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_vector) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_returned_by_value_1) << "\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(key_returned_by_value_2) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(key_array) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(key_vector) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(key_returned_by_value_1) << "\n";
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(key_returned_by_value_2) << "\n";
 }
 
 int main()
@@ -218,7 +218,7 @@ int main()
     
     std::cout << "Derive with hkdf:\n";
     {
-        using hkdf_type = milo::kdf::apie<milo::kdf::hkdf<milo::mac::hmac<milo::hash::sha_2_256>>>;
+        using hkdf_type = milo::crypto::kdf::apie<milo::crypto::kdf::hkdf<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>>>;
         
         auto ikm  = "ikm"sv;
         auto salt = "salt"sv;
@@ -231,12 +231,12 @@ int main()
          * Derive example uses streaming derivation.
          */
         std::cout << "Key:\n";
-        std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type::impl_type>(ikm, salt, info, 224)) << "\n\n" ;
+        std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<hkdf_type::impl_type>(ikm, salt, info, 224)) << "\n\n" ;
     }
     
     std::cout << "Derive with pbkdf-2:\n";
     {
-        using pbkdf_2_type = milo::kdf::apie<milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_256>>>;
+        using pbkdf_2_type = milo::crypto::kdf::apie<milo::crypto::kdf::pbkdf_2<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>>>;
         
         auto ikm        = "ikm"sv;
         auto salt       = "salt"sv;
@@ -249,7 +249,7 @@ int main()
          * Derive example uses streaming derivation.
          */
         std::cout << "Key:\n";
-        std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type::impl_type>(ikm, salt, iterations, 224)) << "\n" ;
+        std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<pbkdf_2_type::impl_type>(ikm, salt, iterations, 224)) << "\n" ;
         
         return 0;
     }
@@ -262,30 +262,30 @@ int main()
 #include <iostream>
 #include <string_view>
 
-#include <milo/codec/apie.h>
-#include <milo/codec/base.h>
-#include <milo/hash/sha.h>
-#include <milo/mac/hmac.h>
-#include <milo/kdf/apie.h>
-#include <milo/kdf/hkdf.h>
-#include <milo/kdf/pbkdf.h>
+#include <milo/crypto/codec/apie.h>
+#include <milo/crypto/codec/base.h>
+#include <milo/crypto/hash/sha.h>
+#include <milo/crypto/mac/hmac.h>
+#include <milo/crypto/kdf/apie.h>
+#include <milo/crypto/kdf/hkdf.h>
+#include <milo/crypto/kdf/pbkdf.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using hkdf_type = milo::kdf::hkdf<milo::mac::hmac<milo::hash::sha_2_256>>;
-    using pbkdf_2_type = milo::kdf::pbkdf_2<milo::mac::hmac<milo::hash::sha_2_256>>;
+    using hkdf_type = milo::crypto::kdf::hkdf<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>>;
+    using pbkdf_2_type = milo::crypto::kdf::pbkdf_2<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>>;
     
     std::cout << "Derive with hkdf:\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 64)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 32)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<hkdf_type>("ikm"sv, "hello"sv, "world"sv, 32)) << "\n" ;
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 64)) << "\n" ;
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 32)) << "\n" ;
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<hkdf_type>("ikm"sv, "hello"sv, "world"sv, 32)) << "\n" ;
     
     std::cout << "Derive with pbkdf-2:\n";
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 100, 64)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 1000, 32)) << "\n" ;
-    std::cout << milo::codec::encode<milo::codec::base_16, std::string>(milo::kdf::derive<pbkdf_2_type>("ikm"sv, "hello"sv, 5000, 32)) << "\n" ;
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 100, 64)) << "\n" ;
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 1000, 32)) << "\n" ;
+    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::kdf::derive<pbkdf_2_type>("ikm"sv, "hello"sv, 5000, 32)) << "\n" ;
     
     return 0;
 }
