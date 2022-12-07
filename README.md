@@ -37,20 +37,19 @@ auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256>("message
 ```c++
 try
 {
-    using namespace std::literals;
+    using namespace milo::literal;
     
-    using aead_type  = milo::crypto::aead::chacha_20_poly_1305;
-    using codec_type = milo::crypto::codec::base_16;
+    using aead = milo::crypto::aead::chacha_20_poly_1305;
     
-    auto key = milo::crypto::codec::decode<codec_type>("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"sv);
-    auto iv  = milo::crypto::codec::decode<codec_type>("000102030405060708090a0b"sv);
+    auto key = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"_base_16;
+    auto iv  = "000102030405060708090a0b"_base_16;
     
-    auto [ciphertext, mac] = milo::crypto::aead::encrypt<aead_type, std::string>(key, iv, "aad"sv, "message"sv);
-    auto plaintext         = milo::crypto::aead::decrypt<aead_type, std::string>(key, iv, "aad"sv, ciphertext, mac);
+    auto [ciphertext, mac] = milo::crypto::aead::encrypt<aead, std::string>(key, iv, "aad"_cv, "message"_cv);
+    auto plaintext         = milo::crypto::aead::decrypt<aead, std::string>(key, iv, "aad"_cv, ciphertext, mac);
 }
 catch (const milo::error& error)
 {
-
+    
 }
 ```
 
