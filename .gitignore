@@ -8,7 +8,7 @@ cmake-build-*/
 .vs/
 
 # Generated headers
-include/milo/detail/config.h
+include/milo/inner/config.h
 
 # Python
 apps/codegen/build/
