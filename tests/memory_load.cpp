@@ -1,9 +1,6 @@
 
 
-#include <milo/meta.h>
-#include <milo/container.h>
-
-#include <milo/inner/memory.h>
+#include <milo/inner.h>
 
 
 template<
@@ -55,16 +52,16 @@ test_case(
             datas.data(),
             i
         );
-    
+        
         c += 1;
-    
+        
         loads[c] = milo::inner::memory_load_be<load_type>(
             datas.data(),
             i
         );
-    
+        
         c += 1;
-    
+        
         for (size_t j = 0; j < load_size + 1; j += 1)
         {
             loads[c] = milo::inner::memory_load_le<load_type>(
@@ -72,9 +69,9 @@ test_case(
                 i,
                 j
             );
-        
+            
             c += 1;
-        
+            
             loads[c] = milo::inner::memory_load_be<load_type>(
                 datas.data(),
                 i,
@@ -117,17 +114,17 @@ test(
         test_do<uint8_t, uint16_t>();
         test_do<uint8_t, uint32_t>();
         test_do<uint8_t, uint64_t>();
-    
+        
         test_do<uint16_t, uint8_t>();
         test_do<uint16_t, uint16_t>();
         test_do<uint16_t, uint32_t>();
         test_do<uint16_t, uint64_t>();
-    
+        
         test_do<uint32_t, uint8_t>();
         test_do<uint32_t, uint16_t>();
         test_do<uint32_t, uint32_t>();
         test_do<uint32_t, uint64_t>();
-    
+        
         test_do<uint64_t, uint8_t>();
         test_do<uint64_t, uint16_t>();
         test_do<uint64_t, uint32_t>();

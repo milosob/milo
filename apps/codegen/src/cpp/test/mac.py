@@ -32,7 +32,7 @@ def gen(
             src.cpp.lang.gen_include(
                 [
                     '<milo/inner.h>',
-                    '<milo/literals.h>'
+                    '<milo/literal.h>'
                 ]
             ),
             '',
@@ -46,7 +46,7 @@ def gen(
             ),
             '',
             '',
-            'using namespace milo::literals;',
+            'using namespace milo::literal;',
             '',
             src.cpp.lang.gen_struct(
                 'test_vector',

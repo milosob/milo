@@ -9,7 +9,7 @@
 #include <milo/crypto/codec/base.h>
 
 
-namespace milo::literals
+namespace milo::literal
 {
     auto
     operator "" _b(

@@ -1,9 +1,6 @@
 
 
-#include <milo/meta.h>
-#include <milo/container.h>
-
-#include <milo/inner/memory.h>
+#include <milo/inner.h>
 
 
 template<
@@ -39,24 +36,24 @@ test_case(
             {
                 stor <<= 8;
             }
-    
+            
             stor |= stor_type(c & 0xff);
-    
+            
             c += 1;
         }
-    
+        
         milo::inner::memory_stor_le<stor_type>(
             datas[0].data(),
             i,
             stor
         );
-    
+        
         milo::inner::memory_stor_be<stor_type>(
             datas[1].data(),
             i,
             stor
         );
-    
+        
         for (size_t j = 0; j < stor_size + 1; j += 1)
         {
             milo::inner::memory_stor_le<stor_type>(
@@ -65,7 +62,7 @@ test_case(
                 stor,
                 j
             );
-        
+            
             milo::inner::memory_stor_be<stor_type>(
                 datas[2 + j * 2 + 1].data(),
                 i,

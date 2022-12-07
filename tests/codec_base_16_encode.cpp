@@ -3,13 +3,13 @@
 #include <iostream>
 
 #include <milo/inner.h>
-#include <milo/literals.h>
+#include <milo/literal.h>
 
 #include <milo/crypto/codec/base.h>
 #include <milo/crypto/codec/test.h>
 
 
-using namespace milo::literals;
+using namespace milo::literal;
 
 struct test_vector
 {

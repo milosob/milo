@@ -3,14 +3,14 @@
 #include <iostream>
 
 #include <milo/inner.h>
-#include <milo/literals.h>
+#include <milo/literal.h>
 
 #include <milo/crypto/hash/sha.h>
 #include <milo/crypto/mac/hmac.h>
 #include <milo/crypto/mac/test.h>
 
 
-using namespace milo::literals;
+using namespace milo::literal;
 
 struct test_vector
 {
