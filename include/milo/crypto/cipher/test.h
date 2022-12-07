@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/cipher/apie.h>
 
@@ -19,7 +17,7 @@ namespace milo::crypto::cipher
      * Impl type.
      */
     template<
-        concepts::cipher t_impl
+        meta::crypto::cipher t_impl
     >
     class test
     {
@@ -52,10 +50,10 @@ namespace milo::crypto::cipher
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv,
-            concepts::bytes t_plaintext,
-            concepts::bytes t_ciphertext
+            meta::bytes t_key,
+            meta::bytes t_iv,
+            meta::bytes t_plaintext,
+            meta::bytes t_ciphertext
         >
         static
         constexpr auto
@@ -113,10 +111,10 @@ namespace milo::crypto::cipher
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv,
-            concepts::bytes t_ciphertext,
-            concepts::bytes t_plaintext
+            meta::bytes t_key,
+            meta::bytes t_iv,
+            meta::bytes t_ciphertext,
+            meta::bytes t_plaintext
         >
         static
         constexpr auto

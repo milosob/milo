@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
-#include <milo/error.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::codec
@@ -18,7 +15,7 @@ namespace milo::crypto::codec
      * Impl type.
      */
     template<
-        concepts::codec t_impl
+        meta::crypto::codec t_impl
     >
     class apie
     {
@@ -53,8 +50,8 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::byte t_from,
-            concepts::byte t_to
+            meta::byte t_from,
+            meta::byte t_to
         >
         static
         constexpr auto
@@ -86,17 +83,17 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::bytes t_from,
-            concepts::bytes t_to
+            meta::bytes t_from,
+            meta::bytes t_to
         >
         static
         constexpr auto
         encode(
             const t_from& a_from,
             t_to& a_to
-        ) noexcept(concepts::container_static<t_to>) -> size_t
+        ) noexcept(meta::container_static<t_to>) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_to,
                 encode_size(a_from)
             );
@@ -107,7 +104,7 @@ namespace milo::crypto::codec
                 a_to.data()
             );
             
-            container::resize(
+            inner::resize(
                 a_to,
                 size
             );
@@ -128,8 +125,8 @@ namespace milo::crypto::codec
          * To.
          */
         template<
-            concepts::bytes t_to,
-            concepts::bytes t_from
+            meta::bytes t_to,
+            meta::bytes t_from
         >
         static
         constexpr auto
@@ -139,7 +136,7 @@ namespace milo::crypto::codec
         requires
         requires
         {
-            requires concepts::container_dynamic<t_to>;
+            requires meta::container_dynamic<t_to>;
         }
         {
             t_to result;
@@ -165,7 +162,7 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::byte t_from
+            meta::byte t_from
         >
         static
         constexpr auto
@@ -191,7 +188,7 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::bytes t_from
+            meta::bytes t_from
         >
         static
         constexpr auto
@@ -224,8 +221,8 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::byte t_from,
-            concepts::byte t_to
+            meta::byte t_from,
+            meta::byte t_to
         >
         static
         constexpr auto
@@ -261,8 +258,8 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::byte t_from,
-            concepts::byte t_to
+            meta::byte t_from,
+            meta::byte t_to
         >
         static
         constexpr auto
@@ -307,8 +304,8 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::bytes t_from,
-            concepts::bytes t_to
+            meta::bytes t_from,
+            meta::bytes t_to
         >
         static
         constexpr auto
@@ -316,9 +313,9 @@ namespace milo::crypto::codec
             const t_from& a_from,
             t_to& a_to,
             error& a_error
-        ) noexcept(concepts::container_static<t_to>) -> size_t
+        ) noexcept(meta::container_static<t_to>) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_to,
                 decode_size(a_from)
             );
@@ -330,7 +327,7 @@ namespace milo::crypto::codec
                 a_error
             );
             
-            container::resize(
+            inner::resize(
                 a_to,
                 size
             );
@@ -353,8 +350,8 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::bytes t_from,
-            concepts::bytes t_to
+            meta::bytes t_from,
+            meta::bytes t_to
         >
         static
         constexpr auto
@@ -363,7 +360,7 @@ namespace milo::crypto::codec
             t_to& a_to
         ) noexcept(false) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_to,
                 decode_size(a_from)
             );
@@ -374,7 +371,7 @@ namespace milo::crypto::codec
                 a_to.data()
             );
             
-            container::resize(
+            inner::resize(
                 a_to,
                 size
             );
@@ -395,8 +392,8 @@ namespace milo::crypto::codec
          * To.
          */
         template<
-            concepts::bytes t_to,
-            concepts::bytes t_from
+            meta::bytes t_to,
+            meta::bytes t_from
         >
         static
         constexpr auto
@@ -406,7 +403,7 @@ namespace milo::crypto::codec
         requires
         requires
         {
-            requires concepts::container_dynamic<t_to>;
+            requires meta::container_dynamic<t_to>;
         }
         {
             t_to result;
@@ -432,7 +429,7 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::byte t_from
+            meta::byte t_from
         >
         static
         constexpr auto
@@ -458,7 +455,7 @@ namespace milo::crypto::codec
          * To size.
          */
         template<
-            concepts::bytes t_from
+            meta::bytes t_from
         >
         static
         constexpr auto
@@ -492,9 +489,9 @@ namespace milo::crypto::codec
      * To size.
      */
     template<
-        concepts::codec t_impl,
-        concepts::byte t_from,
-        concepts::byte t_to
+        meta::crypto::codec t_impl,
+        meta::byte t_from,
+        meta::byte t_to
     >
     constexpr auto
     encode(
@@ -527,16 +524,16 @@ namespace milo::crypto::codec
      * To size.
      */
     template<
-        concepts::codec t_impl,
-        concepts::bytes t_from,
-        concepts::bytes t_to
+        meta::crypto::codec t_impl,
+        meta::bytes t_from,
+        meta::bytes t_to
     >
     static
     constexpr auto
     encode(
         const t_from& a_from,
         t_to& a_to
-    ) noexcept(concepts::container_static<t_to>) -> size_t
+    ) noexcept(meta::container_static<t_to>) -> size_t
     {
         return apie<t_impl>::template encode<t_from, t_to>(
             a_from,
@@ -559,9 +556,9 @@ namespace milo::crypto::codec
      * To.
      */
     template<
-        concepts::codec t_impl,
-        concepts::bytes t_to = container::bytes_dynamic,
-        concepts::bytes t_from
+        meta::crypto::codec t_impl,
+        meta::bytes t_to = container::bytes_dynamic,
+        meta::bytes t_from
     >
     static
     constexpr auto
@@ -595,9 +592,9 @@ namespace milo::crypto::codec
      * To size.
      */
     template<
-        concepts::codec t_impl,
-        concepts::byte t_from,
-        concepts::byte t_to
+        meta::crypto::codec t_impl,
+        meta::byte t_from,
+        meta::byte t_to
     >
     constexpr auto
     decode(
@@ -634,9 +631,9 @@ namespace milo::crypto::codec
      * To size.
      */
     template<
-        concepts::codec t_impl,
-        concepts::byte t_from,
-        concepts::byte t_to
+        meta::crypto::codec t_impl,
+        meta::byte t_from,
+        meta::byte t_to
     >
     constexpr auto
     decode(
@@ -671,9 +668,9 @@ namespace milo::crypto::codec
      * To size.
      */
     template<
-        concepts::codec t_impl,
-        concepts::bytes t_from,
-        concepts::bytes t_to
+        meta::crypto::codec t_impl,
+        meta::bytes t_from,
+        meta::bytes t_to
     >
     static
     constexpr auto
@@ -681,7 +678,7 @@ namespace milo::crypto::codec
         const t_from& a_from,
         t_to& a_to,
         error& a_error
-    ) noexcept(concepts::container_static<t_to>) -> size_t
+    ) noexcept(meta::container_static<t_to>) -> size_t
     {
         return apie<t_impl>::template decode<t_from, t_to>(
             a_from,
@@ -707,9 +704,9 @@ namespace milo::crypto::codec
      * To size.
      */
     template<
-        concepts::codec t_impl,
-        concepts::bytes t_from,
-        concepts::bytes t_to
+        meta::crypto::codec t_impl,
+        meta::bytes t_from,
+        meta::bytes t_to
     >
     static
     constexpr auto
@@ -739,9 +736,9 @@ namespace milo::crypto::codec
      * To.
      */
     template<
-        concepts::codec t_impl,
-        concepts::bytes t_to = container::bytes_dynamic,
-        concepts::bytes t_from
+        meta::crypto::codec t_impl,
+        meta::bytes t_to = container::bytes_dynamic,
+        meta::bytes t_from
     >
     static
     constexpr auto

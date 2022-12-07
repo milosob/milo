@@ -3,19 +3,19 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
+#include <milo/meta.h>
 
-#include <milo/inner/forward.h>
+#include <milo/inner/base.h>
 #include <milo/inner/memory.h>
+#include <milo/inner/utility.h>
 
 
 namespace milo::inner
 {
     template<
         typename t_impl,
-        concepts::byte t_buf,
-        concepts::byte t_src,
+        meta::byte t_buf,
+        meta::byte t_src,
         typename... t_args
     >
     constexpr auto
@@ -34,12 +34,12 @@ namespace milo::inner
         if (a_buf_size > 0)
         {
             auto left_size = block_size - a_buf_size;
-            auto todo_size = common::min(
+            auto todo_size = min(
                 left_size,
                 a_src_size
             );
             
-            inner::memory_copy(
+            memory_copy(
                 a_buf_ptr + a_buf_size,
                 a_src_ptr,
                 todo_size
@@ -55,7 +55,7 @@ namespace milo::inner
             >(
                 a_buf_ptr,
                 1,
-                inner::forward<
+                forward<
                     t_args
                 >(
                     a_args
@@ -76,7 +76,7 @@ namespace milo::inner
             >(
                 a_src_ptr,
                 full_size,
-                inner::forward<
+                forward<
                     t_args
                 >(
                     a_args
@@ -88,7 +88,7 @@ namespace milo::inner
         {
             a_src_ptr += full_size * block_size;
             
-            inner::memory_copy(
+            memory_copy(
                 a_buf_ptr,
                 a_src_ptr,
                 last_size
@@ -100,9 +100,9 @@ namespace milo::inner
     
     template<
         typename t_impl,
-        concepts::byte t_buf,
-        concepts::byte t_dst,
-        concepts::byte t_src,
+        meta::byte t_buf,
+        meta::byte t_dst,
+        meta::byte t_src,
         typename... t_args
     >
     constexpr auto
@@ -122,12 +122,12 @@ namespace milo::inner
         if (a_buf_size > 0)
         {
             auto left_size = block_size - a_buf_size;
-            auto todo_size = common::min(
+            auto todo_size = min(
                 left_size,
                 a_src_size
             );
             
-            inner::memory_xor(
+            memory_xor(
                 a_dst_ptr,
                 a_src_ptr,
                 a_buf_ptr + a_buf_size,
@@ -155,14 +155,14 @@ namespace milo::inner
                 0
             >(
                 block,
-                inner::forward<
+                forward<
                     t_args
                 >(
                     a_args
                 )...
             );
             
-            inner::memory_xor(
+            memory_xor(
                 a_dst_ptr,
                 a_src_ptr,
                 block,
@@ -179,14 +179,14 @@ namespace milo::inner
                 0
             >(
                 a_buf_ptr,
-                inner::forward<
+                forward<
                     t_args
                 >(
                     a_args
                 )...
             );
             
-            inner::memory_xor(
+            memory_xor(
                 a_dst_ptr,
                 a_src_ptr,
                 a_buf_ptr,

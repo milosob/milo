@@ -3,16 +3,13 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-
-#include <milo/inner/memory.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::detail
 {
     template<
-        concepts::mac_hmac t_hmac,
+        meta::crypto::mac_hmac t_hmac,
         typename... t_options
     >
     class kdf_hkdf
@@ -73,8 +70,8 @@ namespace milo::crypto::detail
     private:
         
         template<
-            concepts::byte t_key,
-            concepts::byte t_previous
+            meta::byte t_key,
+            meta::byte t_previous
         >
         constexpr auto
         expand(
@@ -109,9 +106,9 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_ikm,
-            concepts::byte t_salt,
-            concepts::byte t_info
+            meta::byte t_ikm,
+            meta::byte t_salt,
+            meta::byte t_info
         >
         constexpr auto
         initialize(
@@ -146,7 +143,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_key
+            meta::byte t_key
         >
         constexpr auto
         derive(
@@ -159,7 +156,7 @@ namespace milo::crypto::detail
             
             if (m_buffer_size > 0)
             {
-                auto copy_size = common::min(
+                auto copy_size = inner::min(
                     key_size,
                     m_buffer_size
                 );

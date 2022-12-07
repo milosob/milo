@@ -3,8 +3,9 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/traits.h>
+#include <milo/meta.h>
+
+#include <milo/inner/base.h>
 
 
 namespace milo::inner
@@ -45,8 +46,7 @@ namespace milo::inner
         typename t_option
     >
     struct option_oftype_is
-        : traits::boolean<
-            t_option,
+        : meta::asbool<
             (
                 requires
                 {
@@ -54,7 +54,8 @@ namespace milo::inner
                     typename t_option::properties::option_oftype;
                     typename t_option::type;
                 }
-            )
+            ),
+            t_option
         >
     {
     };
@@ -68,8 +69,7 @@ namespace milo::inner
         typename t_option
     >
     struct option_ofvalue_is
-        : traits::boolean<
-            t_option,
+        : meta::asbool<
             (
                 requires
                 {
@@ -77,7 +77,8 @@ namespace milo::inner
                     typename t_option::properties::option_ofvalue;
                     t_option::value;
                 }
-            )
+            ),
+            t_option
         >
     {
     };
@@ -95,7 +96,7 @@ namespace milo::inner
     {
     private:
         
-        using expression_type = traits::disjunction<
+        using expression_type = meta::disjunction<
             t_solver<t_options>...
         >;
         
@@ -137,24 +138,24 @@ namespace milo::inner
         template<
             typename t_option
         >
-        using solver = traits::boolean<
-            t_option,
+        using solver = meta::asbool<
             (
                 requires
                 {
                     requires option_ofvalue_is_v<t_option>;
-                    requires traits::is_same_v<
-                        traits::del_constant_t<
+                    requires meta::same<
+                        meta::del_constant<
                             decltype(t_option::value)
                         >,
                         t_type
                     >;
-                    requires traits::is_same_v<
+                    requires meta::same<
                         t_option,
                         option<t_option::value>
                     >;
                 }
-            )
+            ),
+            t_option
         >;
         
         template<
@@ -223,18 +224,18 @@ namespace milo::inner
         template<
             typename t_option
         >
-        using solver = traits::boolean<
-            t_option,
+        using solver = meta::asbool<
             (
                 requires
                 {
                     requires option_oftype_is_v<t_option>;
-                    requires traits::is_same_v<
+                    requires meta::same<
                         t_option,
                         option<typename t_option::type>
                     >;
                 }
-            )
+            ),
+            t_option
         >;
         
         template<

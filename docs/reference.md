@@ -104,8 +104,8 @@ The kinds of parameters that the library accepts as inputs or outputs are:
 
 When talking about inputs and outputs, the two most used concepts throughout the library have to be introduced:
 
-- `milo::crypto::concepts::byte` - signed or unsigned char.
-- `milo::crypto::concepts::bytes` - objective memory with `data() -> milo::crypto::concepts::byte*` and `size() -> size_t` methods.
+- `milo::meta::byte` - signed or unsigned char.
+- `milo::meta::bytes` - objective memory with `data() -> milo::meta::byte*` and `size() -> size_t` methods.
 
 There are no direct overloads for char pointers, unsigned char pointers, strings, vectors of byte, etc.
 It would be hard to maintain and would introduce a lot of redundant code, instead concepts are used.

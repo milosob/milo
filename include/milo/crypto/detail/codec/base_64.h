@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/error.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::detail
@@ -75,8 +73,8 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_from,
-            concepts::byte t_to
+            meta::byte t_from,
+            meta::byte t_to
         >
         static
         constexpr auto
@@ -136,7 +134,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_from
+            meta::byte t_from
         >
         static
         constexpr auto
@@ -150,8 +148,8 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_from,
-            concepts::byte t_to
+            meta::byte t_from,
+            meta::byte t_to
         >
         static
         constexpr auto
@@ -251,7 +249,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_from
+            meta::byte t_from
         >
         static
         constexpr auto

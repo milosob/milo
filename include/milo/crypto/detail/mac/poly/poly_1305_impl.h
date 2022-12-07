@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/traits.h>
-
-#include <milo/inner/forward.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::detail
@@ -69,8 +66,8 @@ namespace milo::crypto::detail
             return a_impl(
                 inner::forward<
                     t_args,
-                    traits::type_map_char_ptr_to_unsigned_char_ptr,
-                    traits::type_map_const_char_ptr_to_const_unsigned_char_ptr
+                    meta::type_map_char_ptr_to_unsigned_char_ptr,
+                    meta::type_map_const_char_ptr_to_const_unsigned_char_ptr
                 >(
                     a_args
                 )...

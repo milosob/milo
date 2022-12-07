@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
-#include <milo/error.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::kdf
@@ -18,7 +15,7 @@ namespace milo::crypto::kdf
      * Impl type.
      */
     template<
-        concepts::kdf t_impl
+        meta::crypto::kdf t_impl
     >
     class apie
     {
@@ -73,9 +70,9 @@ namespace milo::crypto::kdf
          * Info size.
          */
         template<
-            concepts::byte t_ikm,
-            concepts::byte t_salt,
-            concepts::byte t_info
+            meta::byte t_ikm,
+            meta::byte t_salt,
+            meta::byte t_info
         >
         constexpr
         apie(
@@ -89,7 +86,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_hkdf<impl_type>;
+            requires meta::crypto::kdf_hkdf<impl_type>;
         }
         {
             initialize(
@@ -121,9 +118,9 @@ namespace milo::crypto::kdf
          * as long as methods of this class are invoked.
          */
         template<
-            concepts::bytes t_ikm,
-            concepts::bytes t_salt,
-            concepts::bytes t_info
+            meta::bytes t_ikm,
+            meta::bytes t_salt,
+            meta::bytes t_info
         >
         constexpr
         apie(
@@ -134,7 +131,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_hkdf<impl_type>;
+            requires meta::crypto::kdf_hkdf<impl_type>;
         }
         {
             initialize(
@@ -165,8 +162,8 @@ namespace milo::crypto::kdf
          * Iterations.
          */
         template<
-            concepts::byte t_ikm,
-            concepts::byte t_salt
+            meta::byte t_ikm,
+            meta::byte t_salt
         >
         constexpr
         apie(
@@ -179,7 +176,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_pbkdf_2<impl_type>;
+            requires meta::crypto::kdf_pbkdf_2<impl_type>;
         }
         {
             initialize(
@@ -210,8 +207,8 @@ namespace milo::crypto::kdf
          * Iterations.
          */
         template<
-            concepts::bytes t_ikm,
-            concepts::bytes t_salt
+            meta::bytes t_ikm,
+            meta::bytes t_salt
         >
         constexpr
         apie(
@@ -222,7 +219,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_pbkdf_2<impl_type>;
+            requires meta::crypto::kdf_pbkdf_2<impl_type>;
         }
         {
             initialize(
@@ -258,9 +255,9 @@ namespace milo::crypto::kdf
          * Info size.
          */
         template<
-            concepts::byte t_ikm,
-            concepts::byte t_salt,
-            concepts::byte t_info
+            meta::byte t_ikm,
+            meta::byte t_salt,
+            meta::byte t_info
         >
         constexpr auto
         initialize(
@@ -274,7 +271,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_hkdf<impl_type>;
+            requires meta::crypto::kdf_hkdf<impl_type>;
         }
         {
             m_impl.initialize(
@@ -306,9 +303,9 @@ namespace milo::crypto::kdf
          * as long as methods of this class are invoked.
          */
         template<
-            concepts::bytes t_ikm,
-            concepts::bytes t_salt,
-            concepts::bytes t_info
+            meta::bytes t_ikm,
+            meta::bytes t_salt,
+            meta::bytes t_info
         >
         constexpr auto
         initialize(
@@ -319,7 +316,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_hkdf<impl_type>;
+            requires meta::crypto::kdf_hkdf<impl_type>;
         }
         {
             initialize(
@@ -353,8 +350,8 @@ namespace milo::crypto::kdf
          * Iterations.
          */
         template<
-            concepts::byte t_ikm,
-            concepts::byte t_salt
+            meta::byte t_ikm,
+            meta::byte t_salt
         >
         constexpr auto
         initialize(
@@ -367,7 +364,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_pbkdf_2<impl_type>;
+            requires meta::crypto::kdf_pbkdf_2<impl_type>;
         }
         {
             m_impl.initialize(
@@ -398,8 +395,8 @@ namespace milo::crypto::kdf
          * Iterations.
          */
         template<
-            concepts::bytes t_ikm,
-            concepts::bytes t_salt
+            meta::bytes t_ikm,
+            meta::bytes t_salt
         >
         constexpr auto
         initialize(
@@ -410,7 +407,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_pbkdf_2<impl_type>;
+            requires meta::crypto::kdf_pbkdf_2<impl_type>;
         }
         {
             initialize(
@@ -435,7 +432,7 @@ namespace milo::crypto::kdf
          * Key size.
          */
         template<
-            concepts::byte t_key
+            meta::byte t_key
         >
         constexpr auto
         derive(
@@ -462,15 +459,15 @@ namespace milo::crypto::kdf
          * Key size.
          */
         template<
-            concepts::bytes t_key
+            meta::bytes t_key
         >
         constexpr auto
         derive(
             t_key& a_key,
             size_t a_key_size
-        ) noexcept(concepts::container_static<t_key>) -> size_t
+        ) noexcept(meta::container_static<t_key>) -> size_t
         {
-            a_key_size = container::resize(
+            a_key_size = inner::resize(
                 a_key,
                 a_key_size
             );
@@ -492,7 +489,7 @@ namespace milo::crypto::kdf
          * Key.
          */
         template<
-            concepts::bytes t_key = container::bytes_dynamic
+            meta::bytes t_key = container::bytes_dynamic
         >
         constexpr auto
         derive(
@@ -501,7 +498,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::container_dynamic<t_key>;
+            requires meta::container_dynamic<t_key>;
         }
         {
             t_key result;
@@ -523,7 +520,7 @@ namespace milo::crypto::kdf
          * Key.
          */
         template<
-            concepts::bytes t_key
+            meta::bytes t_key
         >
         constexpr auto
         derive(
@@ -531,7 +528,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::container_static<t_key>;
+            requires meta::container_static<t_key>;
         }
         {
             t_key result;
@@ -578,11 +575,11 @@ namespace milo::crypto::kdf
      * Key size.
      */
     template<
-        concepts::kdf_hkdf t_impl,
-        concepts::byte t_ikm,
-        concepts::byte t_salt,
-        concepts::byte t_info,
-        concepts::byte t_key
+        meta::crypto::kdf_hkdf t_impl,
+        meta::byte t_ikm,
+        meta::byte t_salt,
+        meta::byte t_info,
+        meta::byte t_key
     >
     constexpr auto
     derive(
@@ -638,11 +635,11 @@ namespace milo::crypto::kdf
      * Key size.
      */
     template<
-        concepts::kdf_hkdf t_impl,
-        concepts::bytes t_ikm,
-        concepts::bytes t_salt,
-        concepts::bytes t_info,
-        concepts::bytes t_key
+        meta::crypto::kdf_hkdf t_impl,
+        meta::bytes t_ikm,
+        meta::bytes t_salt,
+        meta::bytes t_info,
+        meta::bytes t_key
     >
     constexpr auto
     derive(
@@ -651,7 +648,7 @@ namespace milo::crypto::kdf
         const t_info& a_info,
         t_key& a_key,
         size_t a_key_size
-    ) noexcept(concepts::container_static<t_key>) -> size_t
+    ) noexcept(meta::container_static<t_key>) -> size_t
     {
         apie<t_impl> apie(
             a_ikm,
@@ -690,11 +687,11 @@ namespace milo::crypto::kdf
      * Key.
      */
     template<
-        concepts::kdf_hkdf t_impl,
-        concepts::bytes t_key = container::bytes_dynamic,
-        concepts::bytes t_ikm,
-        concepts::bytes t_salt,
-        concepts::bytes t_info
+        meta::crypto::kdf_hkdf t_impl,
+        meta::bytes t_key = container::bytes_dynamic,
+        meta::bytes t_ikm,
+        meta::bytes t_salt,
+        meta::bytes t_info
     >
     constexpr auto
     derive(
@@ -738,11 +735,11 @@ namespace milo::crypto::kdf
      * Key.
      */
     template<
-        concepts::kdf_hkdf t_impl,
-        concepts::bytes t_key,
-        concepts::bytes t_ikm,
-        concepts::bytes t_salt,
-        concepts::bytes t_info
+        meta::crypto::kdf_hkdf t_impl,
+        meta::bytes t_key,
+        meta::bytes t_ikm,
+        meta::bytes t_salt,
+        meta::bytes t_info
     >
     constexpr auto
     derive(
@@ -789,10 +786,10 @@ namespace milo::crypto::kdf
      * Key size.
      */
     template<
-        concepts::kdf_pbkdf_2 t_impl,
-        concepts::byte t_ikm,
-        concepts::byte t_salt,
-        concepts::byte t_key
+        meta::crypto::kdf_pbkdf_2 t_impl,
+        meta::byte t_ikm,
+        meta::byte t_salt,
+        meta::byte t_key
     >
     constexpr auto
     derive(
@@ -844,10 +841,10 @@ namespace milo::crypto::kdf
      * Key size.
      */
     template<
-        concepts::kdf_pbkdf_2 t_impl,
-        concepts::bytes t_ikm,
-        concepts::bytes t_salt,
-        concepts::bytes t_key
+        meta::crypto::kdf_pbkdf_2 t_impl,
+        meta::bytes t_ikm,
+        meta::bytes t_salt,
+        meta::bytes t_key
     >
     constexpr auto
     derive(
@@ -856,7 +853,7 @@ namespace milo::crypto::kdf
         uint32_t a_iterations,
         t_key& a_key,
         size_t a_key_size
-    ) noexcept(concepts::container_static<t_key>) -> size_t
+    ) noexcept(meta::container_static<t_key>) -> size_t
     {
         apie<t_impl> apie(
             a_ikm,
@@ -893,10 +890,10 @@ namespace milo::crypto::kdf
      * Key.
      */
     template<
-        concepts::kdf_pbkdf_2 t_impl,
-        concepts::bytes t_key = container::bytes_dynamic,
-        concepts::bytes t_ikm,
-        concepts::bytes t_salt
+        meta::crypto::kdf_pbkdf_2 t_impl,
+        meta::bytes t_key = container::bytes_dynamic,
+        meta::bytes t_ikm,
+        meta::bytes t_salt
     >
     constexpr auto
     derive(
@@ -938,10 +935,10 @@ namespace milo::crypto::kdf
      * Key.
      */
     template<
-        concepts::kdf_pbkdf_2 t_impl,
-        concepts::bytes t_key,
-        concepts::bytes t_ikm,
-        concepts::bytes t_salt
+        meta::crypto::kdf_pbkdf_2 t_impl,
+        meta::bytes t_key,
+        meta::bytes t_ikm,
+        meta::bytes t_salt
     >
     constexpr auto
     derive(

@@ -5,10 +5,9 @@
 
 #include <bit>
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/traits.h>
+#include <milo/meta.h>
 
+#include <milo/inner/base.h>
 #include <milo/inner/compiler.h>
 
 
@@ -19,26 +18,26 @@ namespace milo::inner
     constexpr bool endian_little = std::endian::little == std::endian::native;
     
     template<
-        concepts::integral_u t_int
+        meta::integral_u t_int
     >
     constexpr auto
     endian_swap_sw(
         t_int a_int
     ) noexcept(true) -> t_int
     {
-        if constexpr (concepts::same<t_int, uint8_t>)
+        if constexpr (meta::same<t_int, uint8_t>)
         {
             return a_int;
         }
         
-        if constexpr (concepts::same<t_int, uint16_t>)
+        if constexpr (meta::same<t_int, uint16_t>)
         {
             return
                 a_int << 8 |
                 a_int >> 8;
         }
         
-        if constexpr (concepts::same<t_int, uint32_t>)
+        if constexpr (meta::same<t_int, uint32_t>)
         {
             return
                 a_int >> 24 |
@@ -47,7 +46,7 @@ namespace milo::inner
                 (a_int & 0x0000ff00) << 8;
         }
         
-        if constexpr (concepts::same<t_int, uint64_t>)
+        if constexpr (meta::same<t_int, uint64_t>)
         {
             return
                 a_int >> 56 |
@@ -64,19 +63,19 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral_u t_int
+        meta::integral_u t_int
     >
     constexpr auto
     endian_swap_bi(
         t_int a_int
     ) noexcept(true) -> t_int
     {
-        if constexpr (concepts::same<t_int, uint8_t>)
+        if constexpr (meta::same<t_int, uint8_t>)
         {
             return a_int;
         }
         
-        if constexpr (concepts::same<t_int, uint16_t>)
+        if constexpr (meta::same<t_int, uint16_t>)
         {
             if constexpr (compiler_msvc)
             {
@@ -88,7 +87,7 @@ namespace milo::inner
             }
         }
         
-        if constexpr (concepts::same<t_int, uint32_t>)
+        if constexpr (meta::same<t_int, uint32_t>)
         {
             if constexpr (compiler_msvc)
             {
@@ -100,7 +99,7 @@ namespace milo::inner
             }
         }
         
-        if constexpr (concepts::same<t_int, uint64_t>)
+        if constexpr (meta::same<t_int, uint64_t>)
         {
             if constexpr (compiler_msvc)
             {
@@ -116,7 +115,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral_u t_int
+        meta::integral_u t_int
     >
     constexpr auto
     endian_swap(
@@ -141,7 +140,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral_s t_int
+        meta::integral_s t_int
     >
     constexpr auto
     endian_swap(
@@ -149,13 +148,13 @@ namespace milo::inner
     ) noexcept(true) -> t_int
     {
         using to_type = t_int;
-        using as_type = traits::to_integral_unsigned_t<t_int>;
+        using as_type = meta::to_integral_unsigned<t_int>;
         
         return to_type(endian_swap(as_type(a_int)));
     }
     
     template<
-        concepts::integral t_int
+        meta::integral t_int
     >
     constexpr auto
     endian_bigof(
@@ -171,7 +170,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_int
+        meta::integral t_int
     >
     constexpr auto
     endian_littleof(

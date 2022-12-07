@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner/option.h>
+#include <milo/inner.h>
 
 
 namespace milo::option

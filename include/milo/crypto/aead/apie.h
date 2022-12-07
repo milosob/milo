@@ -3,12 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
-#include <milo/error.h>
-
-#include <milo/inner/move.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::aead
@@ -20,7 +15,7 @@ namespace milo::crypto::aead
      * Impl type.
      */
     template<
-        concepts::aead t_impl
+        meta::crypto::aead t_impl
     >
     class apie
     {
@@ -83,8 +78,8 @@ namespace milo::crypto::aead
          * Iv size.
          */
         template<
-            concepts::byte t_key,
-            concepts::byte t_iv
+            meta::byte t_key,
+            meta::byte t_iv
         >
         constexpr
         apie(
@@ -115,8 +110,8 @@ namespace milo::crypto::aead
          * Iv.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv
+            meta::bytes t_key,
+            meta::bytes t_iv
         >
         constexpr
         apie(
@@ -177,8 +172,8 @@ namespace milo::crypto::aead
          * Iv size.
          */
         template<
-            concepts::byte t_key,
-            concepts::byte t_iv
+            meta::byte t_key,
+            meta::byte t_iv
         >
         constexpr auto
         initialize(
@@ -212,8 +207,8 @@ namespace milo::crypto::aead
          * Iv.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv
+            meta::bytes t_key,
+            meta::bytes t_iv
         >
         constexpr auto
         initialize(
@@ -240,7 +235,7 @@ namespace milo::crypto::aead
          * Aad size.
          */
         template<
-            concepts::byte t_aad
+            meta::byte t_aad
         >
         constexpr auto
         aad(
@@ -263,7 +258,7 @@ namespace milo::crypto::aead
          * Aad.
          */
         template<
-            concepts::bytes t_aad
+            meta::bytes t_aad
         >
         constexpr auto
         aad(
@@ -293,8 +288,8 @@ namespace milo::crypto::aead
          * Ciphertext size.
          */
         template<
-            concepts::byte t_plaintext,
-            concepts::byte t_ciphertext
+            meta::byte t_plaintext,
+            meta::byte t_ciphertext
         >
         constexpr auto
         encrypt(
@@ -327,16 +322,16 @@ namespace milo::crypto::aead
          * Ciphertext size.
          */
         template<
-            concepts::bytes t_plaintext,
-            concepts::bytes t_ciphertext
+            meta::bytes t_plaintext,
+            meta::bytes t_ciphertext
         >
         constexpr auto
         encrypt(
             const t_plaintext& a_plaintext,
             t_ciphertext& a_ciphertext
-        ) noexcept(concepts::container_static<t_ciphertext>) -> size_t
+        ) noexcept(meta::container_static<t_ciphertext>) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_ciphertext,
                 encrypt_size(a_plaintext)
             );
@@ -347,7 +342,7 @@ namespace milo::crypto::aead
                 a_ciphertext.data()
             );
             
-            container::resize(
+            inner::resize(
                 a_ciphertext,
                 size
             );
@@ -368,8 +363,8 @@ namespace milo::crypto::aead
          * Ciphertext.
          */
         template<
-            concepts::bytes t_ciphertext = container::bytes_dynamic,
-            concepts::bytes t_plaintext
+            meta::bytes t_ciphertext = container::bytes_dynamic,
+            meta::bytes t_plaintext
         >
         constexpr auto
         encrypt(
@@ -378,7 +373,7 @@ namespace milo::crypto::aead
         requires
         requires
         {
-            requires concepts::container_dynamic<t_ciphertext>;
+            requires meta::container_dynamic<t_ciphertext>;
         }
         {
             t_ciphertext result;
@@ -404,7 +399,7 @@ namespace milo::crypto::aead
          * Ciphertext size.
          */
         template<
-            concepts::byte t_plaintext
+            meta::byte t_plaintext
         >
         constexpr auto
         encrypt_size(
@@ -429,7 +424,7 @@ namespace milo::crypto::aead
          * Ciphertext size.
          */
         template<
-            concepts::bytes t_plaintext
+            meta::bytes t_plaintext
         >
         constexpr auto
         encrypt_size(
@@ -459,8 +454,8 @@ namespace milo::crypto::aead
          * Plaintext size.
          */
         template<
-            concepts::byte t_ciphertext,
-            concepts::byte t_plaintext
+            meta::byte t_ciphertext,
+            meta::byte t_plaintext
         >
         constexpr auto
         decrypt(
@@ -493,16 +488,16 @@ namespace milo::crypto::aead
          * Plaintext size.
          */
         template<
-            concepts::bytes t_ciphertext,
-            concepts::bytes t_plaintext
+            meta::bytes t_ciphertext,
+            meta::bytes t_plaintext
         >
         constexpr auto
         decrypt(
             const t_ciphertext& a_ciphertext,
             t_plaintext& a_plaintext
-        ) noexcept(concepts::container_static<t_plaintext>) -> size_t
+        ) noexcept(meta::container_static<t_plaintext>) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_plaintext,
                 decrypt_size(a_ciphertext)
             );
@@ -513,7 +508,7 @@ namespace milo::crypto::aead
                 a_plaintext.data()
             );
             
-            container::resize(
+            inner::resize(
                 a_plaintext,
                 size
             );
@@ -534,8 +529,8 @@ namespace milo::crypto::aead
          * Plaintext.
          */
         template<
-            concepts::bytes t_plaintext = container::bytes_dynamic,
-            concepts::bytes t_ciphertext
+            meta::bytes t_plaintext = container::bytes_dynamic,
+            meta::bytes t_ciphertext
         >
         constexpr auto
         decrypt(
@@ -544,7 +539,7 @@ namespace milo::crypto::aead
         requires
         requires
         {
-            requires concepts::container_dynamic<t_plaintext>;
+            requires meta::container_dynamic<t_plaintext>;
         }
         {
             t_plaintext result;
@@ -570,7 +565,7 @@ namespace milo::crypto::aead
          * Plaintext size.
          */
         template<
-            concepts::byte t_ciphertext
+            meta::byte t_ciphertext
         >
         constexpr auto
         decrypt_size(
@@ -595,7 +590,7 @@ namespace milo::crypto::aead
          * Plaintext size.
          */
         template<
-            concepts::bytes t_ciphertext
+            meta::bytes t_ciphertext
         >
         constexpr auto
         decrypt_size(
@@ -621,7 +616,7 @@ namespace milo::crypto::aead
          * Digest size.
          */
         template<
-            concepts::byte t_digest
+            meta::byte t_digest
         >
         constexpr auto
         digest(
@@ -650,22 +645,22 @@ namespace milo::crypto::aead
          * Digest size.
          */
         template<
-            concepts::bytes t_digest
+            meta::bytes t_digest
         >
         constexpr auto
         digest(
             t_digest& a_digest,
             size_t a_digest_size = digest_size
-        ) noexcept(concepts::container_static<t_digest>) -> size_t
+        ) noexcept(meta::container_static<t_digest>) -> size_t
         {
             do_finalize();
             
-            a_digest_size = common::min(
+            a_digest_size = inner::min(
                 a_digest_size,
                 digest_size
             );
             
-            a_digest_size = container::resize(
+            a_digest_size = inner::resize(
                 a_digest,
                 a_digest_size
             );
@@ -687,7 +682,7 @@ namespace milo::crypto::aead
          * Digest.
          */
         template<
-            concepts::bytes t_digest = container::bytes_dynamic
+            meta::bytes t_digest = container::bytes_dynamic
         >
         constexpr auto
         digest(
@@ -696,7 +691,7 @@ namespace milo::crypto::aead
         requires
         requires
         {
-            requires concepts::container_dynamic<t_digest>;
+            requires meta::container_dynamic<t_digest>;
         }
         {
             t_digest result;
@@ -718,7 +713,7 @@ namespace milo::crypto::aead
          * Digest.
          */
         template<
-            concepts::bytes t_digest = container::bytes_static<digest_size>
+            meta::bytes t_digest = container::bytes_static<digest_size>
         >
         constexpr auto
         digest(
@@ -726,7 +721,7 @@ namespace milo::crypto::aead
         requires
         requires
         {
-            requires concepts::container_static<t_digest, 1, digest_size>;
+            requires meta::container_static<t_digest, 1, digest_size>;
         }
         {
             t_digest result;
@@ -752,7 +747,7 @@ namespace milo::crypto::aead
          * Error
          */
         template<
-            concepts::byte t_digest
+            meta::byte t_digest
         >
         constexpr auto
         verify(
@@ -784,7 +779,7 @@ namespace milo::crypto::aead
          * Digest size.
          */
         template<
-            concepts::byte t_digest
+            meta::byte t_digest
         >
         constexpr auto
         verify(
@@ -817,7 +812,7 @@ namespace milo::crypto::aead
          * Error
          */
         template<
-            concepts::bytes t_digest
+            meta::bytes t_digest
         >
         constexpr auto
         verify(
@@ -841,7 +836,7 @@ namespace milo::crypto::aead
          * Digest.
          */
         template<
-            concepts::bytes t_digest
+            meta::bytes t_digest
         >
         constexpr auto
         verify(
@@ -896,13 +891,13 @@ namespace milo::crypto::aead
      * [Ciphertext size, Digest size]
      */
     template<
-        concepts::aead t_impl,
-        concepts::byte t_key,
-        concepts::byte t_iv,
-        concepts::byte t_aad,
-        concepts::byte t_plaintext,
-        concepts::byte t_ciphertext,
-        concepts::byte t_digest
+        meta::crypto::aead t_impl,
+        meta::byte t_key,
+        meta::byte t_iv,
+        meta::byte t_aad,
+        meta::byte t_plaintext,
+        meta::byte t_ciphertext,
+        meta::byte t_digest
     >
     constexpr auto
     encrypt(
@@ -979,13 +974,13 @@ namespace milo::crypto::aead
      * [Ciphertext size, Digest size]
      */
     template<
-        concepts::aead t_impl,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_aad,
-        concepts::bytes t_plaintext,
-        concepts::bytes t_ciphertext,
-        concepts::bytes t_digest
+        meta::crypto::aead t_impl,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_aad,
+        meta::bytes t_plaintext,
+        meta::bytes t_ciphertext,
+        meta::bytes t_digest
     >
     constexpr auto
     encrypt(
@@ -997,8 +992,8 @@ namespace milo::crypto::aead
         t_digest& a_digest
     ) noexcept(
     (
-        concepts::container_static<t_ciphertext> &&
-        concepts::container_static<t_digest>
+        meta::container_static<t_ciphertext> &&
+        meta::container_static<t_digest>
     )
     ) -> container::tuple<size_t, size_t>
     {
@@ -1055,13 +1050,13 @@ namespace milo::crypto::aead
      * [Ciphertext, Digest]
      */
     template<
-        concepts::aead t_impl,
-        concepts::bytes t_ciphertext = container::bytes_dynamic,
-        concepts::bytes t_digest = container::bytes_static<t_impl::digest_size>,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_aad,
-        concepts::bytes t_plaintext
+        meta::crypto::aead t_impl,
+        meta::bytes t_ciphertext = container::bytes_dynamic,
+        meta::bytes t_digest = container::bytes_static<t_impl::digest_size>,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_aad,
+        meta::bytes t_plaintext
     >
     constexpr auto
     encrypt(
@@ -1139,13 +1134,13 @@ namespace milo::crypto::aead
      * Plaintext size
      */
     template<
-        concepts::aead t_impl,
-        concepts::byte t_key,
-        concepts::byte t_iv,
-        concepts::byte t_aad,
-        concepts::byte t_ciphertext,
-        concepts::byte t_digest,
-        concepts::byte t_plaintext,
+        meta::crypto::aead t_impl,
+        meta::byte t_key,
+        meta::byte t_iv,
+        meta::byte t_aad,
+        meta::byte t_ciphertext,
+        meta::byte t_digest,
+        meta::byte t_plaintext,
         typename... t_error
     >
     constexpr auto
@@ -1237,13 +1232,13 @@ namespace milo::crypto::aead
      * Plaintext size.
      */
     template<
-        concepts::aead t_impl,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_aad,
-        concepts::bytes t_ciphertext,
-        concepts::bytes t_digest,
-        concepts::bytes t_plaintext,
+        meta::crypto::aead t_impl,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_aad,
+        meta::bytes t_ciphertext,
+        meta::bytes t_digest,
+        meta::bytes t_plaintext,
         typename... t_error
     >
     constexpr auto
@@ -1258,7 +1253,7 @@ namespace milo::crypto::aead
     ) noexcept(
     (
         sizeof...(t_error) == 0 &&
-        concepts::container_static<t_plaintext>
+        meta::container_static<t_plaintext>
     )
     ) -> size_t
     requires
@@ -1324,13 +1319,13 @@ namespace milo::crypto::aead
      * Plaintext.
      */
     template<
-        concepts::aead t_impl,
-        concepts::bytes t_plaintext = container::bytes_dynamic,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_aad,
-        concepts::bytes t_ciphertext,
-        concepts::bytes t_digest,
+        meta::crypto::aead t_impl,
+        meta::bytes t_plaintext = container::bytes_dynamic,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_aad,
+        meta::bytes t_ciphertext,
+        meta::bytes t_digest,
         typename... t_error
     >
     constexpr auto

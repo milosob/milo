@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-
-#include <milo/inner/config.h>
+#include <milo/inner.h>
 
 
 namespace milo::version

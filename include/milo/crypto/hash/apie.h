@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
-#include <milo/error.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::hash
@@ -18,7 +15,7 @@ namespace milo::crypto::hash
      * Impl type.
      */
     template<
-        concepts::hash t_impl
+        meta::crypto::hash t_impl
     >
     class apie
     {
@@ -100,7 +97,7 @@ namespace milo::crypto::hash
          * Message size.
          */
         template<
-            concepts::byte t_message
+            meta::byte t_message
         >
         constexpr auto
         update(
@@ -123,7 +120,7 @@ namespace milo::crypto::hash
          * Message.
          */
         template<
-            concepts::bytes t_message
+            meta::bytes t_message
         >
         constexpr auto
         update(
@@ -149,7 +146,7 @@ namespace milo::crypto::hash
          * Digest size.
          */
         template<
-            concepts::byte t_digest
+            meta::byte t_digest
         >
         constexpr auto
         digest(
@@ -178,22 +175,22 @@ namespace milo::crypto::hash
          * Digest size.
          */
         template<
-            concepts::bytes t_digest
+            meta::bytes t_digest
         >
         constexpr auto
         digest(
             t_digest& a_digest,
             size_t a_digest_size = digest_size
-        ) noexcept(concepts::container_static<t_digest>) -> size_t
+        ) noexcept(meta::container_static<t_digest>) -> size_t
         {
             do_finalize();
             
-            a_digest_size = common::min(
+            a_digest_size = inner::min(
                 a_digest_size,
                 digest_size
             );
             
-            a_digest_size = container::resize(
+            a_digest_size = inner::resize(
                 a_digest,
                 a_digest_size
             );
@@ -215,7 +212,7 @@ namespace milo::crypto::hash
          * Digest.
          */
         template<
-            concepts::bytes t_digest = container::bytes_dynamic
+            meta::bytes t_digest = container::bytes_dynamic
         >
         constexpr auto
         digest(
@@ -224,7 +221,7 @@ namespace milo::crypto::hash
         requires
         requires
         {
-            requires concepts::container_dynamic<t_digest>;
+            requires meta::container_dynamic<t_digest>;
         }
         {
             t_digest result;
@@ -246,7 +243,7 @@ namespace milo::crypto::hash
          * Digest.
          */
         template<
-            concepts::bytes t_digest = container::bytes_static<digest_size>
+            meta::bytes t_digest = container::bytes_static<digest_size>
         >
         constexpr auto
         digest(
@@ -254,7 +251,7 @@ namespace milo::crypto::hash
         requires
         requires
         {
-            requires concepts::container_static<t_digest, 1, digest_size>;
+            requires meta::container_static<t_digest, 1, digest_size>;
         }
         {
             t_digest result;
@@ -289,9 +286,9 @@ namespace milo::crypto::hash
      * Digest size.
      */
     template<
-        concepts::hash t_impl,
-        concepts::byte t_message,
-        concepts::byte t_digest
+        meta::crypto::hash t_impl,
+        meta::byte t_message,
+        meta::byte t_digest
     >
     constexpr auto
     digest(
@@ -333,16 +330,16 @@ namespace milo::crypto::hash
      * Digest size.
      */
     template<
-        concepts::hash t_impl,
-        concepts::bytes t_message,
-        concepts::bytes t_digest
+        meta::crypto::hash t_impl,
+        meta::bytes t_message,
+        meta::bytes t_digest
     >
     constexpr auto
     digest(
         const t_message& a_message,
         t_digest& a_digest,
         size_t a_digest_size = t_impl::digest_size
-    ) noexcept(concepts::container_static<t_digest>) -> size_t
+    ) noexcept(meta::container_static<t_digest>) -> size_t
     {
         apie<t_impl> apie;
         
@@ -373,9 +370,9 @@ namespace milo::crypto::hash
      * Digest.
      */
     template<
-        concepts::hash t_impl,
-        concepts::bytes t_digest = container::bytes_dynamic,
-        concepts::bytes t_message
+        meta::crypto::hash t_impl,
+        meta::bytes t_digest = container::bytes_dynamic,
+        meta::bytes t_message
     >
     constexpr auto
     digest(
@@ -409,9 +406,9 @@ namespace milo::crypto::hash
      * Digest.
      */
     template<
-        concepts::hash t_impl,
-        concepts::bytes t_digest = container::bytes_static<t_impl::digest_size>,
-        concepts::bytes t_message
+        meta::crypto::hash t_impl,
+        meta::bytes t_digest = container::bytes_static<t_impl::digest_size>,
+        meta::bytes t_message
     >
     constexpr auto
     digest(

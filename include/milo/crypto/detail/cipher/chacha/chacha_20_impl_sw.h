@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-
-#include <milo/inner/bit.h>
-#include <milo/inner/memory.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::detail

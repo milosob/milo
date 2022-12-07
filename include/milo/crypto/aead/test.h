@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/aead/apie.h>
 
@@ -19,7 +17,7 @@ namespace milo::crypto::aead
      * Impl type.
      */
     template<
-        concepts::aead t_impl
+        meta::crypto::aead t_impl
     >
     class test
     {
@@ -60,12 +58,12 @@ namespace milo::crypto::aead
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv,
-            concepts::bytes t_aad,
-            concepts::bytes t_plaintext,
-            concepts::bytes t_ciphertext,
-            concepts::bytes t_digest
+            meta::bytes t_key,
+            meta::bytes t_iv,
+            meta::bytes t_aad,
+            meta::bytes t_plaintext,
+            meta::bytes t_ciphertext,
+            meta::bytes t_digest
         >
         static
         constexpr auto
@@ -140,12 +138,12 @@ namespace milo::crypto::aead
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv,
-            concepts::bytes t_aad,
-            concepts::bytes t_ciphertext,
-            concepts::bytes t_digest,
-            concepts::bytes t_plaintext
+            meta::bytes t_key,
+            meta::bytes t_iv,
+            meta::bytes t_aad,
+            meta::bytes t_ciphertext,
+            meta::bytes t_digest,
+            meta::bytes t_plaintext
         >
         static
         constexpr auto

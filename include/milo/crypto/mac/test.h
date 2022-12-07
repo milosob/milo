@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/mac/apie.h>
 
@@ -19,7 +17,7 @@ namespace milo::crypto::mac
      * Impl type.
      */
     template<
-        concepts::mac t_impl
+        meta::crypto::mac t_impl
     >
     class test
     {
@@ -48,9 +46,9 @@ namespace milo::crypto::mac
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_message,
-            concepts::bytes t_digest
+            meta::bytes t_key,
+            meta::bytes t_message,
+            meta::bytes t_digest
         >
         static
         constexpr auto

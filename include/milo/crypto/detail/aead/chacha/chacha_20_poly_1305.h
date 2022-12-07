@@ -3,19 +3,17 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/cipher/chacha.h>
 #include <milo/crypto/mac/poly.h>
-#include <milo/inner//memory.h>
 
 
 namespace milo::crypto::detail
 {
     template<
-        concepts::cipher_chacha_20 t_cipher,
-        concepts::mac_poly_1305 t_mac,
+        meta::crypto::cipher_chacha_20 t_cipher,
+        meta::crypto::mac_poly_1305 t_mac,
         typename... t_options
     >
     class aead_chacha_20_poly_1305
@@ -76,8 +74,8 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_key,
-            concepts::byte t_iv
+            meta::byte t_key,
+            meta::byte t_iv
         >
         constexpr auto
         initialize(
@@ -127,7 +125,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_aad
+            meta::byte t_aad
         >
         constexpr auto
         aad(
@@ -157,8 +155,8 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_plaintext,
-            concepts::byte t_ciphertext
+            meta::byte t_plaintext,
+            meta::byte t_ciphertext
         >
         constexpr auto
         encrypt(
@@ -183,7 +181,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_plaintext
+            meta::byte t_plaintext
         >
         constexpr auto
         encrypt_size(
@@ -198,8 +196,8 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_ciphertext,
-            concepts::byte t_plaintext
+            meta::byte t_ciphertext,
+            meta::byte t_plaintext
         >
         constexpr auto
         decrypt(
@@ -224,7 +222,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_ciphertext
+            meta::byte t_ciphertext
         >
         constexpr auto
         decrypt_size(
@@ -273,7 +271,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_digest
+            meta::byte t_digest
         >
         constexpr auto
         digest(

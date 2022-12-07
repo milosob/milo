@@ -3,19 +3,15 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-
-#include <milo/inner/arch.h>
-#include <milo/inner/memory.h>
+#include <milo/inner.h>
 
 
 #if MILO_ARCH_X86_ISE_SSE_1 && \
     MILO_ARCH_X86_ISE_SSE_2 && \
     MILO_ARCH_X86_ISE_SSSE_3 && \
     MILO_ARCH_X86_ISE_SHA_2
-    
-    
+
+
 #include <immintrin.h>
 
 
@@ -76,7 +72,7 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_src
+            meta::byte t_src
         >
         static
         constexpr auto

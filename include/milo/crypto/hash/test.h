@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/hash/apie.h>
 
@@ -19,7 +17,7 @@ namespace milo::crypto::hash
      * Impl type.
      */
     template<
-        concepts::hash t_impl
+        meta::crypto::hash t_impl
     >
     class test
     {
@@ -44,8 +42,8 @@ namespace milo::crypto::hash
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_message,
-            concepts::bytes t_digest
+            meta::bytes t_message,
+            meta::bytes t_digest
         >
         static
         constexpr auto

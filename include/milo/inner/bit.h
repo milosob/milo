@@ -3,9 +3,9 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/traits.h>
+#include <milo/meta.h>
+
+#include <milo/inner/base.h>
 
 
 namespace milo::inner
@@ -35,7 +35,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral_u t_value
+        meta::integral_u t_value
     >
     constexpr auto
     bit_rotl(
@@ -49,7 +49,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral_u t_value
+        meta::integral_u t_value
     >
     constexpr auto
     bit_rotr(

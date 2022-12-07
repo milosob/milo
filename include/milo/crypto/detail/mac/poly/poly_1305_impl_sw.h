@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-
-#include <milo/inner/memory.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::detail
@@ -21,7 +18,7 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_src
+            meta::byte t_src
         >
         static
         constexpr auto

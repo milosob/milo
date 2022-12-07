@@ -3,21 +3,19 @@
 #pragma once
 
 
-#include <new>
+#include <milo/meta.h>
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/traits.h>
-
+#include <milo/inner/base.h>
 #include <milo/inner/bit.h>
 #include <milo/inner/endian.h>
+#include <milo/inner/utility.h>
 
 
 namespace milo::inner
 {
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_load(
@@ -27,8 +25,8 @@ namespace milo::inner
     {
         using des_type = t_val;
         using job_type = t_ptr;
-        using val_type = traits::to_integral_unsigned_t<des_type>;
-        using ptr_type = traits::to_integral_unsigned_t<job_type>;
+        using val_type = meta::to_integral_unsigned<des_type>;
+        using ptr_type = meta::to_integral_unsigned<job_type>;
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
@@ -109,8 +107,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_load(
@@ -121,8 +119,8 @@ namespace milo::inner
     {
         using des_type = t_val;
         using job_type = t_ptr;
-        using val_type = traits::to_integral_unsigned_t<des_type>;
-        using ptr_type = traits::to_integral_unsigned_t<job_type>;
+        using val_type = meta::to_integral_unsigned<des_type>;
+        using ptr_type = meta::to_integral_unsigned<job_type>;
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
@@ -168,7 +166,7 @@ namespace milo::inner
             
             if constexpr (full_size > 0 && val_size != ptr_size)
             {
-                auto todo_size = common::min(
+                auto todo_size = min(
                     a_size,
                     full_size
                 );
@@ -206,7 +204,7 @@ namespace milo::inner
             std::memcpy(
                 reinterpret_cast<uint8_t*>(&val),
                 reinterpret_cast<const val_type*>(a_ptr) + a_off,
-                common::min(
+                min(
                     val_size,
                     ptr_size * a_size
                 )
@@ -217,8 +215,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_load_be(
@@ -238,8 +236,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_load_be(
@@ -261,8 +259,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_load_le(
@@ -282,8 +280,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_load_le(
@@ -305,8 +303,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_stor(
@@ -317,8 +315,8 @@ namespace milo::inner
     {
         using des_type = t_val;
         using job_type = t_ptr;
-        using val_type = traits::to_integral_unsigned_t<des_type>;
-        using ptr_type = traits::to_integral_unsigned_t<job_type>;
+        using val_type = meta::to_integral_unsigned<des_type>;
+        using ptr_type = meta::to_integral_unsigned<job_type>;
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
@@ -393,8 +391,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_stor(
@@ -406,8 +404,8 @@ namespace milo::inner
     {
         using des_type = t_val;
         using job_type = t_ptr;
-        using val_type = traits::to_integral_unsigned_t<des_type>;
-        using ptr_type = traits::to_integral_unsigned_t<job_type>;
+        using val_type = meta::to_integral_unsigned<des_type>;
+        using ptr_type = meta::to_integral_unsigned<job_type>;
         
         constexpr auto val_size = sizeof(val_type);
         constexpr auto ptr_size = sizeof(ptr_type);
@@ -455,7 +453,7 @@ namespace milo::inner
             
             if constexpr (full_size > 0 && val_size != ptr_size)
             {
-                auto todo_size = common::min(
+                auto todo_size = min(
                     a_size,
                     full_size
                 );
@@ -489,7 +487,7 @@ namespace milo::inner
             std::memcpy(
                 reinterpret_cast<val_type*>(a_ptr) + a_off,
                 reinterpret_cast<const uint8_t*>(&a_val),
-                common::min(
+                min(
                     val_size,
                     ptr_size * a_size
                 )
@@ -498,8 +496,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_stor_be(
@@ -518,8 +516,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_stor_be(
@@ -540,8 +538,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_stor_le(
@@ -560,8 +558,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_val,
-        concepts::integral t_ptr
+        meta::integral t_val,
+        meta::integral t_ptr
     >
     constexpr auto
     memory_stor_le(
@@ -582,8 +580,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src
+        meta::integral t_dst,
+        meta::integral t_src
     >
     constexpr auto
     memory_copy(
@@ -617,8 +615,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src
+        meta::integral t_dst,
+        meta::integral t_src
     >
     constexpr auto
     memory_copy_be(
@@ -651,8 +649,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src
+        meta::integral t_dst,
+        meta::integral t_src
     >
     constexpr auto
     memory_copy_le(
@@ -685,8 +683,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_ptr,
-        concepts::integral t_val
+        meta::integral t_ptr,
+        meta::integral t_val
     >
     constexpr auto
     memory_set(
@@ -717,9 +715,9 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src_0,
-        concepts::integral t_src_1
+        meta::integral t_dst,
+        meta::integral t_src_0,
+        meta::integral t_src_1
     >
     constexpr auto
     memory_xor(
@@ -746,8 +744,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_src_a,
-        concepts::integral t_src_b
+        meta::integral t_src_a,
+        meta::integral t_src_b
     >
     constexpr auto
     memory_equal(
@@ -785,8 +783,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::container t_container_a,
-        concepts::container t_container_b
+        meta::container t_container_a,
+        meta::container t_container_b
     >
     constexpr auto
     memory_equal(
@@ -796,9 +794,9 @@ namespace milo::inner
     requires
     requires
     {
-        requires concepts::integral<typename t_container_a::value_type>;
-        requires concepts::integral<typename t_container_b::value_type>;
-        requires concepts::convertible<typename t_container_a::value_type, typename t_container_b::value_type>;
+        requires meta::integral<typename t_container_a::value_type>;
+        requires meta::integral<typename t_container_b::value_type>;
+        requires meta::convertible<typename t_container_a::value_type, typename t_container_b::value_type>;
     }
     {
         return
@@ -814,8 +812,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_src_a,
-        concepts::integral t_src_b
+        meta::integral t_src_a,
+        meta::integral t_src_b
     >
     constexpr auto
     memory_match(
@@ -841,8 +839,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::container t_container_a,
-        concepts::container t_container_b
+        meta::container t_container_a,
+        meta::container t_container_b
     >
     constexpr auto
     memory_match(
@@ -852,9 +850,9 @@ namespace milo::inner
     requires
     requires
     {
-        requires concepts::integral<typename t_container_a::value_type>;
-        requires concepts::integral<typename t_container_b::value_type>;
-        requires concepts::convertible<typename t_container_a::value_type, typename t_container_b::value_type>;
+        requires meta::integral<typename t_container_a::value_type>;
+        requires meta::integral<typename t_container_b::value_type>;
+        requires meta::convertible<typename t_container_a::value_type, typename t_container_b::value_type>;
     }
     {
         return
@@ -867,7 +865,7 @@ namespace milo::inner
                     memory_match(
                         a_container_a.data(),
                         a_container_b.data(),
-                        common::min(
+                        min(
                             a_container_a.size() * sizeof(typename t_container_a::value_type),
                             a_container_b.size() * sizeof(typename t_container_b::value_type)
                         )
@@ -877,7 +875,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_ptr
+        meta::integral t_ptr
     >
     constexpr auto
     memory_zero(
@@ -892,7 +890,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_ptr,
+        meta::integral t_ptr,
         size_t t_size
     >
     constexpr auto
@@ -907,7 +905,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_ptr
+        meta::integral t_ptr
     >
     constexpr auto
     memory_erase(
@@ -936,7 +934,7 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_ref
+        meta::integral t_ref
     >
     constexpr auto
     memory_erase(
@@ -969,8 +967,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src
+        meta::integral t_dst,
+        meta::integral t_src
     >
     constexpr auto
     memory_init(
@@ -988,7 +986,7 @@ namespace milo::inner
         memory_copy(
             a_dst_ptr,
             a_src_ptr,
-            common::min(
+            min(
                 a_dst_size * sizeof(t_dst),
                 a_src_size * sizeof(t_src)
             )
@@ -996,8 +994,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src,
+        meta::integral t_dst,
+        meta::integral t_src,
         size_t t_dst_size
     >
     constexpr auto
@@ -1016,8 +1014,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src
+        meta::integral t_dst,
+        meta::integral t_src
     >
     constexpr auto
     memory_init_be(
@@ -1046,8 +1044,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src,
+        meta::integral t_dst,
+        meta::integral t_src,
         size_t t_dst_size
     >
     constexpr auto
@@ -1066,8 +1064,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src
+        meta::integral t_dst,
+        meta::integral t_src
     >
     constexpr auto
     memory_init_le(
@@ -1096,8 +1094,8 @@ namespace milo::inner
     }
     
     template<
-        concepts::integral t_dst,
-        concepts::integral t_src,
+        meta::integral t_dst,
+        meta::integral t_src,
         size_t t_dst_size
     >
     constexpr auto
@@ -1180,7 +1178,7 @@ namespace milo::inner
     public:
         
         template<
-            concepts::byte t_ptr
+            meta::byte t_ptr
         >
         constexpr
         memory_bytes_const_view(

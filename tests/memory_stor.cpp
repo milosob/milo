@@ -1,14 +1,14 @@
 
 
-#include <milo/concepts.h>
+#include <milo/meta.h>
 #include <milo/container.h>
 
 #include <milo/inner/memory.h>
 
 
 template<
-    milo::concepts::integral t_stor,
-    milo::concepts::integral t_data,
+    milo::meta::integral t_stor,
+    milo::meta::integral t_data,
     size_t t_size
 >
 constexpr auto

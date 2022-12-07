@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
+#include <milo/inner/base.h>
 
 
 namespace milo::inner

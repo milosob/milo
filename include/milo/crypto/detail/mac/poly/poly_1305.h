@@ -3,15 +3,10 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/detail/mac/poly/poly_1305_impl.h>
 #include <milo/crypto/detail/mac/poly/poly_1305_impl_sw.h>
-#include <milo/inner/impl.h>
-#include <milo/inner/memory.h>
-#include <milo/inner/option.h>
-#include <milo/inner/update.h>
 
 
 namespace milo::crypto::detail
@@ -105,7 +100,7 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_key
+            meta::byte t_key
         >
         constexpr auto
         initialize(
@@ -140,7 +135,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_message
+            meta::byte t_message
         >
         constexpr auto
         update(
@@ -216,7 +211,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_digest
+            meta::byte t_digest
         >
         constexpr auto
         digest(
@@ -224,7 +219,7 @@ namespace milo::crypto::detail
             size_t a_digest_size = digest_size
         ) const noexcept(true) -> size_t
         {
-            a_digest_size = common::min(
+            a_digest_size = inner::min(
                 a_digest_size,
                 digest_size
             );

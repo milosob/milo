@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/codec/apie.h>
 
@@ -19,7 +17,7 @@ namespace milo::crypto::codec
      * Impl type.
      */
     template<
-        concepts::codec t_impl
+        meta::crypto::codec t_impl
     >
     class test
     {

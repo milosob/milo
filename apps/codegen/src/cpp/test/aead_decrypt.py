@@ -34,8 +34,7 @@ def gen(
             '',
             src.cpp.lang.gen_include(
                 [
-                    '<milo/concepts.h>',
-                    '<milo/container.h>',
+                    '<milo/inner.h>',
                     '<milo/literals.h>'
                 ]
             ),

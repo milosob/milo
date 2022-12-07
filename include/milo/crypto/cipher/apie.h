@@ -3,10 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
-#include <milo/error.h>
+#include <milo/inner.h>
 
 
 namespace milo::crypto::cipher
@@ -18,7 +15,7 @@ namespace milo::crypto::cipher
      * Impl type.
      */
     template<
-        concepts::cipher t_impl
+        meta::crypto::cipher t_impl
     >
     class apie
     {
@@ -73,8 +70,8 @@ namespace milo::crypto::cipher
          * Iv.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv
+            meta::bytes t_key,
+            meta::bytes t_iv
         >
         constexpr
         apie(
@@ -107,8 +104,8 @@ namespace milo::crypto::cipher
          * Iv size.
          */
         template<
-            concepts::byte t_key,
-            concepts::byte t_iv
+            meta::byte t_key,
+            meta::byte t_iv
         >
         constexpr auto
         initialize(
@@ -139,8 +136,8 @@ namespace milo::crypto::cipher
          * Iv.
          */
         template<
-            concepts::bytes t_key,
-            concepts::bytes t_iv
+            meta::bytes t_key,
+            meta::bytes t_iv
         >
         constexpr auto
         initialize(
@@ -173,8 +170,8 @@ namespace milo::crypto::cipher
          * Ciphertext size.
          */
         template<
-            concepts::byte t_plaintext,
-            concepts::byte t_ciphertext
+            meta::byte t_plaintext,
+            meta::byte t_ciphertext
         >
         constexpr auto
         encrypt(
@@ -205,16 +202,16 @@ namespace milo::crypto::cipher
          * Ciphertext size.
          */
         template<
-            concepts::bytes t_plaintext,
-            concepts::bytes t_ciphertext
+            meta::bytes t_plaintext,
+            meta::bytes t_ciphertext
         >
         constexpr auto
         encrypt(
             const t_plaintext& a_plaintext,
             t_ciphertext& a_ciphertext
-        ) noexcept(concepts::container_static<t_ciphertext>) -> size_t
+        ) noexcept(meta::container_static<t_ciphertext>) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_ciphertext,
                 encrypt_size(a_plaintext)
             );
@@ -225,7 +222,7 @@ namespace milo::crypto::cipher
                 a_ciphertext.data()
             );
             
-            container::resize(
+            inner::resize(
                 a_ciphertext,
                 size
             );
@@ -246,8 +243,8 @@ namespace milo::crypto::cipher
          * Ciphertext.
          */
         template<
-            concepts::bytes t_ciphertext,
-            concepts::bytes t_plaintext
+            meta::bytes t_ciphertext,
+            meta::bytes t_plaintext
         >
         constexpr auto
         encrypt(
@@ -256,7 +253,7 @@ namespace milo::crypto::cipher
         requires
         requires
         {
-            requires concepts::container_dynamic<t_ciphertext>;
+            requires meta::container_dynamic<t_ciphertext>;
         }
         {
             t_ciphertext result;
@@ -282,7 +279,7 @@ namespace milo::crypto::cipher
          * Ciphertext size.
          */
         template<
-            concepts::byte t_plaintext
+            meta::byte t_plaintext
         >
         constexpr auto
         encrypt_size(
@@ -307,7 +304,7 @@ namespace milo::crypto::cipher
          * Ciphertext size.
          */
         template<
-            concepts::bytes t_plaintext
+            meta::bytes t_plaintext
         >
         constexpr auto
         encrypt_size(
@@ -337,8 +334,8 @@ namespace milo::crypto::cipher
          * Plaintext size.
          */
         template<
-            concepts::byte t_ciphertext,
-            concepts::byte t_plaintext
+            meta::byte t_ciphertext,
+            meta::byte t_plaintext
         >
         constexpr auto
         decrypt(
@@ -369,16 +366,16 @@ namespace milo::crypto::cipher
          * Plaintext size.
          */
         template<
-            concepts::bytes t_ciphertext,
-            concepts::bytes t_plaintext
+            meta::bytes t_ciphertext,
+            meta::bytes t_plaintext
         >
         constexpr auto
         decrypt(
             const t_ciphertext& a_ciphertext,
             t_plaintext& a_plaintext
-        ) noexcept(concepts::container_static<t_plaintext>) -> size_t
+        ) noexcept(meta::container_static<t_plaintext>) -> size_t
         {
-            container::resize(
+            inner::resize(
                 a_plaintext,
                 decrypt_size(a_ciphertext)
             );
@@ -389,7 +386,7 @@ namespace milo::crypto::cipher
                 a_plaintext.data()
             );
             
-            container::resize(
+            inner::resize(
                 a_plaintext,
                 size
             );
@@ -410,8 +407,8 @@ namespace milo::crypto::cipher
          * Plaintext.
          */
         template<
-            concepts::bytes t_plaintext,
-            concepts::bytes t_ciphertext
+            meta::bytes t_plaintext,
+            meta::bytes t_ciphertext
         >
         constexpr auto
         decrypt(
@@ -420,7 +417,7 @@ namespace milo::crypto::cipher
         requires
         requires
         {
-            requires concepts::container_dynamic<t_plaintext>;
+            requires meta::container_dynamic<t_plaintext>;
         }
         {
             t_plaintext result;
@@ -446,7 +443,7 @@ namespace milo::crypto::cipher
          * Plaintext size.
          */
         template<
-            concepts::byte t_ciphertext
+            meta::byte t_ciphertext
         >
         constexpr auto
         decrypt_size(
@@ -471,7 +468,7 @@ namespace milo::crypto::cipher
          * Plaintext size.
          */
         template<
-            concepts::bytes t_ciphertext
+            meta::bytes t_ciphertext
         >
         constexpr auto
         decrypt_size(
@@ -516,11 +513,11 @@ namespace milo::crypto::cipher
      * Ciphertext size.
      */
     template<
-        concepts::cipher t_impl,
-        concepts::byte t_key,
-        concepts::byte t_iv,
-        concepts::byte t_plaintext,
-        concepts::byte t_ciphertext
+        meta::crypto::cipher t_impl,
+        meta::byte t_key,
+        meta::byte t_iv,
+        meta::byte t_plaintext,
+        meta::byte t_ciphertext
     >
     constexpr auto
     encrypt(
@@ -572,11 +569,11 @@ namespace milo::crypto::cipher
      * Ciphertext size.
      */
     template<
-        concepts::cipher t_impl,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_plaintext,
-        concepts::bytes t_ciphertext
+        meta::crypto::cipher t_impl,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_plaintext,
+        meta::bytes t_ciphertext
     >
     constexpr auto
     encrypt(
@@ -584,7 +581,7 @@ namespace milo::crypto::cipher
         const t_iv& a_iv,
         const t_plaintext& a_plaintext,
         t_ciphertext& a_ciphertext
-    ) noexcept(concepts::container_static<t_ciphertext>) -> size_t
+    ) noexcept(meta::container_static<t_ciphertext>) -> size_t
     {
         apie<t_impl> apie(
             a_key,
@@ -621,11 +618,11 @@ namespace milo::crypto::cipher
      * Ciphertext
      */
     template<
-        concepts::cipher t_impl,
-        concepts::bytes t_ciphertext = container::bytes_dynamic,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_plaintext
+        meta::crypto::cipher t_impl,
+        meta::bytes t_ciphertext = container::bytes_dynamic,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_plaintext
     >
     constexpr auto
     encrypt(
@@ -675,11 +672,11 @@ namespace milo::crypto::cipher
      * Plaintext size.
      */
     template<
-        concepts::cipher t_impl,
-        concepts::byte t_key,
-        concepts::byte t_iv,
-        concepts::byte t_ciphertext,
-        concepts::byte t_plaintext
+        meta::crypto::cipher t_impl,
+        meta::byte t_key,
+        meta::byte t_iv,
+        meta::byte t_ciphertext,
+        meta::byte t_plaintext
     >
     constexpr auto
     decrypt(
@@ -731,11 +728,11 @@ namespace milo::crypto::cipher
      * Plaintext size.
      */
     template<
-        concepts::cipher t_impl,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_ciphertext,
-        concepts::bytes t_plaintext
+        meta::crypto::cipher t_impl,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_ciphertext,
+        meta::bytes t_plaintext
     >
     constexpr auto
     decrypt(
@@ -743,7 +740,7 @@ namespace milo::crypto::cipher
         const t_iv& a_iv,
         const t_ciphertext& a_ciphertext,
         t_plaintext& a_plaintext
-    ) noexcept(concepts::container_static<t_plaintext>) -> size_t
+    ) noexcept(meta::container_static<t_plaintext>) -> size_t
     {
         apie<t_impl> apie(
             a_key,
@@ -779,11 +776,11 @@ namespace milo::crypto::cipher
      * Plaintext.
      */
     template<
-        concepts::cipher t_impl,
-        concepts::bytes t_plaintext = container::bytes_dynamic,
-        concepts::bytes t_key,
-        concepts::bytes t_iv,
-        concepts::bytes t_ciphertext
+        meta::crypto::cipher t_impl,
+        meta::bytes t_plaintext = container::bytes_dynamic,
+        meta::bytes t_key,
+        meta::bytes t_iv,
+        meta::bytes t_ciphertext
     >
     constexpr auto
     decrypt(

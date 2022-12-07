@@ -3,13 +3,11 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/traits.h>
+#include <milo/meta.h>
 
 #include <milo/inner/arch.h>
-#include <milo/inner/forward.h>
 #include <milo/inner/option.h>
+#include <milo/inner/utility.h>
 
 
 namespace milo::inner
@@ -31,7 +29,7 @@ namespace milo::inner
     impl_choose_hook(
     ) noexcept(true)
     {
-        if constexpr (traits::is_class_v<t_impl>)
+        if constexpr (meta::complex<t_impl>)
         {
             if constexpr ((!
                 requires
@@ -74,10 +72,9 @@ namespace milo::inner
     >
     struct impl_choose_type
         :
-            traits::disjunction<
-                traits::boolean<
-                    typename t_chooser::template type<t_impls>,
-                    traits::is_class_v<t_impls> &&
+            meta::disjunction<
+                meta::asbool<
+                    meta::complex<t_impls> &&
                     (
                         (!
                             requires
@@ -86,7 +83,8 @@ namespace milo::inner
                             }
                         ) ||
                         t_domain::template check<t_impls>()
-                    )
+                    ),
+                    typename t_chooser::template type<t_impls>
                 >...
             >
     {
@@ -101,7 +99,7 @@ namespace milo::inner
     requires
     {
         requires sizeof...(t_impls) > 0;
-        requires concepts::same<
+        requires meta::same<
             t_domain,
             impl_domain_strict,
             impl_domain_native,
@@ -117,7 +115,7 @@ namespace milo::inner
     template<
         typename... t_impls
     >
-    using impl_cpltime = traits::args<t_impls...>;
+    using impl_cpltime = meta::args<t_impls...>;
     
     template<
         typename t_domain,
@@ -133,7 +131,7 @@ namespace milo::inner
     template<
         typename... t_impls
     >
-    using impl_runtime = traits::args<t_impls...>;
+    using impl_runtime = meta::args<t_impls...>;
     
     template<
         typename t_domain,
@@ -208,9 +206,9 @@ namespace milo::inner
         
         using runtime_override = option_impl_runtime_suite::query_default_t<void, t_options...>;
         
-        using cpltime_selected = typename traits::args_reader<t_cpltime, impl_cpltime_reader, domain, chooser>::type;
+        using cpltime_selected = typename meta::args_reader<t_cpltime, impl_cpltime_reader, domain, chooser>::type;
         
-        using runtime_selected = typename traits::args_reader<t_runtime, impl_runtime_reader, domain, chooser>::type;
+        using runtime_selected = typename meta::args_reader<t_runtime, impl_runtime_reader, domain, chooser>::type;
     
     public:
         
@@ -226,13 +224,13 @@ namespace milo::inner
         {
             if MILO_CONSTEVAL
             {
-                if constexpr (traits::is_class_v<cpltime_override>)
+                if constexpr (meta::complex<cpltime_override>)
                 {
                     return invoker::template type<
                         t_id,
                         cpltime_override
                     >(
-                        inner::forward<
+                        forward<
                             t_args
                         >(
                             a_args
@@ -245,7 +243,7 @@ namespace milo::inner
                         t_id,
                         typename cpltime_selected::impl
                     >(
-                        inner::forward<
+                        forward<
                             t_args
                         >(
                             a_args
@@ -255,13 +253,13 @@ namespace milo::inner
             }
             else
             {
-                if constexpr (traits::is_class_v<runtime_override>)
+                if constexpr (meta::complex<runtime_override>)
                 {
                     return invoker::template type<
                         t_id,
                         runtime_override
                     >(
-                        inner::forward<
+                        forward<
                             t_args
                         >(
                             a_args
@@ -270,7 +268,7 @@ namespace milo::inner
                 }
                 else
                 {
-                    if constexpr (concepts::same<
+                    if constexpr (meta::same<
                         domain,
                         impl_domain_strict,
                         impl_domain_native
@@ -280,7 +278,7 @@ namespace milo::inner
                             t_id,
                             typename runtime_selected::impl
                         >(
-                            inner::forward<
+                            forward<
                                 t_args
                             >(
                                 a_args
@@ -293,7 +291,7 @@ namespace milo::inner
                             t_id
                         >(
                             runtime_selected::impl,
-                            inner::forward<
+                            forward<
                                 t_args
                             >(
                                 a_args

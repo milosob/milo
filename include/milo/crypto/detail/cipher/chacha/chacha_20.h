@@ -3,15 +3,10 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/detail/cipher/chacha/chacha_20_impl.h>
 #include <milo/crypto/detail/cipher/chacha/chacha_20_impl_sw.h>
-#include <milo/inner/impl.h>
-#include <milo/inner/memory.h>
-#include <milo/inner/option.h>
-#include <milo/inner/update.h>
 
 
 namespace milo::crypto::detail
@@ -96,8 +91,8 @@ namespace milo::crypto::detail
     public:
         
         template<
-            concepts::byte t_key,
-            concepts::byte t_iv
+            meta::byte t_key,
+            meta::byte t_iv
         >
         constexpr auto
         initialize(
@@ -130,8 +125,8 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_plaintext,
-            concepts::byte t_ciphertext
+            meta::byte t_plaintext,
+            meta::byte t_ciphertext
         >
         constexpr auto
         encrypt(
@@ -155,7 +150,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_plaintext
+            meta::byte t_plaintext
         >
         constexpr auto
         encrypt_size(
@@ -168,8 +163,8 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_ciphertext,
-            concepts::byte t_plaintext
+            meta::byte t_ciphertext,
+            meta::byte t_plaintext
         >
         constexpr auto
         decrypt(
@@ -193,7 +188,7 @@ namespace milo::crypto::detail
         }
         
         template<
-            concepts::byte t_ciphertext
+            meta::byte t_ciphertext
         >
         constexpr auto
         decrypt_size(

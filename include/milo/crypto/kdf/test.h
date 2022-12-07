@@ -3,9 +3,7 @@
 #pragma once
 
 
-#include <milo/common.h>
-#include <milo/concepts.h>
-#include <milo/container.h>
+#include <milo/inner.h>
 
 #include <milo/crypto/kdf/apie.h>
 
@@ -19,7 +17,7 @@ namespace milo::crypto::kdf
      * Impl type.
      */
     template<
-        concepts::kdf t_impl
+        meta::crypto::kdf t_impl
     >
     class test
     {
@@ -52,10 +50,10 @@ namespace milo::crypto::kdf
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_ikm,
-            concepts::bytes t_salt,
-            concepts::bytes t_info,
-            concepts::bytes t_key
+            meta::bytes t_ikm,
+            meta::bytes t_salt,
+            meta::bytes t_info,
+            meta::bytes t_key
         >
         static
         constexpr auto
@@ -68,7 +66,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_hkdf<impl_type>;
+            requires meta::crypto::kdf_hkdf<impl_type>;
         }
         {
             try
@@ -117,9 +115,9 @@ namespace milo::crypto::kdf
          * True on success, otherwise returns False.
          */
         template<
-            concepts::bytes t_ikm,
-            concepts::bytes t_salt,
-            concepts::bytes t_key
+            meta::bytes t_ikm,
+            meta::bytes t_salt,
+            meta::bytes t_key
         >
         static
         constexpr auto
@@ -132,7 +130,7 @@ namespace milo::crypto::kdf
         requires
         requires
         {
-            requires concepts::kdf_pbkdf_2<impl_type>;
+            requires meta::crypto::kdf_pbkdf_2<impl_type>;
         }
         {
             try
