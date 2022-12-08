@@ -2,16 +2,16 @@ import json
 import pathlib
 import argparse
 
-import src.cpp.test.aead_decrypt
-import src.cpp.test.aead_encrypt
-import src.cpp.test.cipher_decrypt
-import src.cpp.test.cipher_encrypt
-import src.cpp.test.codec_decode
-import src.cpp.test.codec_encode
-import src.cpp.test.hash
-import src.cpp.test.kdf_hkdf
-import src.cpp.test.kdf_pbkdf_2
-import src.cpp.test.mac
+import src.cpp.test.primitive.aead_decrypt
+import src.cpp.test.primitive.aead_encrypt
+import src.cpp.test.primitive.cipher_decrypt
+import src.cpp.test.primitive.cipher_encrypt
+import src.cpp.test.primitive.codec_decode
+import src.cpp.test.primitive.codec_encode
+import src.cpp.test.primitive.hash
+import src.cpp.test.primitive.kdf_hkdf
+import src.cpp.test.primitive.kdf_pbkdf_2
+import src.cpp.test.primitive.mac
 
 parser: argparse.ArgumentParser
 parser = argparse.ArgumentParser(
@@ -54,16 +54,16 @@ def main(
 
     callbacks: dict
     callbacks = {
-        'test-aead-decrypt': src.cpp.test.aead_decrypt.gen,
-        'test-aead-encrypt': src.cpp.test.aead_encrypt.gen,
-        'test-cipher-decrypt': src.cpp.test.cipher_decrypt.gen,
-        'test-cipher-encrypt': src.cpp.test.cipher_encrypt.gen,
-        'test-codec-decode': src.cpp.test.codec_decode.gen,
-        'test-codec-encode': src.cpp.test.codec_encode.gen,
-        'test-hash': src.cpp.test.hash.gen,
-        'test-kdf-hkdf': src.cpp.test.kdf_hkdf.gen,
-        'test-kdf-pbkdf-2': src.cpp.test.kdf_pbkdf_2.gen,
-        'test-mac': src.cpp.test.mac.gen
+        'test-primitive-aead-decrypt': src.cpp.test.primitive.aead_decrypt.gen,
+        'test-primitive-aead-encrypt': src.cpp.test.primitive.aead_encrypt.gen,
+        'test-primitive-cipher-decrypt': src.cpp.test.primitive.cipher_decrypt.gen,
+        'test-primitive-cipher-encrypt': src.cpp.test.primitive.cipher_encrypt.gen,
+        'test-primitive-codec-decode': src.cpp.test.primitive.codec_decode.gen,
+        'test-primitive-codec-encode': src.cpp.test.primitive.codec_encode.gen,
+        'test-primitive-hash': src.cpp.test.primitive.hash.gen,
+        'test-primitive-kdf-hkdf': src.cpp.test.primitive.kdf_hkdf.gen,
+        'test-primitive-kdf-pbkdf-2': src.cpp.test.primitive.kdf_pbkdf_2.gen,
+        'test-primitive-mac': src.cpp.test.primitive.mac.gen
     }
 
     scheme: str

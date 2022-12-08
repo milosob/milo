@@ -1,0 +1,215 @@
+{
+    "scheme": "test-primitive-codec-encode",
+    "payload": {
+        "impl": "milo::primitive::codec::base_64",
+        "include": [
+            "<milo/primitive/codec/base.h>"
+        ],
+        "vectors": [
+            {
+                "data": [
+                    {
+                        "id": 1,
+                        "from": "86612fa55d65338bd7c0d6791202784b988950e64b8a58363879b1bdd67c9ea7",
+                        "to": "hmEvpV1lM4vXwNZ5EgJ4S5iJUOZLilg2OHmxvdZ8nqc="
+                    },
+                    {
+                        "id": 2,
+                        "from": "86830bc73332b7ce188a0764b41cdccf3bb7c30bf548f9522fc20edbab6def9895",
+                        "to": "hoMLxzMyt84YigdktBzczzu3wwv1SPlSL8IO26tt75iV"
+                    },
+                    {
+                        "id": 3,
+                        "from": "568d154c10f36200dc72bf80d4c36e5a2251c1ba895acd08fcb2682f6168dba80c22",
+                        "to": "Vo0VTBDzYgDccr+A1MNuWiJRwbqJWs0I/LJoL2Fo26gMIg=="
+                    },
+                    {
+                        "id": 4,
+                        "from": "3ff529a3152789e4cccdc0af3dd7fe4895b0bdce3929a8c548f36cb728e9ac0b4844db",
+                        "to": "P/UpoxUnieTMzcCvPdf+SJWwvc45KajFSPNstyjprAtIRNs="
+                    },
+                    {
+                        "id": 5,
+                        "from": "d46fe97490f4abb7ec00beeaa1b5776b0def58cb93b55ce52e170dc1647ff66d7f2df8e1",
+                        "to": "1G/pdJD0q7fsAL7qobV3aw3vWMuTtVzlLhcNwWR/9m1/Lfjh"
+                    },
+                    {
+                        "id": 6,
+                        "from": "c5a3e913b5da5c58af702c96cef2709922d61c211873cc0585a0e0327d963ebfb229ab3371",
+                        "to": "xaPpE7XaXFivcCyWzvJwmSLWHCEYc8wFhaDgMn2WPr+yKaszcQ=="
+                    },
+                    {
+                        "id": 7,
+                        "from": "5f00fd1824aa165d218015953167a4a0bfa63770dfde7b6b8f397ad7b08c5dccce01900e3956",
+                        "to": "XwD9GCSqFl0hgBWVMWekoL+mN3Df3ntrjzl617CMXczOAZAOOVY="
+                    },
+                    {
+                        "id": 8,
+                        "from": "41e2335085826293bb62c9c769291d21615c4cf33d7bcd96c01b31f1d38a6345e3252e8f44b9dd",
+                        "to": "QeIzUIWCYpO7YsnHaSkdIWFcTPM9e82WwBsx8dOKY0XjJS6PRLnd"
+                    },
+                    {
+                        "id": 9,
+                        "from": "0115a467290d18f098e4f8d295bda4556dd38493ae40ba4cc448be0e2c3ef963fbe84da2a5672345",
+                        "to": "ARWkZykNGPCY5PjSlb2kVW3ThJOuQLpMxEi+Diw++WP76E2ipWcjRQ=="
+                    },
+                    {
+                        "id": 10,
+                        "from": "538ee01c92d2b70222a3cffa67664ba2f14b4fbc8fcb8122cbee0486e4f0e27ec29fb435366e87df88",
+                        "to": "U47gHJLStwIio8/6Z2ZLovFLT7yPy4Eiy+4EhuTw4n7Cn7Q1Nm6H34g="
+                    },
+                    {
+                        "id": 11,
+                        "from": "00abf1c89b8d4b3413f8148861f606d9f174a6c97ba216a6561b2a783aa599e9ae9032d74039f3651975",
+                        "to": "AKvxyJuNSzQT+BSIYfYG2fF0psl7ohamVhsqeDqlmemukDLXQDnzZRl1"
+                    },
+                    {
+                        "id": 12,
+                        "from": "4b829cdec0e6d260b33718ded78d13b429335a2653f712878628b116c97429ea9f303e4e08f4314e5272ff",
+                        "to": "S4Kc3sDm0mCzNxje140TtCkzWiZT9xKHhiixFsl0KeqfMD5OCPQxTlJy/w=="
+                    },
+                    {
+                        "id": 13,
+                        "from": "a35ad3195e8ac5f1cadb292b3f695aa68437b09d04d413c0cd7ca3eb244d749c393217614a899cf5804e09d0",
+                        "to": "o1rTGV6KxfHK2ykrP2lapoQ3sJ0E1BPAzXyj6yRNdJw5MhdhSomc9YBOCdA="
+                    },
+                    {
+                        "id": 14,
+                        "from": "490a07b0983d7d009144914b6e25e4c29a49c2d2647a37485d75a353375b77525e5b9fc0385b28635ab528b669",
+                        "to": "SQoHsJg9fQCRRJFLbiXkwppJwtJkejdIXXWjUzdbd1JeW5/AOFsoY1q1KLZp"
+                    },
+                    {
+                        "id": 15,
+                        "from": "8c9b29b9efcd7989c68774c08c3315482b981ec19b70529c00e144b543d483e18f2bd78fd4c01ff69d9d9fcc0cff",
+                        "to": "jJspue/NeYnGh3TAjDMVSCuYHsGbcFKcAOFEtUPUg+GPK9eP1MAf9p2dn8wM/w=="
+                    },
+                    {
+                        "id": 16,
+                        "from": "da736cc838625a4aec4cbd4f4c32ed97164f487c51b519f82f5c018a0fe1ced6a070cd2c1916e5ab2668b1175375da",
+                        "to": "2nNsyDhiWkrsTL1PTDLtlxZPSHxRtRn4L1wBig/hztagcM0sGRblqyZosRdTddo="
+                    },
+                    {
+                        "id": 17,
+                        "from": "83c789915f1893f1114ae5d4d8f005be0283d24adbbf66c3f304537e1431c413de71b65aea8e3bfc9822e97a18b00a07",
+                        "to": "g8eJkV8Yk/ERSuXU2PAFvgKD0krbv2bD8wRTfhQxxBPecbZa6o47/Jgi6XoYsAoH"
+                    },
+                    {
+                        "id": 18,
+                        "from": "2c03c168bdf34431ef988bcb02b9db237ff3968ef9e019e1bf5d52bca43897cf4abf7909db45085544748067781fce6b80",
+                        "to": "LAPBaL3zRDHvmIvLArnbI3/zlo754Bnhv11SvKQ4l89Kv3kJ20UIVUR0gGd4H85rgA=="
+                    },
+                    {
+                        "id": 19,
+                        "from": "a84c2d1aa423d5a9621ed3a4992a1b0c6a5762dc3326be2cf3570c015653d37292837fc82db7f3c10e26b3889e325fe038c0",
+                        "to": "qEwtGqQj1aliHtOkmSobDGpXYtwzJr4s81cMAVZT03KSg3/ILbfzwQ4ms4ieMl/gOMA="
+                    },
+                    {
+                        "id": 20,
+                        "from": "dae15ebb5ed5559f44d9c7b2da1ef6937343e5b846d7809e076704b6452e3203910d3e77bdf5d0a54ce61b1b1d439f2048b9c7",
+                        "to": "2uFeu17VVZ9E2cey2h72k3ND5bhG14CeB2cEtkUuMgORDT53vfXQpUzmGxsdQ58gSLnH"
+                    },
+                    {
+                        "id": 21,
+                        "from": "a59aacbc22dc81ed23b920695f20663edf28a9e5f751029c12d5d050d538e13d94a9f1f963ee034721c964a9f18a424a312e70e1",
+                        "to": "pZqsvCLcge0juSBpXyBmPt8oqeX3UQKcEtXQUNU44T2UqfH5Y+4DRyHJZKnxikJKMS5w4Q=="
+                    },
+                    {
+                        "id": 22,
+                        "from": "27ee0314aafed27296fd2ad1aaa32e8b78a41f0187aa879187a822e3ec6b6ac66a36751b889e72cc5dc81cf75c873c860a8828cc03",
+                        "to": "J+4DFKr+0nKW/SrRqqMui3ikHwGHqoeRh6gi4+xrasZqNnUbiJ5yzF3IHPdchzyGCogozAM="
+                    },
+                    {
+                        "id": 23,
+                        "from": "f093c2334fdfea0225ed973001bc74cdf67a6467b83709e9adb303f75430f7864de27b2a7894e222fa7b78c38555ec3c18b19e972082",
+                        "to": "8JPCM0/f6gIl7ZcwAbx0zfZ6ZGe4NwnprbMD91Qw94ZN4nsqeJTiIvp7eMOFVew8GLGelyCC"
+                    },
+                    {
+                        "id": 24,
+                        "from": "6062de87354191e6e914c9ac99fefb90c5f6f2ad69f905754b2e0a223d4602d22e68a6618a75ce2a70cce79bab623b52d154b3f86c77d6",
+                        "to": "YGLehzVBkebpFMmsmf77kMX28q1p+QV1Sy4KIj1GAtIuaKZhinXOKnDM55urYjtS0VSz+Gx31g=="
+                    },
+                    {
+                        "id": 25,
+                        "from": "04b794a1317daa227f4ec6023521327cf46dcf0b691e4948a60032a7abe9e4c2d54aff2e579b4465f668a277ae83eaa978b85d9771e3d292",
+                        "to": "BLeUoTF9qiJ/TsYCNSEyfPRtzwtpHklIpgAyp6vp5MLVSv8uV5tEZfZooneug+qpeLhdl3Hj0pI="
+                    },
+                    {
+                        "id": 26,
+                        "from": "08e4f0b2d7c8f114040611b2e82ecb09490c5fc15f3e23eb1a9d2cc048ab06cdf8f518261c0513c2e8b5dfb843358460b1bb0c44a51ebe5494",
+                        "to": "COTwstfI8RQEBhGy6C7LCUkMX8FfPiPrGp0swEirBs349RgmHAUTwui137hDNYRgsbsMRKUevlSU"
+                    },
+                    {
+                        "id": 27,
+                        "from": "95dbb50f013eb8d340d6efce6bfd28635fa30c9f67a7b54d6b83c3dee8dee2b159377a5cd26017a000e4a8fb5bfcd41ac61b2bb44c3fde6ca143",
+                        "to": "ldu1DwE+uNNA1u/Oa/0oY1+jDJ9np7VNa4PD3uje4rFZN3pc0mAXoADkqPtb/NQaxhsrtEw/3myhQw=="
+                    },
+                    {
+                        "id": 28,
+                        "from": "f2dd6a1660adc396cd45cc10810fc79cd1bba143d35869be12aab4c71ef9a806605d05dd4da03a3f6087030a6cc3fa022e46c07f91a857276b1391",
+                        "to": "8t1qFmCtw5bNRcwQgQ/HnNG7oUPTWGm+Eqq0xx75qAZgXQXdTaA6P2CHAwpsw/oCLkbAf5GoVydrE5E="
+                    },
+                    {
+                        "id": 29,
+                        "from": "346a8e00a019c770957ac454b11488b4fc13b56d1af9545c5760acbda865b6b2f1b35505824f58bf1e5d191cee1dc2b2a493bd2cbf914103aa7fb784",
+                        "to": "NGqOAKAZx3CVesRUsRSItPwTtW0a+VRcV2CsvahltrLxs1UFgk9Yvx5dGRzuHcKypJO9LL+RQQOqf7eE"
+                    },
+                    {
+                        "id": 30,
+                        "from": "1f9e7ffe6102b5183d8555f4bb30649336aee5d7a86a43962cec55c9d8ecdaefc1811b5ae477403d487682e50715ad74ddc7a5ab319c0f4befd8fe3021",
+                        "to": "H55//mECtRg9hVX0uzBkkzau5deoakOWLOxVydjs2u/BgRta5HdAPUh2guUHFa103celqzGcD0vv2P4wIQ=="
+                    },
+                    {
+                        "id": 31,
+                        "from": "9e24b43ce1ff3f41c8fdef10dedfbac1846a3fc28fe14141457f07fd9c7319387fbb6e3c44a881cf5877791506cccc52acc5925bbc927a661e0a49eaa108",
+                        "to": "niS0POH/P0HI/e8Q3t+6wYRqP8KP4UFBRX8H/ZxzGTh/u248RKiBz1h3eRUGzMxSrMWSW7ySemYeCknqoQg="
+                    },
+                    {
+                        "id": 32,
+                        "from": "e8ca464684af93d8fcd9907a7127073c9462e1b0f6b1730df867ca5f502b787aac4d8405c43ef60131780a5fb55dd5787390a64983a834498cbcd1c4499194",
+                        "to": "6MpGRoSvk9j82ZB6cScHPJRi4bD2sXMN+GfKX1AreHqsTYQFxD72ATF4Cl+1XdV4c5CmSYOoNEmMvNHESZGU"
+                    },
+                    {
+                        "id": 33,
+                        "from": "81025e673c31fad5a649e1f1b6aea83e2755f6bc2faa2e8a42365b59fe90840d85b7b8af142e8ee1d01e664cba137284ea2172bef78a0d7f8dddc68b2d528314",
+                        "to": "gQJeZzwx+tWmSeHxtq6oPidV9rwvqi6KQjZbWf6QhA2Ft7ivFC6O4dAeZky6E3KE6iFyvveKDX+N3caLLVKDFA=="
+                    },
+                    {
+                        "id": 34,
+                        "from": "7e4678a1caa91d3e1055e1a3dd4cd8dde9b27d71538c87c28b72bc1fb8dafdb2617b4f5ba9a32bb8740e63aa95c2ed0207be279209077f183f85150a1166ab1f62",
+                        "to": "fkZ4ocqpHT4QVeGj3UzY3emyfXFTjIfCi3K8H7ja/bJhe09bqaMruHQOY6qVwu0CB74nkgkHfxg/hRUKEWarH2I="
+                    },
+                    {
+                        "id": 35,
+                        "from": "c276f2df0bfac56ae3346374d607cba6c3e8e348ac92c431953428b8b9bb84b6924ed2c7cf7440f31b8ea16fcc4ae8538054b3be7db8fe2e14d6ee354e7dde71a27d",
+                        "to": "wnby3wv6xWrjNGN01gfLpsPo40isksQxlTQouLm7hLaSTtLHz3RA8xuOoW/MSuhTgFSzvn24/i4U1u41Tn3ecaJ9"
+                    },
+                    {
+                        "id": 36,
+                        "from": "38522719625e42b1cf77235bc700eec688cdda9621be7a4c2eff0e473224bc52b7168ee142e29c6443aa7b9542bf9b4627057647054cfde4e5633279f88b6c0d2d073f",
+                        "to": "OFInGWJeQrHPdyNbxwDuxojN2pYhvnpMLv8ORzIkvFK3Fo7hQuKcZEOqe5VCv5tGJwV2RwVM/eTlYzJ5+ItsDS0HPw=="
+                    },
+                    {
+                        "id": 37,
+                        "from": "ea7d84f62036bdfab01696383a5065f006e5c0a796605ca42e70bf0fa1970bd651ceaffac800f3f52ff9609f5d74c9479c1f4c9c4489d33f080744b8aadea4c8e9d4be31",
+                        "to": "6n2E9iA2vfqwFpY4OlBl8AblwKeWYFykLnC/D6GXC9ZRzq/6yADz9S/5YJ9ddMlHnB9MnESJ0z8IB0S4qt6kyOnUvjE="
+                    },
+                    {
+                        "id": 38,
+                        "from": "9dfd860f7e16b5088afb4121a5f5a8036145936230df6564f14b65b4c907cec330b29780f1cf011a22aaed2cad0795ee597b6690eafea37228bc93ebe8fe1f3534b13e6a55",
+                        "to": "nf2GD34WtQiK+0EhpfWoA2FFk2Iw32Vk8UtltMkHzsMwspeA8c8BGiKq7SytB5XuWXtmkOr+o3IovJPr6P4fNTSxPmpV"
+                    },
+                    {
+                        "id": 39,
+                        "from": "0b6043aa01481502fd2d4d069864e3001d0789d3dbdb0b945f7aad40870ae41da09809a225a1958857abbb461826bd80ba3fa29f8dafe6a51b048f4d9ec920bc289b1fc20b89",
+                        "to": "C2BDqgFIFQL9LU0GmGTjAB0HidPb2wuUX3qtQIcK5B2gmAmiJaGViFeru0YYJr2Auj+in42v5qUbBI9NnskgvCibH8ILiQ=="
+                    },
+                    {
+                        "id": 40,
+                        "from": "a1e65c84989db32f013bb43d5b1565650375f2eab692c3ad14814bb8876525f28823543cd57dbccdf6863dab0c297c838245150df1469ecf45f764178897feae79130cf2e0b1ac",
+                        "to": "oeZchJidsy8BO7Q9WxVlZQN18uq2ksOtFIFLuIdlJfKII1Q81X28zfaGPasMKXyDgkUVDfFGns9F92QXiJf+rnkTDPLgsaw="
+                    }
+                ]
+            }
+        ]
+    }
+}

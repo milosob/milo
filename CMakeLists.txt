@@ -7,8 +7,10 @@ project(
 
 include(GNUInstallDirs)
 
-option(MILO_BUILD_TESTS "Build tests." OFF)
-option(MILO_BUILD_TESTS_CONSTEXPR "Build tests constexpr." OFF)
+option(MILO_TEST "Enable testing." OFF)
+option(MILO_TEST_CONSTEXPR "Enable constexpr testing." OFF)
+option(MILO_TEST_INNER "Enable inner testing." OFF)
+option(MILO_TEST_PRIMITIVE "Enable primitive testing." OFF)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/config.h
@@ -49,7 +51,7 @@ install(
         DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake"
 )
 
-if (${MILO_BUILD_TESTS})
+if (${MILO_TEST})
     enable_testing()
-    add_subdirectory(tests)
+    add_subdirectory(test)
 endif ()

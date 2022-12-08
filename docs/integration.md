@@ -49,10 +49,10 @@ cd milo-build
 ```
 
 ```shell
-cmake ../milo -DMILO_BUILD_TESTS=ON -DMILO_BUILD_TESTS_CONSTEXPR=ON && make && ctest --test-dir tests
+cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON && make && ctest --test-dir tests
 ```
 
-Skip `-DMILO_BUILD_TESTS_CONSTEXPR=ON` if testing for `constexpr` correctness is not necessary.
+Skip `-DMILO_TEST_CONSTEXPR=ON` if testing for `constexpr` correctness is not necessary.
 Testing constexpr cases can take up to several minutes.
 
 ```shell

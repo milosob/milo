@@ -218,8 +218,8 @@ pipenv install
 bash tests/configs/generate.sh
 ```
 
-Tests are detected by CMake when `MILO_BUILD_TESTS` option is set to `ON`.
-Testing constexpr cases can be done when `MILO_BUILD_TESTS_CONSTEXPR` option is set `ON`.
+Tests are detected by CMake when `MILO_TEST` option is set to `ON`.
+Testing constexpr cases can be done when `MILO_TEST_CONSTEXPR` option is set `ON`.
 It often takes a few minutes, and the evaluation of `pbkdf_2` consumes most of the time.
 
 To understand how to generate custom test programs, analyze
