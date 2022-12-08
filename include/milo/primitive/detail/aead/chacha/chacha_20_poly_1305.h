@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -88,7 +88,7 @@ namespace milo::primitive::detail
             constexpr auto init_mac_key_size = cipher_type::block_size;
             uint8_t init_mac_key[init_mac_key_size]{};
             
-            inner::memory_init(
+            internal::memory_init(
                 init_cipher_iv + sizeof(uint32_t),
                 init_cipher_iv_size - sizeof(uint32_t),
                 a_iv_ptr,
@@ -248,13 +248,13 @@ namespace milo::primitive::detail
             constexpr size_t buffer_last_size = 16;
             uint8_t buffer_last[buffer_last_size];
             
-            inner::memory_stor_le<uint64_t>(
+            internal::memory_stor_le<uint64_t>(
                 buffer_last,
                 0,
                 m_aad_processed_size
             );
             
-            inner::memory_stor_le<uint64_t>(
+            internal::memory_stor_le<uint64_t>(
                 buffer_last,
                 1,
                 m_edd_processed_size

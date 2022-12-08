@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/cipher/apie.h>
 
@@ -72,7 +72,7 @@ namespace milo::primitive::cipher
                     a_plaintext
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     ciphertext,
                     a_ciphertext
                 ))
@@ -133,7 +133,7 @@ namespace milo::primitive::cipher
                     a_ciphertext
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     plaintext,
                     a_plaintext
                 ))

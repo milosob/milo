@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -90,13 +90,13 @@ namespace milo::primitive::detail
                 
                 for (size_t j = 0; j < 16; j += 1)
                 {
-                    schedule[j] = inner::memory_load_be<uint32_t>(
+                    schedule[j] = internal::memory_load_be<uint32_t>(
                         a_src_ptr,
                         j
                     );
                     
                     uint32_t t_1 =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             a,
                             5
                         ) +
@@ -111,7 +111,7 @@ namespace milo::primitive::detail
                     
                     e = d;
                     d = c;
-                    c = inner::bit_rotr(
+                    c = internal::bit_rotr(
                         b,
                         2
                     );
@@ -122,7 +122,7 @@ namespace milo::primitive::detail
                 for (size_t j = 16; j < 20; j += 1)
                 {
                     schedule[j] =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -131,7 +131,7 @@ namespace milo::primitive::detail
                         );
                     
                     uint32_t t_1 =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             a,
                             5
                         ) +
@@ -146,7 +146,7 @@ namespace milo::primitive::detail
                     
                     e = d;
                     d = c;
-                    c = inner::bit_rotr(
+                    c = internal::bit_rotr(
                         b,
                         2
                     );
@@ -157,7 +157,7 @@ namespace milo::primitive::detail
                 for (size_t j = 20; j < 40; j += 1)
                 {
                     schedule[j] =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -166,7 +166,7 @@ namespace milo::primitive::detail
                         );
                     
                     uint32_t t_1 =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             a,
                             5
                         ) +
@@ -181,7 +181,7 @@ namespace milo::primitive::detail
                     
                     e = d;
                     d = c;
-                    c = inner::bit_rotr(
+                    c = internal::bit_rotr(
                         b,
                         2
                     );
@@ -192,7 +192,7 @@ namespace milo::primitive::detail
                 for (size_t j = 40; j < 60; j += 1)
                 {
                     schedule[j] =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -201,7 +201,7 @@ namespace milo::primitive::detail
                         );
                     
                     uint32_t t_1 =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             a,
                             5
                         ) +
@@ -216,7 +216,7 @@ namespace milo::primitive::detail
                     
                     e = d;
                     d = c;
-                    c = inner::bit_rotr(
+                    c = internal::bit_rotr(
                         b,
                         2
                     );
@@ -227,7 +227,7 @@ namespace milo::primitive::detail
                 for (size_t j = 60; j < 80; j += 1)
                 {
                     schedule[j] =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             schedule[j - 3] ^
                             schedule[j - 8] ^
                             schedule[j - 14] ^
@@ -236,7 +236,7 @@ namespace milo::primitive::detail
                         );
                     
                     uint32_t t_1 =
-                        inner::bit_rotl(
+                        internal::bit_rotl(
                             a,
                             5
                         ) +
@@ -251,7 +251,7 @@ namespace milo::primitive::detail
                     
                     e = d;
                     d = c;
-                    c = inner::bit_rotr(
+                    c = internal::bit_rotr(
                         b,
                         2
                     );

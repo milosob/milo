@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::cipher
@@ -211,7 +211,7 @@ namespace milo::primitive::cipher
             t_ciphertext& a_ciphertext
         ) noexcept(meta::container_static<t_ciphertext>) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_ciphertext,
                 encrypt_size(a_plaintext)
             );
@@ -222,7 +222,7 @@ namespace milo::primitive::cipher
                 a_ciphertext.data()
             );
             
-            inner::resize(
+            internal::resize(
                 a_ciphertext,
                 size
             );
@@ -375,7 +375,7 @@ namespace milo::primitive::cipher
             t_plaintext& a_plaintext
         ) noexcept(meta::container_static<t_plaintext>) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_plaintext,
                 decrypt_size(a_ciphertext)
             );
@@ -386,7 +386,7 @@ namespace milo::primitive::cipher
                 a_plaintext.data()
             );
             
-            inner::resize(
+            internal::resize(
                 a_plaintext,
                 size
             );

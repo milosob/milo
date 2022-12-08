@@ -1,5 +1,5 @@
 project(
-        milo_test_inner
+        milo_test_internal
         VERSION ${PROJECT_VERSION}
         LANGUAGES CXX
 )

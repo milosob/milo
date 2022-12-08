@@ -5,12 +5,12 @@
 
 #include <milo/meta.h>
 
-#include <milo/inner/base.h>
-#include <milo/inner/memory.h>
-#include <milo/inner/utility.h>
+#include <milo/internal/base.h>
+#include <milo/internal/memory.h>
+#include <milo/internal/utility.h>
 
 
-namespace milo::inner
+namespace milo::internal
 {
     template<
         typename t_impl,

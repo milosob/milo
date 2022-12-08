@@ -5,11 +5,11 @@
 
 #include <milo/meta.h>
 
-#include <milo/inner/arch/x86.h>
-#include <milo/inner/arch/any.h>
+#include <milo/internal/arch/x86.h>
+#include <milo/internal/arch/any.h>
 
 
-namespace milo::inner
+namespace milo::internal
 {
     using arch_active = meta::disjunction<
         meta::asbool<arch_x86::value, arch_x86>,

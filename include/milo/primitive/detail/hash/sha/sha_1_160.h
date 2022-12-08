@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/detail/hash/impl.h>
 #include <milo/primitive/detail/hash/sha/sha_1_160_impl_sw.h>
@@ -22,14 +22,14 @@ namespace milo::primitive::detail
     public:
         
         struct impl_type
-            : inner::impl_proxy<
-                inner::impl_domain_runtime,
+            : internal::impl_proxy<
+                internal::impl_domain_runtime,
                 hash_impl_chooser,
                 hash_impl_invoker,
-                inner::impl_cpltime<
+                internal::impl_cpltime<
                     hash_sha_1_160_impl_sw
                 >,
-                inner::impl_runtime<
+                internal::impl_runtime<
                     hash_sha_1_160_impl_hw_x86_v_2,
                     hash_sha_1_160_impl_hw_x86_v_1,
                     hash_sha_1_160_impl_sw
@@ -60,7 +60,7 @@ namespace milo::primitive::detail
         
         static
         constexpr size_t digest_size =
-            inner::option_digest_size_suite::query_default_v<
+            internal::option_digest_size_suite::query_default_v<
                 bits / 8,
                 t_options...
             >;
@@ -85,10 +85,10 @@ namespace milo::primitive::detail
         
         constexpr ~hash_sha_1_160() noexcept(true)
         {
-            inner::memory_erase(m_h);
-            inner::memory_erase(m_processed_bytes);
-            inner::memory_erase(m_buffer);
-            inner::memory_erase(m_buffer_size);
+            internal::memory_erase(m_h);
+            internal::memory_erase(m_processed_bytes);
+            internal::memory_erase(m_buffer);
+            internal::memory_erase(m_buffer_size);
         }
     
     public:
@@ -132,7 +132,7 @@ namespace milo::primitive::detail
         {
             m_processed_bytes += a_message_size;
             
-            m_buffer_size = inner::update_block_soak<
+            m_buffer_size = internal::update_block_soak<
                 impl_type
             >(
                 m_buffer,
@@ -157,7 +157,7 @@ namespace milo::primitive::detail
                 m_buffer[i] = 0;
             }
             
-            inner::memory_stor_be<uint64_t>(
+            internal::memory_stor_be<uint64_t>(
                 m_buffer + last_size - 8,
                 0,
                 m_processed_bytes << 3
@@ -181,12 +181,12 @@ namespace milo::primitive::detail
             size_t a_digest_size = digest_size
         ) const noexcept(true) -> size_t
         {
-            a_digest_size = inner::min(
+            a_digest_size = internal::min(
                 a_digest_size,
                 digest_size
             );
             
-            inner::memory_copy_be(
+            internal::memory_copy_be(
                 a_digest_ptr,
                 m_h,
                 a_digest_size

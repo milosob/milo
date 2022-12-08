@@ -1,10 +1,10 @@
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 template<
-    milo::meta::integral t_load,
+    milo::meta::integral t_stor,
     milo::meta::integral t_data,
     size_t t_size
 >
@@ -12,95 +12,85 @@ constexpr auto
 test_case(
 ) noexcept(true)
 {
-    using load_type = t_load;
+    using stor_type = t_stor;
     using data_type = t_data;
     
     constexpr auto size = t_size;
-    constexpr auto load_size = sizeof(load_type);
+    constexpr auto stor_size = sizeof(stor_type);
     constexpr auto data_size = sizeof(data_type);
-    constexpr auto loads_size = size / load_size;
+    constexpr auto stors_size = size / stor_size;
     constexpr auto datas_size = size / data_size;
     
     static_assert(size / data_size < 256);
     static_assert(size % data_size == 0);
     
-    milo::container::array<load_type, loads_size * (load_size + 1 + 1) * 2> loads{};
-    milo::container::array<data_type, datas_size> datas{};
+    milo::container::array<milo::container::array<data_type, datas_size>, (stor_size + 1 + 1) * 2> datas{};
     
-    for (size_t i = 0, c = 0; i < datas_size; i += 1)
+    for (size_t i = 0, c = 0; i < stors_size; i += 1)
     {
-        data_type data = 0;
+        stor_type stor = 0;
         
-        for (size_t j = 0; j < data_size; j += 1)
+        for (size_t j = 0; j < stor_size; j += 1)
         {
-            if constexpr (data_size > 1)
+            if constexpr (stor_size > 1)
             {
-                data <<= 8;
+                stor <<= 8;
             }
             
-            data |= data_type(c & 0xff);
+            stor |= stor_type(c & 0xff);
             
             c += 1;
         }
         
-        datas[i] = milo::inner::endian_bigof(data);
-    }
-    
-    for (size_t i = 0, c = 0; i < loads_size; i += 1)
-    {
-        loads[c] = milo::inner::memory_load_le<load_type>(
-            datas.data(),
-            i
+        milo::internal::memory_stor_le<stor_type>(
+            datas[0].data(),
+            i,
+            stor
         );
         
-        c += 1;
-        
-        loads[c] = milo::inner::memory_load_be<load_type>(
-            datas.data(),
-            i
+        milo::internal::memory_stor_be<stor_type>(
+            datas[1].data(),
+            i,
+            stor
         );
         
-        c += 1;
-        
-        for (size_t j = 0; j < load_size + 1; j += 1)
+        for (size_t j = 0; j < stor_size + 1; j += 1)
         {
-            loads[c] = milo::inner::memory_load_le<load_type>(
-                datas.data(),
+            milo::internal::memory_stor_le<stor_type>(
+                datas[2 + j * 2].data(),
                 i,
+                stor,
                 j
             );
             
-            c += 1;
-            
-            loads[c] = milo::inner::memory_load_be<load_type>(
-                datas.data(),
+            milo::internal::memory_stor_be<stor_type>(
+                datas[2 + j * 2 + 1].data(),
                 i,
+                stor,
                 j
             );
-            
-            c += 1;
         }
     }
     
-    return loads;
+    return datas;
 }
 
 template<
-    typename t_load,
+    typename t_stor,
     typename t_data
 >
 auto
 test_do(
 ) noexcept(false) -> void
 {
-    constexpr auto case_constexpr = test_case<t_load, t_data, 32>();
+    constexpr auto case_constexpr = test_case<t_stor, t_data, 32>();
     
-    volatile auto loads_runtime_cb = test_case<t_load, t_data, 32>;
-    auto case_runtime = loads_runtime_cb();
+    volatile auto stors_runtime_cb = test_case<t_stor, t_data, 32>;
+    auto case_runtime = stors_runtime_cb();
     
     if (case_constexpr != case_runtime)
     {
-        throw int(sizeof(t_load) << 8 | sizeof(t_data));
+        throw int(sizeof(t_stor) << 8 | sizeof(t_data));
     }
 }
 

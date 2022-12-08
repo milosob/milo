@@ -5,13 +5,13 @@
 
 #include <milo/meta.h>
 
-#include <milo/inner/base.h>
-#include <milo/inner/bit.h>
-#include <milo/inner/endian.h>
-#include <milo/inner/utility.h>
+#include <milo/internal/base.h>
+#include <milo/internal/bit.h>
+#include <milo/internal/endian.h>
+#include <milo/internal/utility.h>
 
 
-namespace milo::inner
+namespace milo::internal
 {
     template<
         meta::integral t_val,

@@ -4,8 +4,8 @@ project(
         LANGUAGES CXX
 )
 
-if (${MILO_TEST_INNER})
-    add_subdirectory(inner)
+if (${MILO_TEST_INTERNAL})
+    add_subdirectory(internal)
 endif ()
 
 if (${MILO_TEST_PRIMITIVE})

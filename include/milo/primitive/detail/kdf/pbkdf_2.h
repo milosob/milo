@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -36,9 +36,9 @@ namespace milo::primitive::detail
         
         prf_type m_prf;
         
-        inner::memory_bytes_const_view m_ikm;
+        internal::memory_bytes_const_view m_ikm;
         
-        inner::memory_bytes_const_view m_salt;
+        internal::memory_bytes_const_view m_salt;
         
         uint32_t m_iterations = 0;
         
@@ -58,10 +58,10 @@ namespace milo::primitive::detail
         
         constexpr ~kdf_pbkdf_2() noexcept(true)
         {
-            inner::memory_erase(m_iterations);
-            inner::memory_erase(m_counter);
-            inner::memory_erase(m_buffer);
-            inner::memory_erase(m_buffer_size);
+            internal::memory_erase(m_iterations);
+            internal::memory_erase(m_counter);
+            internal::memory_erase(m_buffer);
+            internal::memory_erase(m_buffer_size);
         }
     
     public:
@@ -85,7 +85,7 @@ namespace milo::primitive::detail
             uint8_t buffer[expand_size * 2];
             uint8_t buffer_counter[sizeof(uint32_t)];
             
-            inner::memory_stor_be<uint32_t>(
+            internal::memory_stor_be<uint32_t>(
                 buffer_counter,
                 0,
                 a_counter
@@ -108,7 +108,7 @@ namespace milo::primitive::detail
                 buffer
             );
             
-            inner::memory_copy(
+            internal::memory_copy(
                 buffer + expand_size,
                 buffer,
                 expand_size
@@ -129,7 +129,7 @@ namespace milo::primitive::detail
                     buffer
                 );
                 
-                inner::memory_xor(
+                internal::memory_xor(
                     buffer + expand_size,
                     buffer + expand_size,
                     buffer,
@@ -150,7 +150,7 @@ namespace milo::primitive::detail
                 buffer
             );
             
-            inner::memory_xor(
+            internal::memory_xor(
                 a_key_ptr,
                 buffer + expand_size,
                 buffer,
@@ -173,11 +173,11 @@ namespace milo::primitive::detail
             uint32_t a_iterations
         ) noexcept(true) -> void
         {
-            m_ikm = inner::memory_bytes_const_view(
+            m_ikm = internal::memory_bytes_const_view(
                 a_ikm_ptr,
                 a_ikm_size
             );
-            m_salt = inner::memory_bytes_const_view(
+            m_salt = internal::memory_bytes_const_view(
                 a_salt_ptr,
                 a_salt_size
             );
@@ -201,12 +201,12 @@ namespace milo::primitive::detail
             
             if (m_buffer_size > 0)
             {
-                auto copy_size = inner::min(
+                auto copy_size = internal::min(
                     key_size,
                     m_buffer_size
                 );
                 
-                inner::memory_copy(
+                internal::memory_copy(
                     key_ptr,
                     m_buffer + expand_size - m_buffer_size,
                     copy_size
@@ -248,7 +248,7 @@ namespace milo::primitive::detail
                 
                 counter += 1;
                 
-                inner::memory_copy(
+                internal::memory_copy(
                     key_ptr,
                     m_buffer,
                     last_size

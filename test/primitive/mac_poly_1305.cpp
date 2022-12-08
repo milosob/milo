@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 #include <milo/literal.h>
 
 #include <milo/primitive/mac/poly.h>

@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -33,25 +33,25 @@ namespace milo::primitive::detail
             auto s_3 = a_state_ptr[a_3];
             
             s_0 = s_0 + s_1;
-            s_3 = inner::bit_rotl(
+            s_3 = internal::bit_rotl(
                 s_3 ^ s_0,
                 16
             );
             
             s_2 = s_2 + s_3;
-            s_1 = inner::bit_rotl(
+            s_1 = internal::bit_rotl(
                 s_1 ^ s_2,
                 12
             );
             
             s_0 = s_0 + s_1;
-            s_3 = inner::bit_rotl(
+            s_3 = internal::bit_rotl(
                 s_3 ^ s_0,
                 8
             );
             
             s_2 = s_2 + s_3;
-            s_1 = inner::bit_rotl(
+            s_1 = internal::bit_rotl(
                 s_1 ^ s_2,
                 7
             );
@@ -94,7 +94,7 @@ namespace milo::primitive::detail
             
             for (size_t i = 0; i < 16; i += 1)
             {
-                inner::memory_stor_le<uint32_t>(
+                internal::memory_stor_le<uint32_t>(
                     a_dst_ptr,
                     i,
                     state[i] + a_state_ptr[i]

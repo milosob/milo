@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 #if MILO_ARCH_X86_ISE_SSE_1 && \

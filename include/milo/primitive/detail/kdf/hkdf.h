@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -36,7 +36,7 @@ namespace milo::primitive::detail
         
         hmac_type m_hmac;
         
-        inner::memory_bytes_const_view m_info;
+        internal::memory_bytes_const_view m_info;
         
         uint8_t m_counter = 1;
         
@@ -56,10 +56,10 @@ namespace milo::primitive::detail
         
         constexpr ~kdf_hkdf() noexcept(true)
         {
-            inner::memory_erase(m_counter);
-            inner::memory_erase(m_prk);
-            inner::memory_erase(m_buffer);
-            inner::memory_erase(m_buffer_size);
+            internal::memory_erase(m_counter);
+            internal::memory_erase(m_prk);
+            internal::memory_erase(m_buffer);
+            internal::memory_erase(m_buffer_size);
         }
     
     public:
@@ -120,7 +120,7 @@ namespace milo::primitive::detail
             size_t a_info_size
         ) noexcept(true) -> void
         {
-            m_info = inner::memory_bytes_const_view(
+            m_info = internal::memory_bytes_const_view(
                 a_info_ptr,
                 a_info_size
             );
@@ -156,12 +156,12 @@ namespace milo::primitive::detail
             
             if (m_buffer_size > 0)
             {
-                auto copy_size = inner::min(
+                auto copy_size = internal::min(
                     key_size,
                     m_buffer_size
                 );
                 
-                inner::memory_copy(
+                internal::memory_copy(
                     key_ptr,
                     m_buffer + expand_size - m_buffer_size,
                     copy_size
@@ -235,7 +235,7 @@ namespace milo::primitive::detail
                 counter += 1;
             }
             
-            inner::memory_copy(
+            internal::memory_copy(
                 key_ptr,
                 m_buffer,
                 last_size

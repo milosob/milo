@@ -9,12 +9,12 @@ include(GNUInstallDirs)
 
 option(MILO_TEST "Enable testing." OFF)
 option(MILO_TEST_CONSTEXPR "Enable constexpr testing." OFF)
-option(MILO_TEST_INNER "Enable inner testing." OFF)
+option(MILO_TEST_INTERNAL "Enable internal testing." OFF)
 option(MILO_TEST_PRIMITIVE "Enable primitive testing." OFF)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/config.h
-        ${PROJECT_SOURCE_DIR}/include/milo/inner/config.h
+        ${PROJECT_SOURCE_DIR}/include/milo/internal/config.h
 )
 
 add_library(

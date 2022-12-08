@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/detail/cipher/chacha/chacha_20_impl.h>
 #include <milo/primitive/detail/cipher/chacha/chacha_20_impl_sw.h>
@@ -19,14 +19,14 @@ namespace milo::primitive::detail
     public:
         
         struct impl_type
-            : inner::impl_proxy<
-                inner::impl_domain_runtime,
+            : internal::impl_proxy<
+                internal::impl_domain_runtime,
                 cipher_chacha_20_impl_chooser,
                 cipher_chacha_20_impl_invoker,
-                inner::impl_cpltime<
+                internal::impl_cpltime<
                     cipher_chacha_20_impl_sw
                 >,
-                inner::impl_runtime<
+                internal::impl_runtime<
                     cipher_chacha_20_impl_sw
                 >,
                 t_options...
@@ -76,9 +76,9 @@ namespace milo::primitive::detail
         
         constexpr ~cipher_chacha_20() noexcept(true)
         {
-            inner::memory_erase(m_state);
-            inner::memory_erase(m_buffer);
-            inner::memory_erase(m_buffer_size);
+            internal::memory_erase(m_state);
+            internal::memory_erase(m_buffer);
+            internal::memory_erase(m_buffer_size);
         }
     
     public:
@@ -107,14 +107,14 @@ namespace milo::primitive::detail
             m_state[2] = 0x79622d32;
             m_state[3] = 0x6b206574;
             
-            inner::memory_init_le(
+            internal::memory_init_le(
                 m_state + 4,
                 8,
                 a_key_ptr,
                 a_key_size
             );
             
-            inner::memory_init_le(
+            internal::memory_init_le(
                 m_state + 12,
                 4,
                 a_iv_ptr,
@@ -135,7 +135,7 @@ namespace milo::primitive::detail
             t_ciphertext* a_ciphertext_ptr
         ) noexcept(true) -> size_t
         {
-            m_buffer_size = inner::update_block_prod_xor<
+            m_buffer_size = internal::update_block_prod_xor<
                 impl_type
             >(
                 m_buffer,
@@ -173,7 +173,7 @@ namespace milo::primitive::detail
             t_plaintext* a_plaintext_ptr
         ) noexcept(true) -> size_t
         {
-            m_buffer_size = inner::update_block_prod_xor<
+            m_buffer_size = internal::update_block_prod_xor<
                 impl_type
             >(
                 m_buffer,

@@ -5,12 +5,12 @@
 
 #include <milo/meta.h>
 
-#include <milo/inner/arch.h>
-#include <milo/inner/option.h>
-#include <milo/inner/utility.h>
+#include <milo/internal/arch.h>
+#include <milo/internal/option.h>
+#include <milo/internal/utility.h>
 
 
-namespace milo::inner
+namespace milo::internal
 {
     using impl_domain_strict = arch_active::ise::strict;
     

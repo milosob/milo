@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/codec/apie.h>
 #include <milo/primitive/codec/base.h>

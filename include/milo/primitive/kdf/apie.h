@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::kdf
@@ -467,7 +467,7 @@ namespace milo::primitive::kdf
             size_t a_key_size
         ) noexcept(meta::container_static<t_key>) -> size_t
         {
-            a_key_size = inner::resize(
+            a_key_size = internal::resize(
                 a_key,
                 a_key_size
             );

@@ -32,7 +32,7 @@ def gen(
             '',
             src.cpp.lang.gen_include(
                 [
-                    '<milo/inner.h>',
+                    '<milo/internal.h>',
                     '<milo/literal.h>'
                 ]
             ),

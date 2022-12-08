@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::hash
@@ -185,12 +185,12 @@ namespace milo::primitive::hash
         {
             do_finalize();
             
-            a_digest_size = inner::min(
+            a_digest_size = internal::min(
                 a_digest_size,
                 digest_size
             );
             
-            a_digest_size = inner::resize(
+            a_digest_size = internal::resize(
                 a_digest,
                 a_digest_size
             );

@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -40,19 +40,19 @@ namespace milo::primitive::detail
             
             for (size_t i = 0; i < a_blocks; i += 1)
             {
-                uint64_t t_0 = inner::memory_load_le<uint32_t>(
+                uint64_t t_0 = internal::memory_load_le<uint32_t>(
                     a_src_ptr,
                     0
                 );
-                uint64_t t_1 = inner::memory_load_le<uint32_t>(
+                uint64_t t_1 = internal::memory_load_le<uint32_t>(
                     a_src_ptr,
                     1
                 );
-                uint64_t t_2 = inner::memory_load_le<uint32_t>(
+                uint64_t t_2 = internal::memory_load_le<uint32_t>(
                     a_src_ptr,
                     2
                 );
-                uint64_t t_3 = inner::memory_load_le<uint32_t>(
+                uint64_t t_3 = internal::memory_load_le<uint32_t>(
                     a_src_ptr,
                     3
                 );

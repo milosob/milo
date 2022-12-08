@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -36,7 +36,7 @@ namespace milo::primitive::detail
         
         static
         constexpr size_t digest_size =
-            inner::option_digest_size_suite::query_default_v<
+            internal::option_digest_size_suite::query_default_v<
                 hash_type::digest_size,
                 t_options...
             >;
@@ -62,7 +62,7 @@ namespace milo::primitive::detail
         
         constexpr ~mac_hmac() noexcept(true)
         {
-            inner::memory_erase(m_buffer);
+            internal::memory_erase(m_buffer);
         }
     
     public:
@@ -95,7 +95,7 @@ namespace milo::primitive::detail
                     m_buffer
                 );
                 
-                inner::memory_copy(
+                internal::memory_copy(
                     m_buffer + block_size,
                     m_buffer,
                     hash_type::digest_size
@@ -105,26 +105,26 @@ namespace milo::primitive::detail
             }
             else
             {
-                inner::memory_copy(
+                internal::memory_copy(
                     m_buffer,
                     a_key_ptr,
                     a_key_size
                 );
                 
-                inner::memory_copy(
+                internal::memory_copy(
                     m_buffer + block_size,
                     a_key_ptr,
                     a_key_size
                 );
             }
             
-            inner::memory_set(
+            internal::memory_set(
                 m_buffer + a_key_size,
                 0,
                 block_size - a_key_size
             );
             
-            inner::memory_set(
+            internal::memory_set(
                 m_buffer + block_size + a_key_size,
                 0,
                 block_size - a_key_size
@@ -184,7 +184,7 @@ namespace milo::primitive::detail
             size_t a_digest_size = digest_size
         ) const noexcept(true) -> size_t
         {
-            a_digest_size = inner::min(
+            a_digest_size = internal::min(
                 a_digest_size,
                 digest_size
             );

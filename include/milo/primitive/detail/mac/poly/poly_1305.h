@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/detail/mac/poly/poly_1305_impl.h>
 #include <milo/primitive/detail/mac/poly/poly_1305_impl_sw.h>
@@ -19,14 +19,14 @@ namespace milo::primitive::detail
     private:
         
         struct impl_type
-            : inner::impl_proxy<
-                inner::impl_domain_runtime,
+            : internal::impl_proxy<
+                internal::impl_domain_runtime,
                 mac_poly_1305_impl_chooser,
                 mac_poly_1305_impl_invoker,
-                inner::impl_cpltime<
+                internal::impl_cpltime<
                     mac_poly_1305_impl_sw
                 >,
-                inner::impl_runtime<
+                internal::impl_runtime<
                     mac_poly_1305_impl_sw
                 >
             >
@@ -51,7 +51,7 @@ namespace milo::primitive::detail
         
         static
         constexpr size_t digest_size =
-            inner::option_digest_size_suite::query_default_v<
+            internal::option_digest_size_suite::query_default_v<
                 16,
                 t_options...
             >;
@@ -83,11 +83,11 @@ namespace milo::primitive::detail
         
         constexpr ~mac_poly_1305() noexcept(true)
         {
-            inner::memory_erase(m_key_r);
-            inner::memory_erase(m_key_s);
-            inner::memory_erase(m_acc);
-            inner::memory_erase(m_buffer);
-            inner::memory_erase(m_buffer_size);
+            internal::memory_erase(m_key_r);
+            internal::memory_erase(m_key_s);
+            internal::memory_erase(m_acc);
+            internal::memory_erase(m_buffer);
+            internal::memory_erase(m_buffer_size);
         }
     
     public:
@@ -108,7 +108,7 @@ namespace milo::primitive::detail
             size_t a_key_size
         ) noexcept(true) -> void
         {
-            inner::memory_init(
+            internal::memory_init(
                 m_key_r,
                 a_key_ptr,
                 a_key_size
@@ -143,7 +143,7 @@ namespace milo::primitive::detail
             size_t a_message_size
         ) noexcept(true) -> void
         {
-            m_buffer_size = inner::update_block_soak<
+            m_buffer_size = internal::update_block_soak<
                 impl_type
             >(
                 m_buffer,
@@ -164,7 +164,7 @@ namespace milo::primitive::detail
             {
                 m_buffer[m_buffer_size] = 1;
                 
-                inner::memory_set(
+                internal::memory_set(
                     m_buffer + m_buffer_size + 1,
                     0,
                     block_size - m_buffer_size - 1
@@ -219,12 +219,12 @@ namespace milo::primitive::detail
             size_t a_digest_size = digest_size
         ) const noexcept(true) -> size_t
         {
-            a_digest_size = inner::min(
+            a_digest_size = internal::min(
                 a_digest_size,
                 digest_size
             );
             
-            inner::memory_copy_le(
+            internal::memory_copy_le(
                 a_digest_ptr,
                 m_acc,
                 a_digest_size

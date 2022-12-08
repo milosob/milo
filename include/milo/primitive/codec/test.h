@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/codec/apie.h>
 
@@ -58,7 +58,7 @@ namespace milo::primitive::codec
                     a_from
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     to,
                     a_to
                 ))
@@ -105,7 +105,7 @@ namespace milo::primitive::codec
                     a_from
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     to,
                     a_to
                 ))

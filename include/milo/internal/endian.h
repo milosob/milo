@@ -7,11 +7,11 @@
 
 #include <milo/meta.h>
 
-#include <milo/inner/base.h>
-#include <milo/inner/compiler.h>
+#include <milo/internal/base.h>
+#include <milo/internal/compiler.h>
 
 
-namespace milo::inner
+namespace milo::internal
 {
     constexpr bool endian_big = std::endian::big == std::endian::native;
     

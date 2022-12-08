@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -68,11 +68,11 @@ namespace milo::primitive::detail
         ) noexcept(true) -> uint32_t
         {
             return
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     7
                 ) ^
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     18
                 ) ^
@@ -86,11 +86,11 @@ namespace milo::primitive::detail
         ) noexcept(true) -> uint32_t
         {
             return
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     17
                 ) ^
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     19
                 ) ^
@@ -104,15 +104,15 @@ namespace milo::primitive::detail
         ) noexcept(true) -> uint32_t
         {
             return
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     2
                 ) ^
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     13
                 ) ^
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     22
                 );
@@ -125,15 +125,15 @@ namespace milo::primitive::detail
         ) noexcept(true) -> uint32_t
         {
             return
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     6
                 ) ^
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     11
                 ) ^
-                inner::bit_rotr(
+                internal::bit_rotr(
                     a_0,
                     25
                 );
@@ -178,7 +178,7 @@ namespace milo::primitive::detail
                 
                 for (size_t j = 0; j < 16; j += 1)
                 {
-                    schedule[j] = inner::memory_load_be<uint32_t>(
+                    schedule[j] = internal::memory_load_be<uint32_t>(
                         a_src_ptr,
                         j
                     );

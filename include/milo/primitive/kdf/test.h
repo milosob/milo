@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/kdf/apie.h>
 
@@ -78,7 +78,7 @@ namespace milo::primitive::kdf
                     a_key.size()
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     key,
                     a_key
                 ))
@@ -142,7 +142,7 @@ namespace milo::primitive::kdf
                     a_key.size()
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     key,
                     a_key
                 ))

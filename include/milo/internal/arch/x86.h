@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner/base.h>
+#include <milo/internal/base.h>
 
 
 #if defined(__i386__) || \
@@ -86,7 +86,7 @@
     #define MILO_ARCH_X86_ISE_SHA_2 false
 #endif
 
-namespace milo::inner
+namespace milo::internal
 {
     inline
     const

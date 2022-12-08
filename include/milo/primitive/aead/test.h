@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/aead/apie.h>
 
@@ -85,7 +85,7 @@ namespace milo::primitive::aead
                     a_plaintext
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     ciphertext,
                     a_ciphertext
                 ))
@@ -93,7 +93,7 @@ namespace milo::primitive::aead
                     return false;
                 }
                 
-                if (!inner::memory_match(
+                if (!internal::memory_match(
                     digest,
                     a_digest
                 ))
@@ -166,7 +166,7 @@ namespace milo::primitive::aead
                     a_digest
                 );
                 
-                if (!inner::memory_equal(
+                if (!internal::memory_equal(
                     plaintext,
                     a_plaintext
                 ))

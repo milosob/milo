@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::detail
@@ -43,7 +43,7 @@ namespace milo::primitive::detail
         ) noexcept(true)
         {
             return t_impl::process(
-                inner::forward<
+                internal::forward<
                     t_args
                 >(
                     a_args
@@ -64,7 +64,7 @@ namespace milo::primitive::detail
         ) noexcept(true)
         {
             return a_impl(
-                inner::forward<
+                internal::forward<
                     t_args,
                     meta::type_map_char_ptr_to_unsigned_char_ptr,
                     meta::type_map_const_char_ptr_to_const_unsigned_char_ptr

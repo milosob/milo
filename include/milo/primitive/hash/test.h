@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 #include <milo/primitive/hash/apie.h>
 
@@ -56,7 +56,7 @@ namespace milo::primitive::hash
                 a_message
             );
             
-            if (!inner::memory_equal(
+            if (!internal::memory_equal(
                 digest,
                 a_digest
             ))

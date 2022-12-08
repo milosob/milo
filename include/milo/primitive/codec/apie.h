@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::codec
@@ -93,7 +93,7 @@ namespace milo::primitive::codec
             t_to& a_to
         ) noexcept(meta::container_static<t_to>) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_to,
                 encode_size(a_from)
             );
@@ -104,7 +104,7 @@ namespace milo::primitive::codec
                 a_to.data()
             );
             
-            inner::resize(
+            internal::resize(
                 a_to,
                 size
             );
@@ -315,7 +315,7 @@ namespace milo::primitive::codec
             error& a_error
         ) noexcept(meta::container_static<t_to>) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_to,
                 decode_size(a_from)
             );
@@ -327,7 +327,7 @@ namespace milo::primitive::codec
                 a_error
             );
             
-            inner::resize(
+            internal::resize(
                 a_to,
                 size
             );
@@ -360,7 +360,7 @@ namespace milo::primitive::codec
             t_to& a_to
         ) noexcept(false) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_to,
                 decode_size(a_from)
             );
@@ -371,7 +371,7 @@ namespace milo::primitive::codec
                 a_to.data()
             );
             
-            inner::resize(
+            internal::resize(
                 a_to,
                 size
             );

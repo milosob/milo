@@ -3,7 +3,7 @@
 #pragma once
 
 
-#include <milo/inner.h>
+#include <milo/internal.h>
 
 
 namespace milo::primitive::aead
@@ -331,7 +331,7 @@ namespace milo::primitive::aead
             t_ciphertext& a_ciphertext
         ) noexcept(meta::container_static<t_ciphertext>) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_ciphertext,
                 encrypt_size(a_plaintext)
             );
@@ -342,7 +342,7 @@ namespace milo::primitive::aead
                 a_ciphertext.data()
             );
             
-            inner::resize(
+            internal::resize(
                 a_ciphertext,
                 size
             );
@@ -497,7 +497,7 @@ namespace milo::primitive::aead
             t_plaintext& a_plaintext
         ) noexcept(meta::container_static<t_plaintext>) -> size_t
         {
-            inner::resize(
+            internal::resize(
                 a_plaintext,
                 decrypt_size(a_ciphertext)
             );
@@ -508,7 +508,7 @@ namespace milo::primitive::aead
                 a_plaintext.data()
             );
             
-            inner::resize(
+            internal::resize(
                 a_plaintext,
                 size
             );
@@ -655,12 +655,12 @@ namespace milo::primitive::aead
         {
             do_finalize();
             
-            a_digest_size = inner::min(
+            a_digest_size = internal::min(
                 a_digest_size,
                 digest_size
             );
             
-            a_digest_size = inner::resize(
+            a_digest_size = internal::resize(
                 a_digest,
                 a_digest_size
             );
@@ -757,7 +757,7 @@ namespace milo::primitive::aead
         ) noexcept(true) -> void
         {
             a_error =
-                inner::memory_match(
+                internal::memory_match(
                     digest(),
                     container::view_dynamic<const t_digest>(
                         a_digest_ptr,
@@ -1082,8 +1082,8 @@ namespace milo::primitive::aead
         auto digest = apie.template digest<t_digest>();
         
         return container::tuple<t_ciphertext, t_digest>(
-            inner::move(ciphertext),
-            inner::move(digest)
+            internal::move(ciphertext),
+            internal::move(digest)
         );
     }
     

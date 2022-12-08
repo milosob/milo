@@ -37,7 +37,7 @@
  * @formatter:on
  */
 
-namespace milo::inner
+namespace milo::internal
 {
     constexpr bool compiler_clang = MILO_COMPILER_CLANG;
     

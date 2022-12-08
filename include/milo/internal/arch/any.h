@@ -3,10 +3,10 @@
 #pragma once
 
 
-#include <milo/inner/base.h>
+#include <milo/internal/base.h>
 
 
-namespace milo::inner
+namespace milo::internal
 {
     struct arch_any_ise_strict
     {
