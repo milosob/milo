@@ -27,11 +27,11 @@ Supported:
 
 Headers and types:
 
-- `<milo/crypto/codec/apie.h>`
-    - `milo::crypto::codec::apie<codec_type>`
-- `<milo/crypto/codec/base.h>`
-    - `milo::crypto::codec::base_16`
-    - `milo::crypto::codec::base_64`
+- `<milo/primitive/codec/apie.h>`
+    - `milo::primitive::codec::apie<codec_type>`
+- `<milo/primitive/codec/base.h>`
+    - `milo::primitive::codec::base_16`
+    - `milo::primitive::codec::base_64`
 
 All implementations of the algorithms share the same interface.
 
@@ -61,17 +61,17 @@ constexpr auto ratio_chars_size = alg_type::ratio_chars_size;
 #### Algorithms Base-16
 
 ```c++
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/base.h>
 
-using codec_type = milo::crypto::codec::base_16;
+using codec_type = milo::primitive::codec::base_16;
 ```
 
 #### Algorithms Base-64
 
 ```c++
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/base.h>
 
-using codec_type = milo::crypto::codec::base_64;
+using codec_type = milo::primitive::codec::base_64;
 ```
 
 ### Encoding
@@ -85,7 +85,7 @@ Encoding is an operation that transforms a given input into a different represen
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/base.h>
 
 int main()
 {
@@ -94,7 +94,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::crypto::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64;
     
     auto message = "message"sv;
     auto encoded = std::string();
@@ -136,8 +136,8 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
 
 int main()
 {
@@ -146,7 +146,7 @@ int main()
     /*
      * Declare codec alias via apie wrapper.
      */
-    using codec_type = milo::crypto::codec::apie<milo::crypto::codec::base_64>;
+    using codec_type = milo::primitive::codec::apie<milo::primitive::codec::base_64>;
     
     auto message = "message"sv;
     auto encoded = std::string();
@@ -184,8 +184,8 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
 
 int main()
 {
@@ -194,7 +194,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::crypto::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64;
     
     auto message = "message"sv;
     auto encoded = std::string();
@@ -210,7 +210,7 @@ int main()
      * Returns the size of the result, but can be ignored.
      * This can be useful when the target buffer is of a fixed size.
      */
-    auto encoded_size = milo::crypto::codec::encode<codec_type>(message, encoded);
+    auto encoded_size = milo::primitive::codec::encode<codec_type>(message, encoded);
     
     /*
      * Prints "bWVzc2FnZQ==".
@@ -223,7 +223,7 @@ int main()
      * Only dynamic containers are supported.
      * Prints "bWVzc2FnZQ==".
      */
-    std::cout << milo::crypto::codec::encode<codec_type, std::string>(message) << "\n";
+    std::cout << milo::primitive::codec::encode<codec_type, std::string>(message) << "\n";
     
     return 0;
 }
@@ -238,7 +238,7 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/base.h>
 
 int main()
 {
@@ -247,7 +247,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::crypto::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64;
     
     auto message = "bWVzc2FnZQ=="sv;
     auto decoded = std::string();
@@ -300,8 +300,8 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
 
 int main()
 {
@@ -310,7 +310,7 @@ int main()
     /*
      * Declare codec alias via apie wrapper.
      */
-    using codec_type = milo::crypto::codec::apie<milo::crypto::codec::base_64>;
+    using codec_type = milo::primitive::codec::apie<milo::primitive::codec::base_64>;
     
     auto message = "bWVzc2FnZQ=="sv;
     auto message_invalid = "bWVzABC$c2FnZQ=="sv;
@@ -386,8 +386,8 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
 
 int main()
 {
@@ -396,7 +396,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::crypto::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64;
     
     auto message = "bWVzc2FnZQ=="sv;
     auto message_invalid = "bWVzABC$c2FnZQ=="sv;
@@ -409,7 +409,7 @@ int main()
      * Returns the size of the result, but can be ignored.
      * This can be useful when the target buffer is of a fixed size.
      */
-    auto decoded_size = milo::crypto::codec::decode<codec_type>(message, decoded);
+    auto decoded_size = milo::primitive::codec::decode<codec_type>(message, decoded);
     
     /*
      * Prints "message".
@@ -422,7 +422,7 @@ int main()
      * Only dynamic containers are supported.
      * Prints "message".
      */
-    std::cout << milo::crypto::codec::decode<codec_type, std::string>(message) << "\n";
+    std::cout << milo::primitive::codec::decode<codec_type, std::string>(message) << "\n";
     
     try
     {
@@ -432,7 +432,7 @@ int main()
          * Only dynamic containers are supported.
          * Signalizing error by reference is not supported.
          */
-        std::cout << milo::crypto::codec::decode<codec_type, std::string>(message_invalid) << "\n";
+        std::cout << milo::primitive::codec::decode<codec_type, std::string>(message_invalid) << "\n";
     }
     catch (const milo::error& e)
     {

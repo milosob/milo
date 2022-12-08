@@ -1,9 +1,9 @@
 {
     "scheme": "test-hash",
     "payload": {
-        "impl": "milo::crypto::hash::sha_2_512",
+        "impl": "milo::primitive::hash::sha_2_512",
         "include": [
-            "<milo/crypto/hash/sha.h>"
+            "<milo/primitive/hash/sha.h>"
         ],
         "vectors": [
             {

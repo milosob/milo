@@ -1,9 +1,9 @@
 {
     "scheme": "test-aead-decrypt",
     "payload": {
-        "impl": "milo::crypto::aead::chacha_20_poly_1305",
+        "impl": "milo::primitive::aead::chacha_20_poly_1305",
         "include": [
-            "<milo/crypto/aead/chacha.h>"
+            "<milo/primitive/aead/chacha.h>"
         ],
         "vectors": [
             {

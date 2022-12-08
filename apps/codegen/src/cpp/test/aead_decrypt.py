@@ -44,7 +44,7 @@ def gen(
             ),
             src.cpp.lang.gen_include(
                 [
-                    '<milo/crypto/aead/test.h>'
+                    '<milo/primitive/aead/test.h>'
                 ]
             ),
             '',
@@ -144,7 +144,7 @@ def gen(
                     src.cpp.lang.gen_loop_for(
                         ['size_t i = 0', 'i < test_vectors_size', 'i += 1'],
                         [
-                            f'auto result = milo::crypto::aead::test<{test_impl}>::decrypt(',
+                            f'auto result = milo::primitive::aead::test<{test_impl}>::decrypt(',
                             [
                                 'test_vectors[i].key,',
                                 'test_vectors[i].iv,',

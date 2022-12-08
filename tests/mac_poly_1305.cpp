@@ -5,8 +5,8 @@
 #include <milo/inner.h>
 #include <milo/literal.h>
 
-#include <milo/crypto/mac/poly.h>
-#include <milo/crypto/mac/test.h>
+#include <milo/primitive/mac/poly.h>
+#include <milo/primitive/mac/test.h>
 
 
 using namespace milo::literal;
@@ -234,7 +234,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::crypto::mac::test<milo::crypto::mac::poly_1305>::digest(
+        auto result = milo::primitive::mac::test<milo::primitive::mac::poly_1305>::digest(
             test_vectors[i].key,
             test_vectors[i].message,
             test_vectors[i].digest

@@ -31,7 +31,7 @@ Tested compilers:
 The library aims to provide modern and user-friendly interfaces:
 
 ```c++
-auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256>("message"sv);
 ```
 
 ```c++
@@ -39,13 +39,13 @@ try
 {
     using namespace milo::literal;
     
-    using aead = milo::crypto::aead::chacha_20_poly_1305;
+    using aead = milo::primitive::aead::chacha_20_poly_1305;
     
     auto key = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"_base_16;
     auto iv  = "000102030405060708090a0b"_base_16;
     
-    auto [ciphertext, mac] = milo::crypto::aead::encrypt<aead, std::string>(key, iv, "aad"_cv, "message"_cv);
-    auto plaintext         = milo::crypto::aead::decrypt<aead, std::string>(key, iv, "aad"_cv, ciphertext, mac);
+    auto [ciphertext, mac] = milo::primitive::aead::encrypt<aead, std::string>(key, iv, "aad"_cv, "message"_cv);
+    auto plaintext         = milo::primitive::aead::decrypt<aead, std::string>(key, iv, "aad"_cv, ciphertext, mac);
 }
 catch (const milo::error& error)
 {

@@ -40,7 +40,7 @@ def gen(
             ),
             src.cpp.lang.gen_include(
                 [
-                    '<milo/crypto/codec/test.h>'
+                    '<milo/primitive/codec/test.h>'
                 ]
             ),
             '',
@@ -102,7 +102,7 @@ def gen(
                     src.cpp.lang.gen_loop_for(
                         ['size_t i = 0', 'i < test_vectors_size', 'i += 1'],
                         [
-                            f'auto result = milo::crypto::codec::test<{test_impl}>::decode(',
+                            f'auto result = milo::primitive::codec::test<{test_impl}>::decode(',
                             [
                                 'test_vectors[i].from,',
                                 'test_vectors[i].to'

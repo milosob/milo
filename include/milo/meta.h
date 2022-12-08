@@ -329,7 +329,7 @@ namespace milo::meta
     constexpr auto container_static_size = t_0().size();
 }
 
-namespace milo::meta::crypto
+namespace milo::meta::primitive
 {
     /*
      * Start codec.

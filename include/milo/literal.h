@@ -5,8 +5,8 @@
 
 #include <milo/inner.h>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
 
 
 namespace milo::literal
@@ -65,8 +65,8 @@ namespace milo::literal
         size_t a_size
     ) noexcept(false) -> container::bytes_dynamic
     {
-        return crypto::codec::decode<
-            crypto::codec::base_16,
+        return primitive::codec::decode<
+            primitive::codec::base_16,
             container::bytes_dynamic
         >(
             container::chars_const_view_dynamic(
@@ -82,8 +82,8 @@ namespace milo::literal
         size_t a_size
     ) noexcept(false) -> container::bytes_dynamic
     {
-        return crypto::codec::decode<
-            crypto::codec::base_64,
+        return primitive::codec::decode<
+            primitive::codec::base_64,
             container::bytes_dynamic
         >(
             container::chars_const_view_dynamic(

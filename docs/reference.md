@@ -53,12 +53,12 @@ The library consists of groups of cryptographic algorithms.
 Each group's algorithms are placed in a dedicated namespace.
 Currently, the following groups are defined:
 
-- codec - `milo::crypto::codec` - bytes encoding/decoding
-- hash - `milo::crypto::hash` - hashing functions
-- mac - `milo::crypto::mac` - message authentication codes
-- kdf - `milo::crypto::kdf` - key derivation functions
-- cipher - `milo::crypto::cipher` - ciphers
-- aead - `milo::crypto::aead` - authenticated encryption with associated data
+- codec - `milo::primitive::codec` - bytes encoding/decoding
+- hash - `milo::primitive::hash` - hashing functions
+- mac - `milo::primitive::mac` - message authentication codes
+- kdf - `milo::primitive::kdf` - key derivation functions
+- cipher - `milo::primitive::cipher` - ciphers
+- aead - `milo::primitive::aead` - authenticated encryption with associated data
 
 Each group has the following code component hierarchy:
 
@@ -87,7 +87,7 @@ Each group has the following code component hierarchy:
 Calculate message digest in one call without a single allocation:
 
 ```c++
-auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256>("message"sv);
 ```
 
 Which not only looks better but is more handy and less error-prone.
@@ -139,17 +139,17 @@ depending on whether the requested size was a template or a method argument.
 /*
  * Valid.
  */
-auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256>("message"sv);
 
 /*
  * Valid.
  */
-auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256, std::array<char, 32>>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256, std::array<char, 32>>("message"sv);
 
 /*
  * Compile-time error. The maximum size of the digest is 32.
  */
-auto digest = milo::crypto::hash::digest<milo::crypto::hash::sha_2_256, std::array<char, 33>>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256, std::array<char, 33>>("message"sv);
 ```
 
 ### Endianness

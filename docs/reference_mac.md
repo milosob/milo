@@ -23,12 +23,12 @@ Supported:
 
 Headers and types:
 
-- `<milo/crypto/mac/apie.h>`
-    - `milo::crypto::mac::apie<mac_type>`
-- `<milo/crypto/mac/hmac.h>`
-    - `milo::crypto::mac::hmac<hash_type>`
-- `<milo/crypto/mac/poly.h>`
-    - `milo::crypto::mac::poly_1305`
+- `<milo/primitive/mac/apie.h>`
+    - `milo::primitive::mac::apie<mac_type>`
+- `<milo/primitive/mac/hmac.h>`
+    - `milo::primitive::mac::hmac<hash_type>`
+- `<milo/primitive/mac/poly.h>`
+    - `milo::primitive::mac::poly_1305`
 
 All implementations of the algorithms share the same interface.
 
@@ -63,21 +63,21 @@ constexpr auto key_size = alg_type::key_size;
 #### Algorithms Hmac
 
 ```c++
-#include <milo/crypto/hash/sha.h>
-#include <milo/crypto/mac/hmac.h>
+#include <milo/primitive/hash/sha.h>
+#include <milo/primitive/mac/hmac.h>
 
 /*
  * Hmac class template requires a hash type as the template parameter.
  */
-milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256> hmac;
+milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256> hmac;
 ```
 
 #### Algorithms Poly-1305
 
 ```c++
-#include <milo/crypto/mac/poly.h>
+#include <milo/primitive/mac/poly.h>
     
-milo::crypto::mac::poly_1305 poly_1305;
+milo::primitive::mac::poly_1305 poly_1305;
 ```
 
 ### Mac computation
@@ -90,10 +90,10 @@ milo::crypto::mac::poly_1305 poly_1305;
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
-#include <milo/crypto/hash/sha.h>
-#include <milo/crypto/mac/hmac.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
+#include <milo/primitive/hash/sha.h>
+#include <milo/primitive/mac/hmac.h>
 
 int main()
 {
@@ -102,7 +102,7 @@ int main()
     /*
      * Declare alias.
      */
-    using mac_type = milo::crypto::mac::hmac<milo::crypto::hash::sha_2_256>;
+    using mac_type = milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>;
     
     auto key     = "key"sv;
     auto message = "message"sv;
@@ -158,10 +158,10 @@ int main()
     auto digest_d_size = mac.digest(digest_d, 100);
     
     
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -181,10 +181,10 @@ int main()
 #include <string_view>
 #include <vector>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
-#include <milo/crypto/mac/apie.h>
-#include <milo/crypto/mac/poly.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
+#include <milo/primitive/mac/apie.h>
+#include <milo/primitive/mac/poly.h>
 
 int main()
 {
@@ -193,7 +193,7 @@ int main()
     /*
      * Declare alias via apie wrapper.
      */
-    using mac_type = milo::crypto::mac::apie<milo::crypto::mac::poly_1305>;
+    using mac_type = milo::primitive::mac::apie<milo::primitive::mac::poly_1305>;
     
     auto key     = "key"sv;
     auto message = "message"sv;
@@ -273,13 +273,13 @@ int main()
      */
     auto digest_returned_by_reference_2_size = mac.digest(digest_returned_by_reference_2);
     
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -296,11 +296,11 @@ int main()
 #include <iostream>
 #include <string_view>
 
-#include <milo/crypto/codec/apie.h>
-#include <milo/crypto/codec/base.h>
-#include <milo/crypto/hash/sha.h>
-#include <milo/crypto/mac/apie.h>
-#include <milo/crypto/mac/hmac.h>
+#include <milo/primitive/codec/apie.h>
+#include <milo/primitive/codec/base.h>
+#include <milo/primitive/hash/sha.h>
+#include <milo/primitive/mac/apie.h>
+#include <milo/primitive/mac/hmac.h>
 
 int main()
 {
@@ -309,12 +309,12 @@ int main()
     /*
      * Declare alias.
      */
-    using mac_type = milo::crypto::mac::hmac<milo::crypto::hash::sha_2_384>;
+    using mac_type = milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384>;
     
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::mac::digest<mac_type>("first key"sv,"message"sv)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::mac::digest<mac_type>("first key"sv,"message"sv, 16)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::mac::digest<mac_type>("second key"sv, "hello world"sv)) << "\n";
-    std::cout << milo::crypto::codec::encode<milo::crypto::codec::base_16, std::string>(milo::crypto::mac::digest<mac_type>("second key"sv, "hello world"sv, 8)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::mac::digest<mac_type>("first key"sv,"message"sv)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::mac::digest<mac_type>("first key"sv,"message"sv, 16)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::mac::digest<mac_type>("second key"sv, "hello world"sv)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::mac::digest<mac_type>("second key"sv, "hello world"sv, 8)) << "\n";
     
     return 0;
 }

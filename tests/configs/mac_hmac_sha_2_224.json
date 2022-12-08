@@ -1,10 +1,10 @@
 {
     "scheme": "test-mac",
     "payload": {
-        "impl": "milo::crypto::mac::hmac<milo::crypto::hash::sha_2_224>",
+        "impl": "milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224>",
         "include": [
-            "<milo/crypto/hash/sha.h>",
-            "<milo/crypto/mac/hmac.h>"
+            "<milo/primitive/hash/sha.h>",
+            "<milo/primitive/mac/hmac.h>"
         ],
         "vectors": [
             {

@@ -5,10 +5,10 @@
 #include <milo/inner.h>
 #include <milo/literal.h>
 
-#include <milo/crypto/hash/sha.h>
-#include <milo/crypto/mac/hmac.h>
-#include <milo/crypto/kdf/hkdf.h>
-#include <milo/crypto/kdf/test.h>
+#include <milo/primitive/hash/sha.h>
+#include <milo/primitive/mac/hmac.h>
+#include <milo/primitive/kdf/hkdf.h>
+#include <milo/primitive/kdf/test.h>
 
 
 using namespace milo::literal;
@@ -1195,7 +1195,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::crypto::kdf::test<milo::crypto::kdf::hkdf<milo::crypto::mac::hmac<milo::crypto::hash::sha_2_512_256>>>::derive(
+        auto result = milo::primitive::kdf::test<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256>>>::derive(
             test_vectors[i].ikm,
             test_vectors[i].salt,
             test_vectors[i].info,

@@ -1,9 +1,9 @@
 {
     "scheme": "test-codec-encode",
     "payload": {
-        "impl": "milo::crypto::codec::base_16",
+        "impl": "milo::primitive::codec::base_16",
         "include": [
-            "<milo/crypto/codec/base.h>"
+            "<milo/primitive/codec/base.h>"
         ],
         "vectors": [
             {

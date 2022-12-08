@@ -21,10 +21,10 @@ Supported mac algorithms:
 
 Headers and types:
 
-- `<milo/crypto/cipher/apie.h>`
-    - `milo::crypto::cipher::apie<impl_type>`
-- `<milo/crypto/cipher/chacha.h>`
-  - `milo::crypto::cipher::chacha_20`
+- `<milo/primitive/cipher/apie.h>`
+    - `milo::primitive::cipher::apie<impl_type>`
+- `<milo/primitive/cipher/chacha.h>`
+  - `milo::primitive::cipher::chacha_20`
 
 All implementations of the algorithms share the same interface.
 
@@ -54,9 +54,9 @@ constexpr auto iv_size = alg_type::iv_size;
 #### Algorithms Chacha-20
 
 ```c++
-#include <milo/crypto/cipher/chacha.h>
+#include <milo/primitive/cipher/chacha.h>
 
-milo::crypto::cipher::chacha_20 chacha_20;
+milo::primitive::cipher::chacha_20 chacha_20;
 ```
 
 - `key_size = 32 bytes`
@@ -73,13 +73,13 @@ milo::crypto::cipher::chacha_20 chacha_20;
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/cipher/chacha.h>
+#include <milo/primitive/cipher/chacha.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using cipher_type = milo::crypto::cipher::chacha_20;
+    using cipher_type = milo::primitive::cipher::chacha_20;
     
     auto key        = std::array<char, cipher_type::key_size>{};
     auto iv         = std::array<char, cipher_type::iv_size>{};
@@ -129,14 +129,14 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/cipher/apie.h>
-#include <milo/crypto/cipher/chacha.h>
+#include <milo/primitive/cipher/apie.h>
+#include <milo/primitive/cipher/chacha.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using cipher_type = milo::crypto::cipher::apie<milo::crypto::cipher::chacha_20>;
+    using cipher_type = milo::primitive::cipher::apie<milo::primitive::cipher::chacha_20>;
     
     auto key        = std::array<char, cipher_type::key_size>{};
     auto iv         = std::array<char, cipher_type::iv_size>{};
@@ -211,14 +211,14 @@ int main()
 #include <string>
 #include <string_view>
 
-#include <milo/crypto/cipher/apie.h>
-#include <milo/crypto/cipher/chacha.h>
+#include <milo/primitive/cipher/apie.h>
+#include <milo/primitive/cipher/chacha.h>
 
 int main()
 {
     using namespace std::literals;
     
-    using cipher_type = milo::crypto::cipher::chacha_20;
+    using cipher_type = milo::primitive::cipher::chacha_20;
     
     auto key = std::array<char, cipher_type::key_size>{};
     auto iv = std::array<char, cipher_type::iv_size>{};
@@ -233,8 +233,8 @@ int main()
         std::array<char, 1024> ciphertext;
         std::array<char, 1024> plaintext;
         
-        auto ciphertext_size = milo::crypto::cipher::encrypt<cipher_type>(key, iv, message, ciphertext);
-        auto plaintext_size = milo::crypto::cipher::decrypt<cipher_type>(key, iv, std::span(ciphertext.data(), ciphertext_size), plaintext);
+        auto ciphertext_size = milo::primitive::cipher::encrypt<cipher_type>(key, iv, message, ciphertext);
+        auto plaintext_size = milo::primitive::cipher::decrypt<cipher_type>(key, iv, std::span(ciphertext.data(), ciphertext_size), plaintext);
         
         std::cout << "Reference message: " << message << "\n";
         std::cout << "Decrypted message: " << std::string_view(plaintext.data(), plaintext_size) << "\n";
@@ -247,8 +247,8 @@ int main()
         std::string ciphertext;
         std::string plaintext;
         
-        milo::crypto::cipher::encrypt<cipher_type>(key, iv, message, ciphertext);
-        milo::crypto::cipher::decrypt<cipher_type>(key, iv, ciphertext, plaintext);
+        milo::primitive::cipher::encrypt<cipher_type>(key, iv, message, ciphertext);
+        milo::primitive::cipher::decrypt<cipher_type>(key, iv, ciphertext, plaintext);
         
         std::cout << "Reference message: " << message << "\n";
         std::cout << "Decrypted message: " << std::string_view(plaintext.data(), plaintext.size()) << "\n";
@@ -258,8 +258,8 @@ int main()
         std::cout << "\n";
         std::cout << "Example with dynamic memory returned by value:\n";
         
-        auto ciphertext = milo::crypto::cipher::encrypt<cipher_type, std::string>(key, iv, message);
-        auto plaintext = milo::crypto::cipher::decrypt<cipher_type, std::string>(key, iv, ciphertext);
+        auto ciphertext = milo::primitive::cipher::encrypt<cipher_type, std::string>(key, iv, message);
+        auto plaintext = milo::primitive::cipher::decrypt<cipher_type, std::string>(key, iv, ciphertext);
         
         std::cout << "Reference message: " << message << "\n";
         std::cout << "Decrypted message: " << plaintext << "\n";
