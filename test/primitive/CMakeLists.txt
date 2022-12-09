@@ -65,7 +65,7 @@ foreach (TEST_SOURCE ${TESTS})
     target_link_libraries(
             ${TEST_NAME}
             PRIVATE
-            ${CMAKE_PROJECT_NAME}
+            milo
     )
 
     target_compile_options(

@@ -30,12 +30,13 @@ foreach (TEST_SOURCE ${TESTS})
     target_link_libraries(
             ${TEST_NAME}
             PRIVATE
-            ${CMAKE_PROJECT_NAME}
+            milo
     )
 
     target_compile_options(
             ${TEST_NAME}
             PRIVATE
+            -march=native
             $<$<CXX_COMPILER_ID:Clang>:-Wall -fconstexpr-steps=2147483648>
             $<$<CXX_COMPILER_ID:GNU>:-Wall -fconstexpr-ops-limit=2147483648>
             $<$<CXX_COMPILER_ID:MSVC>:/Wall /constexpr:steps2147483648>
