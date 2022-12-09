@@ -8,5 +8,6 @@
 
 namespace milo::primitive::cipher
 {
-    using chacha_20 = detail::cipher_chacha_20<>;
+    template<typename... t_options>
+    using chacha_20 = detail::cipher_chacha_20<t_options...>;
 }

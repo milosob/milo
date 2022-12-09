@@ -1,7 +1,7 @@
 {
     "scheme": "test-primitive-kdf-pbkdf-2",
     "payload": {
-        "impl": "milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>",
+        "impl": "milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>",
         "include": [
             "<milo/primitive/hash/sha.h>",
             "<milo/primitive/mac/hmac.h>",

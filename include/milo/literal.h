@@ -66,7 +66,7 @@ namespace milo::literal
     ) noexcept(false) -> container::bytes_dynamic
     {
         return primitive::codec::decode<
-            primitive::codec::base_16,
+            primitive::codec::base_16<>,
             container::bytes_dynamic
         >(
             container::chars_const_view_dynamic(
@@ -83,7 +83,7 @@ namespace milo::literal
     ) noexcept(false) -> container::bytes_dynamic
     {
         return primitive::codec::decode<
-            primitive::codec::base_64,
+            primitive::codec::base_64<>,
             container::bytes_dynamic
         >(
             container::chars_const_view_dynamic(

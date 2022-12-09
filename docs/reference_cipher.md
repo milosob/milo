@@ -17,14 +17,14 @@ This file describes ciphers.
 
 Supported mac algorithms:
 
-- `chacha_20`
+- `chacha-20`
 
 Headers and types:
 
 - `<milo/primitive/cipher/apie.h>`
     - `milo::primitive::cipher::apie<impl_type>`
 - `<milo/primitive/cipher/chacha.h>`
-  - `milo::primitive::cipher::chacha_20`
+    - `milo::primitive::cipher::chacha_20<>`
 
 All implementations of the algorithms share the same interface.
 
@@ -56,7 +56,7 @@ constexpr auto iv_size = alg_type::iv_size;
 ```c++
 #include <milo/primitive/cipher/chacha.h>
 
-milo::primitive::cipher::chacha_20 chacha_20;
+milo::primitive::cipher::chacha_20<> chacha_20;
 ```
 
 - `key_size = 32 bytes`
@@ -79,7 +79,7 @@ int main()
 {
     using namespace std::literals;
     
-    using cipher_type = milo::primitive::cipher::chacha_20;
+    using cipher_type = milo::primitive::cipher::chacha_20<>;
     
     auto key        = std::array<char, cipher_type::key_size>{};
     auto iv         = std::array<char, cipher_type::iv_size>{};
@@ -136,7 +136,7 @@ int main()
 {
     using namespace std::literals;
     
-    using cipher_type = milo::primitive::cipher::apie<milo::primitive::cipher::chacha_20>;
+    using cipher_type = milo::primitive::cipher::apie<milo::primitive::cipher::chacha_20<>>;
     
     auto key        = std::array<char, cipher_type::key_size>{};
     auto iv         = std::array<char, cipher_type::iv_size>{};
@@ -218,7 +218,7 @@ int main()
 {
     using namespace std::literals;
     
-    using cipher_type = milo::primitive::cipher::chacha_20;
+    using cipher_type = milo::primitive::cipher::chacha_20<>;
     
     auto key = std::array<char, cipher_type::key_size>{};
     auto iv = std::array<char, cipher_type::iv_size>{};

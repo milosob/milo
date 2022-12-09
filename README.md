@@ -39,7 +39,7 @@ try
 {
     using namespace milo::literal;
     
-    using aead = milo::primitive::aead::chacha_20_poly_1305;
+    using aead = milo::primitive::aead::chacha_20_poly_1305<>;
     
     auto key = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"_base_16;
     auto iv  = "000102030405060708090a0b"_base_16;

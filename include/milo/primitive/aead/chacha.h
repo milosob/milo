@@ -11,5 +11,6 @@
 
 namespace milo::primitive::aead
 {
-    using chacha_20_poly_1305 = detail::aead_chacha_20_poly_1305<cipher::chacha_20, mac::poly_1305>;
+    template<typename... t_options>
+    using chacha_20_poly_1305 = detail::aead_chacha_20_poly_1305<cipher::chacha_20<>, mac::poly_1305<>, t_options...>;
 }

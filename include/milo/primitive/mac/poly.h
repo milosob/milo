@@ -8,5 +8,6 @@
 
 namespace milo::primitive::mac
 {
-    using poly_1305 = detail::mac_poly_1305<>;
+    template<typename... t_options>
+    using poly_1305 = detail::mac_poly_1305<t_options...>;
 }

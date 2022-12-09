@@ -1368,7 +1368,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::primitive::mac::test<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224>>::digest(
+        auto result = milo::primitive::mac::test<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>::digest(
             test_vectors[i].key,
             test_vectors[i].message,
             test_vectors[i].digest

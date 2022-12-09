@@ -65,7 +65,7 @@ Pointers that must remain valid:
 /*
  * Hkdf class template requires a hmac type as the template parameter.
  */
-milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>> hkdf;
+milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>> hkdf;
 
 hkdf.initialize(
     ikm_ptr,
@@ -88,7 +88,7 @@ hkdf.initialize(
  * Pbkdf-2 class template requires a pseudo random function type as the template parameter.
  * Hmac is a compatible pseudo-random function.
  */
-milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>> pbkdf_2;
+milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>> pbkdf_2;
 
 pbkdf_2.initialize(
     ikm_ptr,
@@ -127,8 +127,8 @@ void derive_example(t_kdf& a_kdf)
     auto key_a_size = a_kdf.derive(key_a, 32);
     auto key_b_size = a_kdf.derive(key_b, 32);
     
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(key_a, key_a_size)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(key_b, key_b_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(key_a, key_a_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(key_b, key_b_size)) << "\n";
 }
 
 int main()
@@ -137,7 +137,7 @@ int main()
     
     std::cout << "Derive with hkdf:\n";
     {
-        using hkdf_type = milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>;
+        using hkdf_type = milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>;
         
         auto ikm  = "ikm"sv;
         auto salt = "salt"sv;
@@ -150,7 +150,7 @@ int main()
     
     std::cout << "Derive with pbkdf-2:\n";
     {
-        using pbkdf_2_type = milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>;
+        using pbkdf_2_type = milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>;
         
         auto ikm        = "ikm"sv;
         auto salt       = "salt"sv;
@@ -206,10 +206,10 @@ void derive_example(t_kdf& a_kdf)
      */
     auto key_returned_by_value_2 = a_kdf.template derive<std::array<char, 32>>();
     
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(key_array) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(key_vector) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(key_returned_by_value_1) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(key_returned_by_value_2) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(key_array) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(key_vector) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(key_returned_by_value_1) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(key_returned_by_value_2) << "\n";
 }
 
 int main()
@@ -218,7 +218,7 @@ int main()
     
     std::cout << "Derive with hkdf:\n";
     {
-        using hkdf_type = milo::primitive::kdf::apie<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>>;
+        using hkdf_type = milo::primitive::kdf::apie<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>;
         
         auto ikm  = "ikm"sv;
         auto salt = "salt"sv;
@@ -231,12 +231,12 @@ int main()
          * Derive example uses streaming derivation.
          */
         std::cout << "Key:\n";
-        std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<hkdf_type::impl_type>(ikm, salt, info, 224)) << "\n\n" ;
+        std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<hkdf_type::impl_type>(ikm, salt, info, 224)) << "\n\n" ;
     }
     
     std::cout << "Derive with pbkdf-2:\n";
     {
-        using pbkdf_2_type = milo::primitive::kdf::apie<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>>;
+        using pbkdf_2_type = milo::primitive::kdf::apie<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>;
         
         auto ikm        = "ikm"sv;
         auto salt       = "salt"sv;
@@ -249,7 +249,7 @@ int main()
          * Derive example uses streaming derivation.
          */
         std::cout << "Key:\n";
-        std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<pbkdf_2_type::impl_type>(ikm, salt, iterations, 224)) << "\n" ;
+        std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<pbkdf_2_type::impl_type>(ikm, salt, iterations, 224)) << "\n" ;
         
         return 0;
     }
@@ -274,18 +274,18 @@ int main()
 {
     using namespace std::literals;
     
-    using hkdf_type = milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>;
-    using pbkdf_2_type = milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>;
+    using hkdf_type = milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>;
+    using pbkdf_2_type = milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>;
     
     std::cout << "Derive with hkdf:\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 64)) << "\n" ;
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 32)) << "\n" ;
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<hkdf_type>("ikm"sv, "hello"sv, "world"sv, 32)) << "\n" ;
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 64)) << "\n" ;
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<hkdf_type>("ikm"sv, "salt"sv, "info"sv, 32)) << "\n" ;
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<hkdf_type>("ikm"sv, "hello"sv, "world"sv, 32)) << "\n" ;
     
     std::cout << "Derive with pbkdf-2:\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 100, 64)) << "\n" ;
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 1000, 32)) << "\n" ;
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::kdf::derive<pbkdf_2_type>("ikm"sv, "hello"sv, 5000, 32)) << "\n" ;
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 100, 64)) << "\n" ;
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<pbkdf_2_type>("ikm"sv, "salt"sv, 1000, 32)) << "\n" ;
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::kdf::derive<pbkdf_2_type>("ikm"sv, "hello"sv, 5000, 32)) << "\n" ;
     
     return 0;
 }

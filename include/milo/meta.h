@@ -130,6 +130,9 @@ namespace milo::meta
     template<typename t_0, typename... t_args>
     concept invocable_noexcept = std::is_nothrow_invocable<t_0, t_args...>::value;
     
+    template<typename t_0, typename... t_args>
+    using invocable_result = typename std::invoke_result<t_0, t_args...>::type;
+    
     template<typename t_0>
     concept integral = std::is_integral<t_0>::value;
     

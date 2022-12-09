@@ -1,7 +1,7 @@
 {
     "scheme": "test-primitive-mac",
     "payload": {
-        "impl": "milo::primitive::mac::poly_1305",
+        "impl": "milo::primitive::mac::poly_1305<>",
         "include": [
             "<milo/primitive/mac/poly.h>"
         ],

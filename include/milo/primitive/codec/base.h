@@ -9,13 +9,9 @@
 
 namespace milo::primitive::codec
 {
-    /**
-     * Base16 coder.
-     */
-    using base_16 = detail::codec_base_16<>;
+    template<typename... t_options>
+    using base_16 = detail::codec_base_16<t_options...>;
     
-    /**
-     * Base64 coder.
-     */
-    using base_64 = detail::codec_base_64<>;
+    template<typename... t_options>
+    using base_64 = detail::codec_base_64<t_options...>;
 }

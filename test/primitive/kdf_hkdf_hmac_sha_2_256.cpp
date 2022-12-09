@@ -1195,7 +1195,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::primitive::kdf::test<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256>>>::derive(
+        auto result = milo::primitive::kdf::test<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>::derive(
             test_vectors[i].ikm,
             test_vectors[i].salt,
             test_vectors[i].info,

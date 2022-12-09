@@ -87,7 +87,7 @@ Each group has the following code component hierarchy:
 Calculate message digest in one call without a single allocation:
 
 ```c++
-auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256<>>("message"sv);
 ```
 
 Which not only looks better but is more handy and less error-prone.
@@ -139,17 +139,17 @@ depending on whether the requested size was a template or a method argument.
 /*
  * Valid.
  */
-auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256<>>("message"sv);
 
 /*
  * Valid.
  */
-auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256, std::array<char, 32>>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256<>, std::array<char, 32>>("message"sv);
 
 /*
  * Compile-time error. The maximum size of the digest is 32.
  */
-auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256, std::array<char, 33>>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256<>, std::array<char, 33>>("message"sv);
 ```
 
 ### Endianness

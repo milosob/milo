@@ -30,8 +30,8 @@ Headers and types:
 - `<milo/primitive/codec/apie.h>`
     - `milo::primitive::codec::apie<codec_type>`
 - `<milo/primitive/codec/base.h>`
-    - `milo::primitive::codec::base_16`
-    - `milo::primitive::codec::base_64`
+    - `milo::primitive::codec::base_16<>`
+    - `milo::primitive::codec::base_64<>`
 
 All implementations of the algorithms share the same interface.
 
@@ -63,7 +63,7 @@ constexpr auto ratio_chars_size = alg_type::ratio_chars_size;
 ```c++
 #include <milo/primitive/codec/base.h>
 
-using codec_type = milo::primitive::codec::base_16;
+using codec_type = milo::primitive::codec::base_16<>;
 ```
 
 #### Algorithms Base-64
@@ -71,7 +71,7 @@ using codec_type = milo::primitive::codec::base_16;
 ```c++
 #include <milo/primitive/codec/base.h>
 
-using codec_type = milo::primitive::codec::base_64;
+using codec_type = milo::primitive::codec::base_64<>;
 ```
 
 ### Encoding
@@ -94,7 +94,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::primitive::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64<>;
     
     auto message = "message"sv;
     auto encoded = std::string();
@@ -146,7 +146,7 @@ int main()
     /*
      * Declare codec alias via apie wrapper.
      */
-    using codec_type = milo::primitive::codec::apie<milo::primitive::codec::base_64>;
+    using codec_type = milo::primitive::codec::apie<milo::primitive::codec::base_64<>>;
     
     auto message = "message"sv;
     auto encoded = std::string();
@@ -194,7 +194,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::primitive::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64<>;
     
     auto message = "message"sv;
     auto encoded = std::string();
@@ -247,7 +247,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::primitive::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64<>;
     
     auto message = "bWVzc2FnZQ=="sv;
     auto decoded = std::string();
@@ -310,7 +310,7 @@ int main()
     /*
      * Declare codec alias via apie wrapper.
      */
-    using codec_type = milo::primitive::codec::apie<milo::primitive::codec::base_64>;
+    using codec_type = milo::primitive::codec::apie<milo::primitive::codec::base_64<>>;
     
     auto message = "bWVzc2FnZQ=="sv;
     auto message_invalid = "bWVzABC$c2FnZQ=="sv;
@@ -396,7 +396,7 @@ int main()
     /*
      * Declare codec alias.
      */
-    using codec_type = milo::primitive::codec::base_64;
+    using codec_type = milo::primitive::codec::base_64<>;
     
     auto message = "bWVzc2FnZQ=="sv;
     auto message_invalid = "bWVzABC$c2FnZQ=="sv;

@@ -1,7 +1,7 @@
 {
     "scheme": "test-primitive-codec-encode",
     "payload": {
-        "impl": "milo::primitive::codec::base_16",
+        "impl": "milo::primitive::codec::base_16<>",
         "include": [
             "<milo/primitive/codec/base.h>"
         ],

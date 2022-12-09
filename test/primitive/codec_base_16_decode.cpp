@@ -508,7 +508,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::primitive::codec::test<milo::primitive::codec::base_16>::decode(
+        auto result = milo::primitive::codec::test<milo::primitive::codec::base_16<>>::decode(
             test_vectors[i].from,
             test_vectors[i].to
         );

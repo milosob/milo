@@ -142,7 +142,7 @@ test(
     
     for (size_t i = 0; i < test_vectors_size; i += 1)
     {
-        auto result = milo::primitive::cipher::test<milo::primitive::cipher::chacha_20>::encrypt(
+        auto result = milo::primitive::cipher::test<milo::primitive::cipher::chacha_20<>>::encrypt(
             test_vectors[i].key,
             test_vectors[i].iv,
             test_vectors[i].plaintext,

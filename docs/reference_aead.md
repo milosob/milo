@@ -24,7 +24,7 @@ Headers and types:
 - `<milo/primitive/aead/apie.h>`
   - `milo::primitive::aead::apie<impl_type>`
 - `<milo/primitive/aead/chacha.h>`
-  - `milo::primitive::aead::chacha_20_poly_1305`
+  - `milo::primitive::aead::chacha_20_poly_1305<>`
 
 All implementations of the algorithms share the same interface.
 
@@ -62,7 +62,7 @@ constexpr auto iv_size = alg_type::iv_size;
 ```c++
 #include <milo/primitive/aead/chacha.h>
 
-milo::primitive::aead::chacha_20_poly_1305 chacha_20_poly_1305;
+milo::primitive::aead::chacha_20_poly_1305<> chacha_20_poly_1305;
 ```
 
 - `digest_size = 16 bytes`
@@ -87,7 +87,7 @@ int main()
 {
     using namespace std::literals;
     
-    using aead_type = milo::primitive::aead::chacha_20_poly_1305;
+    using aead_type = milo::primitive::aead::chacha_20_poly_1305<>;
     
     auto key          = std::array<char, aead_type::key_size>{};
     auto iv           = std::array<char, aead_type::iv_size>{};
@@ -157,8 +157,8 @@ int main()
      * Here, the default comparison is used without such security guarantees.
      */
     
-    std::cout << "Encryption mac: " << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_enc) << "\n";
-    std::cout << "Decryption mac: " << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_dec) << "\n";
+    std::cout << "Encryption mac: " << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_enc) << "\n";
+    std::cout << "Decryption mac: " << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_dec) << "\n";
     std::cout << "Authentication: " << std::boolalpha << (digest_enc == digest_dec) << "\n";
     
     return 0;
@@ -180,7 +180,7 @@ int main()
 {
     using namespace std::literals;
     
-    using aead_type = milo::primitive::aead::apie<milo::primitive::aead::chacha_20_poly_1305>;
+    using aead_type = milo::primitive::aead::apie<milo::primitive::aead::chacha_20_poly_1305<>>;
     
     auto key     = std::array<char, aead_type::key_size>{};
     auto iv      = std::array<char, aead_type::iv_size>{};
@@ -287,7 +287,7 @@ int main()
 {
     using namespace std::literals;
     
-    using aead_type = milo::primitive::aead::chacha_20_poly_1305;
+    using aead_type = milo::primitive::aead::chacha_20_poly_1305<>;
     
     auto key     = std::array<char, aead_type::key_size>{};
     auto iv      = std::array<char, aead_type::iv_size>{};

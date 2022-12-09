@@ -30,13 +30,13 @@ Headers and types:
 - `<milo/primitive/hash/apie.h>`
   - `milo::primitive::hash::apie<hash_type>`
 - `<milo/primitive/hash/sha.h>`
-  - `milo::primitive::hash::sha_1_160`
-  - `milo::primitive::hash::sha_2_224`
-  - `milo::primitive::hash::sha_2_256`
-  - `milo::primitive::hash::sha_2_384`
-  - `milo::primitive::hash::sha_2_512`
-  - `milo::primitive::hash::sha_2_512_224`
-  - `milo::primitive::hash::sha_2_512_256`
+  - `milo::primitive::hash::sha_1_160<>`
+  - `milo::primitive::hash::sha_2_224<>`
+  - `milo::primitive::hash::sha_2_256<>`
+  - `milo::primitive::hash::sha_2_384<>`
+  - `milo::primitive::hash::sha_2_512<>`
+  - `milo::primitive::hash::sha_2_512_224<>`
+  - `milo::primitive::hash::sha_2_512_256<>`
 
 All implementations of the algorithms share the same interface.
 
@@ -66,13 +66,13 @@ constexpr auto block_size = alg_type::block_size;
 ```c++
 #include <milo/primitive/hash/sha.h>
 
-milo::primitive::hash::sha_1_160       sha_1_160;
-milo::primitive::hash::sha_2_224       sha_2_224;
-milo::primitive::hash::sha_2_256       sha_2_256;
-milo::primitive::hash::sha_2_384       sha_2_384;
-milo::primitive::hash::sha_2_512       sha_2_512;
-milo::primitive::hash::sha_2_512_224   sha_2_512_224;
-milo::primitive::hash::sha_2_512_256   sha_2_512_256;
+milo::primitive::hash::sha_1_160<>       sha_1_160;
+milo::primitive::hash::sha_2_224<>       sha_2_224;
+milo::primitive::hash::sha_2_256<>       sha_2_256;
+milo::primitive::hash::sha_2_384<>       sha_2_384;
+milo::primitive::hash::sha_2_512<>       sha_2_512;
+milo::primitive::hash::sha_2_512_224<>   sha_2_512_224;
+milo::primitive::hash::sha_2_512_256<>   sha_2_512_256;
 ```
 
 ### Hash computation
@@ -96,7 +96,7 @@ int main()
     /*
      * Declare alias.
      */
-    using hash_type = milo::primitive::hash::sha_2_256;
+    using hash_type = milo::primitive::hash::sha_2_256<>;
     
     auto message = "message"sv;
     
@@ -150,10 +150,10 @@ int main()
      */
     auto digest_d_size = hash.digest(digest_d, 100);
     
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_b, digest_b_size)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_c, digest_c_size)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_d, digest_d_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(digest_b, digest_b_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(digest_c, digest_c_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(digest_d, digest_d_size)) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -185,7 +185,7 @@ int main()
     /*
      * Declare alias via apie wrapper.
      */
-    using hash_type = milo::primitive::hash::apie<milo::primitive::hash::sha_2_256>;
+    using hash_type = milo::primitive::hash::apie<milo::primitive::hash::sha_2_256<>>;
     
     auto message = "message"sv;
     
@@ -264,13 +264,13 @@ int main()
      */
     auto digest_returned_by_reference_2_size = hash.digest(digest_returned_by_reference_2);
     
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(std::span(digest_a, digest_a_size)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_1) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_2) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_3) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_value_4) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_reference_1) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(digest_returned_by_reference_2) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(std::span(digest_a, digest_a_size)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_returned_by_value_1) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_returned_by_value_2) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_returned_by_value_3) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_returned_by_value_4) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_returned_by_reference_1) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(digest_returned_by_reference_2) << "\n";
     
     /*
      * Must be re-initialized before reuse.
@@ -299,12 +299,12 @@ int main()
     /*
      * Declare alias.
      */
-    using hash_type = milo::primitive::hash::sha_2_256;
+    using hash_type = milo::primitive::hash::sha_2_256<>;
     
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::hash::digest<hash_type>("message"sv)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::hash::digest<hash_type>("message"sv, 16)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::hash::digest<hash_type>("hello world"sv)) << "\n";
-    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16, std::string>(milo::primitive::hash::digest<hash_type>("hello world"sv, 8)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::hash::digest<hash_type>("message"sv)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::hash::digest<hash_type>("message"sv, 16)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::hash::digest<hash_type>("hello world"sv)) << "\n";
+    std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::hash::digest<hash_type>("hello world"sv, 8)) << "\n";
     
     return 0;
 }

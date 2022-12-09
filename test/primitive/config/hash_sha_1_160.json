@@ -1,7 +1,7 @@
 {
     "scheme": "test-primitive-hash",
     "payload": {
-        "impl": "milo::primitive::hash::sha_1_160",
+        "impl": "milo::primitive::hash::sha_1_160<>",
         "include": [
             "<milo/primitive/hash/sha.h>"
         ],
