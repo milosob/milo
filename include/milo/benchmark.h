@@ -43,21 +43,6 @@ namespace milo::benchmark
         operator =(
             const result& object
         ) noexcept(true) -> result& = default;
-    
-    private:
-        
-        friend auto
-        operator <<(
-            std::ostream& a_ostream,
-            const result& a_result
-        ) noexcept(false) -> std::ostream&
-        {
-            /*
-             * TODO
-             */
-            
-            return a_ostream;
-        }
     };
     
     template<
@@ -67,7 +52,7 @@ namespace milo::benchmark
     constexpr auto
     run(
         t_invocable&& a_invocable,
-        size_t a_iterations,
+        size_t a_repeat,
         t_args&& ... a_args
     ) noexcept(meta::invocable_noexcept<t_invocable, t_args...>) -> result
     {
@@ -79,7 +64,7 @@ namespace milo::benchmark
         guard_type guard [[maybe_unused]] = 0;
         guard_type volatile guard_vol [[maybe_unused]];
         
-        for (size_t i = 0; i < 10; i += 1)
+        for (size_t i = 0; i < 32; i += 1)
         {
             guard += a_invocable(
                 internal::forward<
@@ -90,6 +75,8 @@ namespace milo::benchmark
             );
         }
         
+        guard_vol = guard;
+        
         /*
          * TODO
          *  Consider adding fences around clock calls for reliability.
@@ -97,7 +84,7 @@ namespace milo::benchmark
         
         auto beg = clock_type::now();
         
-        for (size_t i = 0; i < a_iterations; i += 1)
+        for (size_t i = 0; i < a_repeat; i += 1)
         {
             guard += a_invocable(
                 internal::forward<
