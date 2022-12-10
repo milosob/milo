@@ -202,7 +202,7 @@ At the moment, each algorithm supports the constexpr compile-time evaluation.
 ### Testing
 
 Each algorithm's test program in the library is generated using the Python application `milo-codegen`,
-which sources are placed in the `apps` directory.
+which sources are placed in the `tool` directory.
 Tests are generated based on configuration files, located in the `tests/configs` directory.
 
 Each configuration file contains information about the source of

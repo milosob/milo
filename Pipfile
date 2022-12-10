@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 setuptools = "*"
 shell = "*"
-codegen = { editable = true, path = "./apps/codegen" }
+codegen = { editable = true, path = "./tool/codegen" }
 
 [dev-packages]
 

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f33da07a1891db3a59da8e59120beb42706eff6d8368e8e00e36896e9050497d"
+            "sha256": "c0ea38961d1528d9126261f4ded0437c6a07d2a8792cdaeebfef58f4b51e2edf"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,15 +18,15 @@
     "default": {
         "codegen": {
             "editable": true,
-            "path": "./apps/codegen"
+            "path": "./tool/codegen"
         },
         "setuptools": {
             "hashes": [
-                "sha256:d0b9a8433464d5800cbe05094acf5c6d52a91bfac9b52bcfc4d41382be5d5d31",
-                "sha256:e197a19aa8ec9722928f2206f8de752def0e4c9fc6953527360d1c36d94ddb2f"
+                "sha256:57f6f22bde4e042978bcd50176fdb381d7c21a9efa4041202288d3737a0c6a54",
+                "sha256:a7620757bf984b58deaf32fc8a4577a9bbc0850cf92c20e1ce41c38c19e5fb75"
             ],
             "index": "pypi",
-            "version": "==65.5.1"
+            "version": "==65.6.3"
         },
         "shell": {
             "hashes": [

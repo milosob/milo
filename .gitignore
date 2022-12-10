@@ -11,6 +11,6 @@ cmake-build-*/
 include/milo/internal/config.h
 
 # Python
-apps/codegen/build/
-apps/codegen/codegen.egg-info/
-apps/codegen/__pycache__/
+tool/codegen/build/
+tool/codegen/codegen.egg-info/
+tool/codegen/__pycache__/
