@@ -77,7 +77,7 @@ namespace milo::internal
         
         if constexpr (meta::same<t_int, uint16_t>)
         {
-            if constexpr (compiler_msvc)
+            if constexpr (MILO_COMPILER_MSVC)
             {
                 return _byteswap_ushort(a_int);
             }
@@ -89,7 +89,7 @@ namespace milo::internal
         
         if constexpr (meta::same<t_int, uint32_t>)
         {
-            if constexpr (compiler_msvc)
+            if constexpr (MILO_COMPILER_MSVC)
             {
                 return _byteswap_ulong(a_int);
             }
@@ -101,7 +101,7 @@ namespace milo::internal
         
         if constexpr (meta::same<t_int, uint64_t>)
         {
-            if constexpr (compiler_msvc)
+            if constexpr (MILO_COMPILER_MSVC)
             {
                 return _byteswap_uint64(a_int);
             }
@@ -128,7 +128,12 @@ namespace milo::internal
         }
         else
         {
-            if constexpr (compiler_has_builtin_bswap)
+            if constexpr (
+                MILO_COMPILER_CLANG ||
+                MILO_COMPILER_GCC ||
+                MILO_COMPILER_ICC ||
+                MILO_COMPILER_MSVC
+                )
             {
                 return endian_swap_bi(a_int);
             }

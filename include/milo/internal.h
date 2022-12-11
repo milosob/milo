@@ -10,6 +10,7 @@
 #include <milo/internal/config.h>
 #include <milo/internal/endian.h>
 #include <milo/internal/impl.h>
+#include <milo/internal/macro.h>
 #include <milo/internal/memory.h>
 #include <milo/internal/option.h>
 #include <milo/internal/update.h>
