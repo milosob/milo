@@ -5,7 +5,7 @@
 
 #include <chrono>
 #include <ostream>
-#include <immintrin.h>
+
 #include <milo/internal.h>
 
 
