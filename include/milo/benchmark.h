@@ -52,7 +52,7 @@ namespace milo::benchmark
     constexpr auto
     run(
         t_invocable&& a_invocable,
-        size_t a_repeat,
+        size_t a_repeats,
         t_args&& ... a_args
     ) noexcept(meta::invocable_noexcept<t_invocable, t_args...>) -> result
     {
@@ -84,7 +84,7 @@ namespace milo::benchmark
         
         auto beg = clock_type::now();
         
-        for (size_t i = 0; i < a_repeat; i += 1)
+        for (size_t i = 0; i < a_repeats; i += 1)
         {
             guard += a_invocable(
                 internal::forward<
