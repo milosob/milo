@@ -19,8 +19,8 @@ namespace milocli::command::detail
     MILO_INTERNAL_INLINE
     constexpr auto
     benchmark_run(
-        t_invocable&& a_invocable,
         size_t a_repeats,
+        t_invocable&& a_invocable,
         t_args&& ... a_args
     ) noexcept(milo::meta::invocable_noexcept<t_invocable, t_args...>) -> uint64_t
     {
@@ -108,8 +108,8 @@ namespace milocli::command::detail
         t_impl impl;
         
         return benchmark_run(
-            benchmark_primitive_hash_call_core<t_impl>,
             a_repeats,
+            benchmark_primitive_hash_call_core<t_impl>,
             impl,
             a_message.data(),
             a_message.size()
@@ -155,27 +155,42 @@ namespace milocli::command::detail
              */
         };
         
+        /*
+         * Benchmark result.
+         */
         auto& result = a_result["primitive"]["hash"];
         
+        /*
+         * Benchmark control.
+         */
         auto message_size = a_args.parameter<size_t>("message-size");
+        auto choice = a_args.command();
+        
+        /*
+         * Benchmark parameters.
+         */
+        auto repeats = a_config["repeats"].as<size_t>();
         auto message = std::string(
             message_size,
             ' '
         );
-        
-        auto choice = a_args.command();
-        auto repeats = a_config["repeats"].as<size_t>();
-        auto total = repeats * message_size;
         
         auto invoke = [&](
             auto& a_name,
             auto& a_benchmark
         )
         {
-            auto duration = a_benchmark(
+            auto nanoseconds = a_benchmark(
                 repeats,
                 message
             );
+            
+            auto duration_total = nanoseconds;
+            auto duration_average = double(duration_total) / double(repeats);
+            
+            auto processed_bytes = repeats * message_size;
+            auto throughput_gigabytes_per_second = double(processed_bytes) / duration_total;
+            auto throughput_megabytes_per_second = double(processed_bytes * 1000) / duration_total;
             
             result[a_name] = {
                 {
@@ -189,16 +204,16 @@ namespace milocli::command::detail
                     {
                         {
                          "duration",
-                         {
-                             {"average", double(duration) / double(repeats)},
-                             {"total", total}
-                         }},
+                                    {
+                                        {"average", duration_average},
+                                        {"total", duration_total}
+                                    }},
                         {
                          "throughput",
-                         {
-                             {"gb/s", double(total) / duration},
-                             {"mb/s", double(total * 1000) / duration}
-                         }}
+                                         {
+                                             {"gigabytes_per_second", throughput_gigabytes_per_second},
+                                             {"megabytes_per_second", throughput_megabytes_per_second}
+                                         }}
                     }},
             };
         };
