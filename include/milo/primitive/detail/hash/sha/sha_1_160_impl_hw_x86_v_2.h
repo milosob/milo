@@ -9,9 +9,9 @@
 #if MILO_INTERNAL_ARCH_X86_ISE_SSE_1 && \
     MILO_INTERNAL_ARCH_X86_ISE_SSE_2 && \
     MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1 && \
-    MILO_INTERNAL_ARCH_X86_ISE_SHA_1 && \
-    MILO_INTERNAL_COMPILER_CLANG
-    
+    MILO_INTERNAL_ARCH_X86_ISE_SHA_1
+
+
 #include <immintrin.h>
 
 
@@ -20,7 +20,7 @@ namespace milo::primitive::detail
     class hash_sha_1_160_impl_hw_x86_v_2
     {
     public:
-    
+        
         struct requirements
         {
             struct arch
@@ -30,13 +30,20 @@ namespace milo::primitive::detail
                     struct ise
                     {
                         using sse_1 = int;
-                    
+                        
                         using sse_2 = int;
-                    
+                        
                         using sse_4_1 = int;
-                    
+                        
                         using sha_1 = int;
                     };
+                };
+            };
+            
+            struct compiler
+            {
+                struct clang
+                {
                 };
             };
         };
@@ -67,24 +74,24 @@ namespace milo::primitive::detail
             vect_type state_0;
             vect_type state_1;
             vect_type state_2;
-    
+            
             state_0 = _mm_loadu_si128(
                 reinterpret_cast<const load_type*>(a_h_ptr)
             );
-    
+            
             state_0 = _mm_shuffle_epi32(
                 state_0,
                 0b00011011
             );
-    
+            
             state_1 = _mm_setzero_si128();
-    
+            
             state_1 = _mm_insert_epi32(
                 state_1,
                 int(a_h_ptr[4]),
                 3
             );
-    
+            
             constexpr auto shuffle_mask = vect_type
                 {
                     0x08090a0b0c0d0e0f,
@@ -157,14 +164,14 @@ namespace milo::primitive::detail
                         state_2,
                         schedule[j + 1]
                     );
-    
+                    
                     state_2 = _mm_sha1rnds4_epu32(
                         state_2,
                         schedule[j],
                         0
                     );
                 }
-    
+                
                 /*
                  * Rounds 20 to 39.
                  */
@@ -175,14 +182,14 @@ namespace milo::primitive::detail
                         state_2,
                         schedule[j + 1]
                     );
-    
+                    
                     state_2 = _mm_sha1rnds4_epu32(
                         state_2,
                         schedule[j],
                         1
                     );
                 }
-    
+                
                 /*
                  * Rounds 39 to 59.
                  */
@@ -193,14 +200,14 @@ namespace milo::primitive::detail
                         state_2,
                         schedule[j + 1]
                     );
-    
+                    
                     state_2 = _mm_sha1rnds4_epu32(
                         state_2,
                         schedule[j],
                         2
                     );
                 }
-    
+                
                 /*
                  * Rounds 60 to 75.
                  */
@@ -211,7 +218,7 @@ namespace milo::primitive::detail
                         state_2,
                         schedule[j + 1]
                     );
-    
+                    
                     state_2 = _mm_sha1rnds4_epu32(
                         state_2,
                         schedule[j],
@@ -227,7 +234,7 @@ namespace milo::primitive::detail
                     state_2,
                     state_1
                 );
-    
+                
                 /*
                  * Rounds 76 to 79.
                  */
@@ -237,7 +244,7 @@ namespace milo::primitive::detail
                     schedule[19],
                     3
                 );
-    
+                
                 /*
                  * Merge state.
                  */
@@ -249,17 +256,17 @@ namespace milo::primitive::detail
                 
                 a_src_ptr += block_size;
             }
-    
+            
             state_0 = _mm_shuffle_epi32(
                 state_0,
                 0b00011011
             );
-    
+            
             _mm_storeu_si128(
                 reinterpret_cast<stor_type*>(a_h_ptr),
                 state_0
             );
-    
+            
             a_h_ptr[4] = _mm_extract_epi32(
                 state_1,
                 3

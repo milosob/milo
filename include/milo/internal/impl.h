@@ -79,6 +79,28 @@ namespace milo::internal
                         (!
                             requires
                             {
+                                typename t_impls::requirements::compiler;
+                            }
+                        ) ||
+                        (
+                            requires
+                            {
+                                requires MILO_INTERNAL_COMPILER_CLANG;
+                                typename t_impls::requirements::compiler::clang;
+                            }
+                        ) ||
+                        (
+                            requires
+                            {
+                                requires MILO_INTERNAL_COMPILER_GCC;
+                                typename t_impls::requirements::compiler::gcc;
+                            }
+                        )
+                    ) &&
+                    (
+                        (!
+                            requires
+                            {
                                 typename t_impls::requirements::arch;
                             }
                         ) ||
