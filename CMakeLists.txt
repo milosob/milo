@@ -12,7 +12,7 @@ option(MILO_TEST_CONSTEXPR "Enable constexpr testing." OFF)
 option(MILO_TEST_INTERNAL "Enable internal testing." OFF)
 option(MILO_TEST_PRIMITIVE "Enable primitive testing." OFF)
 
-option(MILO_CLI "Build cli." OFF)
+option(MILO_CLI "Enable cli." OFF)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/config.h
