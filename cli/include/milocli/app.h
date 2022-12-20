@@ -98,7 +98,7 @@ namespace milocli
                 m_args_end,
                 [](auto& a_item)
                 {
-                    return std::isalpha(a_item[0]);
+                    return !a_item.starts_with('-');
                 }
             );
             

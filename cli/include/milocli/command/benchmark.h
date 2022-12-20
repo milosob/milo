@@ -4,9 +4,11 @@
 
 #include <chrono>
 #include <iostream>
+#include <regex>
 
 #include <milocli/app.h>
 #include <milocli/dep.h>
+#include <milocli/pattern.h>
 #include <milocli/type.h>
 
 
@@ -134,6 +136,7 @@ namespace milocli::command::detail
              */
             {"sha-1-160",            benchmark_primitive_hash_call<milo::primitive::hash::sha_1_160<>>},
             {"sha-1-160-sw",         benchmark_primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>},
+            {"sha-1-160-hw", benchmark_primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>},
             {"sha-1-160-hw-x86-v-1", benchmark_primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>},
             {"sha-1-160-hw-x86-v-2", benchmark_primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>},
             {"sha-2-224",            benchmark_primitive_hash_call<milo::primitive::hash::sha_2_224<>>},
@@ -161,10 +164,10 @@ namespace milocli::command::detail
         auto& result = a_result["primitive"]["hash"];
         
         /*
-         * Benchmark control.
+     * Benchmark control.
          */
         auto message_size = a_args.parameter<size_t>("message-size");
-        auto choice = a_args.command();
+        auto pattern = a_args.command();
         
         /*
          * Benchmark parameters.
@@ -172,7 +175,7 @@ namespace milocli::command::detail
         auto repeats = a_config["repeats"].as<size_t>();
         auto message = std::string(
             message_size,
-            ' '
+        ' '
         );
         
         auto invoke = [&](
@@ -218,22 +221,18 @@ namespace milocli::command::detail
             };
         };
         
-        if (choice == "all")
+        for (const auto& [name, benchmark]: benchmarks)
         {
-            for (const auto& [name, benchmark]: benchmarks)
+            if (pattern_match_star(
+                pattern,
+                name
+            ))
             {
                 invoke(
                     name,
                     benchmark
                 );
             }
-        }
-        else
-        {
-            invoke(
-                choice,
-                benchmarks[choice]
-            );
         }
     }
     
