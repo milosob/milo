@@ -222,7 +222,7 @@ namespace milo::internal
             t_args&& ... a_args
         ) noexcept(true)
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 if constexpr (meta::complex<cpltime_override>)
                 {

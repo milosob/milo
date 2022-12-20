@@ -10,9 +10,9 @@
     defined(__x86_64__) || \
     defined(_WIN32) || \
     defined(_WIN64)
-    #define MILO_ARCH_X86 true
+    #define MILO_INTERNAL_ARCH_X86 true
 #else
-    #define MILO_ARCH_X86 false;
+    #define MILO_INTERNAL_ARCH_X86 false;
 #endif
 
 /*
@@ -20,70 +20,70 @@
  *  This won't work for MSVC.
  */
 
-#if MILO_ARCH_X86 && defined __SSE__
-    #define MILO_ARCH_X86_ISE_SSE_1 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SSE__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_1 true
 #else
-    #define MILO_ARCH_X86_ISE_SSE_1 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_1 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SSE2__
-    #define MILO_ARCH_X86_ISE_SSE_2 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SSE2__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_2 true
 #else
-    #define MILO_ARCH_X86_ISE_SSE_2 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_2 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SSE3__
-    #define MILO_ARCH_X86_ISE_SSE_3 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SSE3__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_3 true
 #else
-    #define MILO_ARCH_X86_ISE_SSE_3 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_3 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SSSE3__
-    #define MILO_ARCH_X86_ISE_SSSE_3 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SSSE3__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSSE_3 true
 #else
-    #define MILO_ARCH_X86_ISE_SSSE_3 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSSE_3 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SSE4_1__
-    #define MILO_ARCH_X86_ISE_SSE_4_1 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SSE4_1__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1 true
 #else
-    #define MILO_ARCH_X86_ISE_SSE_4_1 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SSE4_2__
-    #define MILO_ARCH_X86_ISE_SSE_4_2 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SSE4_2__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_2 true
 #else
-    #define MILO_ARCH_X86_ISE_SSE_4_2 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_2 false
 #endif
 
-#if MILO_ARCH_X86 && defined __AVX__
-    #define MILO_ARCH_X86_ISE_AVX_1 true
+#if MILO_INTERNAL_ARCH_X86 && defined __AVX__
+    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_1 true
 #else
-    #define MILO_ARCH_X86_ISE_AVX_1 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_1 false
 #endif
 
-#if MILO_ARCH_X86 && defined __AVX2__
-    #define MILO_ARCH_X86_ISE_AVX_2 true
+#if MILO_INTERNAL_ARCH_X86 && defined __AVX2__
+    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 true
 #else
-    #define MILO_ARCH_X86_ISE_AVX_2 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 false
 #endif
 
-#if MILO_ARCH_X86 && defined __AVX2__
-    #define MILO_ARCH_X86_ISE_AVX_2 true
+#if MILO_INTERNAL_ARCH_X86 && defined __AVX2__
+    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 true
 #else
-    #define MILO_ARCH_X86_ISE_AVX_2 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SHA__
-    #define MILO_ARCH_X86_ISE_SHA_1 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SHA__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_1 true
 #else
-    #define MILO_ARCH_X86_ISE_SHA_1 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_1 false
 #endif
 
-#if MILO_ARCH_X86 && defined __SHA__
-    #define MILO_ARCH_X86_ISE_SHA_2 true
+#if MILO_INTERNAL_ARCH_X86 && defined __SHA__
+    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_2 true
 #else
-    #define MILO_ARCH_X86_ISE_SHA_2 false
+    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_2 false
 #endif
 
 namespace milo::internal
@@ -406,34 +406,34 @@ namespace milo::internal
     struct arch_x86_ise_native
     {
         static
-        constexpr bool sse_1 = MILO_ARCH_X86_ISE_SSE_1;
+        constexpr bool sse_1 = MILO_INTERNAL_ARCH_X86_ISE_SSE_1;
         
         static
-        constexpr bool sse_2 = MILO_ARCH_X86_ISE_SSE_2;
+        constexpr bool sse_2 = MILO_INTERNAL_ARCH_X86_ISE_SSE_2;
         
         static
-        constexpr bool sse_3 = MILO_ARCH_X86_ISE_SSE_3;
+        constexpr bool sse_3 = MILO_INTERNAL_ARCH_X86_ISE_SSE_3;
         
         static
-        constexpr bool ssse_3 = MILO_ARCH_X86_ISE_SSSE_3;
+        constexpr bool ssse_3 = MILO_INTERNAL_ARCH_X86_ISE_SSSE_3;
         
         static
-        constexpr bool sse_4_1 = MILO_ARCH_X86_ISE_SSE_4_1;
+        constexpr bool sse_4_1 = MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1;
         
         static
-        constexpr bool sse_4_2 = MILO_ARCH_X86_ISE_SSE_4_2;
+        constexpr bool sse_4_2 = MILO_INTERNAL_ARCH_X86_ISE_SSE_4_2;
         
         static
-        constexpr bool avx_1 = MILO_ARCH_X86_ISE_AVX_1;
+        constexpr bool avx_1 = MILO_INTERNAL_ARCH_X86_ISE_AVX_1;
         
         static
-        constexpr bool avx_2 = MILO_ARCH_X86_ISE_AVX_2;
+        constexpr bool avx_2 = MILO_INTERNAL_ARCH_X86_ISE_AVX_2;
         
         static
-        constexpr bool sha_1 = MILO_ARCH_X86_ISE_SHA_1;
+        constexpr bool sha_1 = MILO_INTERNAL_ARCH_X86_ISE_SHA_1;
         
         static
-        constexpr bool sha_2 = MILO_ARCH_X86_ISE_SHA_2;
+        constexpr bool sha_2 = MILO_INTERNAL_ARCH_X86_ISE_SHA_2;
         
         template<
             typename t_impl
@@ -513,7 +513,7 @@ namespace milo::internal
     struct arch_x86
     {
         static
-        constexpr bool value = MILO_ARCH_X86;
+        constexpr bool value = MILO_INTERNAL_ARCH_X86;
         
         using ise = arch_x86_ise;
     };

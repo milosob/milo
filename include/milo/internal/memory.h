@@ -47,7 +47,7 @@ namespace milo::internal
         }
         else
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 auto val = val_type(0);
                 auto bse = a_off * val_size;
@@ -135,7 +135,7 @@ namespace milo::internal
             !(full_size != 0 && part_size != 0)
         );
         
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             auto val = val_type(0);
             auto bse = a_off * val_size;
@@ -337,7 +337,7 @@ namespace milo::internal
         }
         else
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 auto val = val_type(a_val);
                 auto bse = a_off * val_size;
@@ -420,7 +420,7 @@ namespace milo::internal
             !(full_size != 0 && part_size != 0)
         );
         
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             auto val = val_type(a_val);
             auto bse = a_off * val_size;
@@ -590,7 +590,7 @@ namespace milo::internal
         size_t a_size
     ) noexcept(true) -> void
     {
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             for (size_t i = 0; i < a_size; i += 1)
             {
@@ -693,7 +693,7 @@ namespace milo::internal
         size_t a_size
     ) noexcept(true) -> void
     {
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             for (size_t i = 0; i < a_size; i += 1)
             {
@@ -754,7 +754,7 @@ namespace milo::internal
         size_t a_size
     ) noexcept(true) -> bool
     {
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             for (size_t i = 0; i < a_size; i += 1)
             {
@@ -913,7 +913,7 @@ namespace milo::internal
         size_t a_size
     ) noexcept(true) -> void
     {
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             auto ptr = a_ptr;
             
@@ -941,7 +941,7 @@ namespace milo::internal
         t_ref& a_ref
     ) noexcept(true) -> void
     {
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             static_cast<t_ref&>(a_ref) = 0;
         }
@@ -1138,7 +1138,7 @@ namespace milo::internal
             m_ptr = a_object.m_ptr;
             m_size = a_object.m_size;
             
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 a_object.m_ptr = nullptr;
                 a_object.m_size = 0;
@@ -1147,7 +1147,7 @@ namespace milo::internal
         
         constexpr memory_bytes_const_view(const memory_bytes_const_view& a_object) noexcept(true)
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 auto size = a_object.m_size;
                 auto ptr = new value_type[size];
@@ -1169,7 +1169,7 @@ namespace milo::internal
         
         constexpr ~memory_bytes_const_view() noexcept(true)
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 delete[] m_ptr;
             }
@@ -1186,7 +1186,7 @@ namespace milo::internal
             size_t a_size
         ) noexcept(true)
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 auto size = a_size;
                 auto ptr = new value_type[size];
@@ -1213,7 +1213,7 @@ namespace milo::internal
             memory_bytes_const_view&& a_object
         ) noexcept(true) -> memory_bytes_const_view&
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 if (this != &a_object)
                 {
@@ -1239,7 +1239,7 @@ namespace milo::internal
             const memory_bytes_const_view& a_object
         ) noexcept(true) -> memory_bytes_const_view&
         {
-            if MILO_CONSTEVAL
+            if MILO_INTERNAL_CONSTEVAL
             {
                 if (this != &a_object)
                 {

@@ -14,7 +14,7 @@
  * @formatter:off
  */
 
-#define MILO_CONSTEVAL                                              \
+#define MILO_INTERNAL_CONSTEVAL                                     \
     (std::is_constant_evaluated())                                  \
 
 /*

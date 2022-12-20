@@ -6,11 +6,11 @@
 #include <milo/internal.h>
 
 
-#if MILO_ARCH_X86_ISE_SSE_1 && \
-    MILO_ARCH_X86_ISE_SSE_2 && \
-    MILO_ARCH_X86_ISE_SSE_4_1 && \
-    MILO_ARCH_X86_ISE_SHA_1 && \
-    MILO_COMPILER_CLANG
+#if MILO_INTERNAL_ARCH_X86_ISE_SSE_1 && \
+    MILO_INTERNAL_ARCH_X86_ISE_SSE_2 && \
+    MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1 && \
+    MILO_INTERNAL_ARCH_X86_ISE_SHA_1 && \
+    MILO_INTERNAL_COMPILER_CLANG
     
 #include <immintrin.h>
 

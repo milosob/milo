@@ -12,12 +12,7 @@ option(MILO_TEST_CONSTEXPR "Enable constexpr testing." OFF)
 option(MILO_TEST_INTERNAL "Enable internal testing." OFF)
 option(MILO_TEST_PRIMITIVE "Enable primitive testing." OFF)
 
-execute_process(
-        COMMAND git rev-parse HEAD
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        OUTPUT_VARIABLE MILO_COMMIT
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+option(MILO_CLI "Build cli." OFF)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/config.h
@@ -33,12 +28,6 @@ target_compile_features(
         ${PROJECT_NAME}
         INTERFACE
         cxx_std_20
-)
-
-target_compile_definitions(
-        ${PROJECT_NAME}
-        INTERFACE
-        MILO_COMMIT="${MILO_COMMIT}"
 )
 
 target_include_directories(
@@ -63,6 +52,10 @@ install(
         EXPORT ${PROJECT_NAME}-config
         DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake "
 )
+
+if (${MILO_CLI})
+    add_subdirectory(cli)
+endif ()
 
 if (${MILO_TEST})
     enable_testing()

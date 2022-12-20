@@ -8,4 +8,4 @@
 #include <cstring>
 
 
-#define MILO_INLINE inline __attribute__((always_inline))
+#define MILO_INTERNAL_INLINE inline __attribute__((always_inline))

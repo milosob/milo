@@ -6,10 +6,10 @@
 #include <milo/internal.h>
 
 
-#if MILO_ARCH_X86_ISE_SSE_1 && \
-    MILO_ARCH_X86_ISE_SSE_2 && \
-    MILO_ARCH_X86_ISE_SSSE_3 && \
-    MILO_ARCH_X86_ISE_SHA_2
+#if MILO_INTERNAL_ARCH_X86_ISE_SSE_1 && \
+    MILO_INTERNAL_ARCH_X86_ISE_SSE_2 && \
+    MILO_INTERNAL_ARCH_X86_ISE_SSSE_3 && \
+    MILO_INTERNAL_ARCH_X86_ISE_SHA_2
 
 
 #include <immintrin.h>
