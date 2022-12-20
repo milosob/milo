@@ -9,3 +9,4 @@
 #include <milo/option.h>
 #include <milo/primitive/hash/sha.h>
 #include <milo/primitive/mac/hmac.h>
+#include <milo/primitive/mac/poly.h>

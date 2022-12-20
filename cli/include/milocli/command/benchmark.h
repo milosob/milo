@@ -325,7 +325,8 @@ namespace milocli::command::detail
             {"hmac-sha-2-512-224",        benchmark_primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>},
             {"hmac-sha-2-512-224-sw",     benchmark_primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
             {"hmac-sha-2-512-256",        benchmark_primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>},
-            {"hmac-sha-2-512-256-sw",     benchmark_primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>}
+            {"hmac-sha-2-512-256-sw",     benchmark_primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
+            {"poly-1305",                 benchmark_primitive_mac_call<milo::primitive::mac::poly_1305<>>}
             /*
              * @formatter:on
              */
@@ -334,7 +335,7 @@ namespace milocli::command::detail
         /*
          * Benchmark result.
          */
-        auto& result = a_result["primitive"]["hash"];
+        auto& result = a_result["primitive"]["mac"];
         
         /*
          * Benchmark control.
