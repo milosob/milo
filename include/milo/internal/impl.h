@@ -19,6 +19,40 @@ namespace milo::internal
     using impl_domain_runtime = arch_active::ise::runtime;
     
     template<
+        typename t_impl
+    >
+    static
+    constexpr auto
+    impl_choose_check(
+    ) noexcept(true) -> bool
+    {
+        return
+            meta::complex<t_impl> &&
+            (
+                (!
+                    requires
+                    {
+                        typename t_impl::requirements::compiler;
+                    }
+                ) ||
+                (
+                    requires
+                    {
+                        requires MILO_INTERNAL_COMPILER_CLANG;
+                        typename t_impl::requirements::compiler::clang;
+                    }
+                ) ||
+                (
+                    requires
+                    {
+                        requires MILO_INTERNAL_COMPILER_GCC;
+                        typename t_impl::requirements::compiler::gcc;
+                    }
+                )
+            );
+    }
+    
+    template<
         typename t_domain,
         typename t_chooser,
         typename t_impl,
@@ -29,7 +63,7 @@ namespace milo::internal
     impl_choose_hook(
     ) noexcept(true)
     {
-        if constexpr (meta::complex<t_impl>)
+        if constexpr (impl_choose_check<t_impl>())
         {
             if constexpr ((!
                 requires
@@ -74,29 +108,7 @@ namespace milo::internal
         :
             meta::disjunction<
                 meta::asbool<
-                    meta::complex<t_impls> &&
-                    (
-                        (!
-                            requires
-                            {
-                                typename t_impls::requirements::compiler;
-                            }
-                        ) ||
-                        (
-                            requires
-                            {
-                                requires MILO_INTERNAL_COMPILER_CLANG;
-                                typename t_impls::requirements::compiler::clang;
-                            }
-                        ) ||
-                        (
-                            requires
-                            {
-                                requires MILO_INTERNAL_COMPILER_GCC;
-                                typename t_impls::requirements::compiler::gcc;
-                            }
-                        )
-                    ) &&
+                    impl_choose_check<t_impls>() &&
                     (
                         (!
                             requires
@@ -106,7 +118,7 @@ namespace milo::internal
                         ) ||
                         t_domain::template check<t_impls>()
                     ),
-                    typename t_chooser::template type<t_impls>
+                    typename t_chooser::template type<t_impls>()
                 >...
             >
     {
