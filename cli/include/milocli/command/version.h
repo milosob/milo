@@ -10,13 +10,11 @@
 #include <milocli/type.h>
 
 
-namespace milocli::command
+namespace milocli::command::version
 {
     auto
-    version(
-        app_args& a_args,
-        app_context& a_context
-    ) noexcept(false) -> void
+    run(
+    ) -> void
     {
         std::cout << MILO_NAME << " " << MILO_VERSION_SEMANTIC << std::endl;
     }

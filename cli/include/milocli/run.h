@@ -16,8 +16,11 @@ namespace milocli
         char** a_argv
     ) noexcept(false) -> int
     {
-        auto args = app_args{a_argc, a_argv};
-        auto context = app_context{
+        app::args = {
+            a_argc,
+            a_argv
+        };
+        app::context = {
             {{
                  "compiler",
                  {
@@ -33,31 +36,28 @@ namespace milocli
              {
                  "command",
                  {
-                     {"dump", args.raw()},
-                     {"args", args.args()},
+                     {"dump", app::args.dump()},
+                     {"args", app::args.args()},
                  }},
              {
-                 "config",
+                 "result",
                  {
-                     {"verbose", args.option("verbose")}
                  }},
             }
         };
+        app::options = {
+            .verbose = app::args.option("verbose"),
+            .developer = app::args.option("developer")
+        };
         
-        auto commands = app_callmap<void(
-            app_args&,
-            app_context&
-        )>{
-            {"benchmark", command::benchmark},
-            {"version",   command::version},
+        auto commands = app_callmap<void()>{
+            {"benchmark", command::benchmark::run},
+            {"version",   command::version::run},
         };
         
         try
         {
-            commands.at(args.command())(
-                args,
-                context
-            );
+            commands.at(app::args.command())();
         }
         catch (const error& error)
         {

@@ -15,7 +15,7 @@ namespace milocli
         typename t_pattern,
         typename t_message
     >
-    constexpr auto
+    auto
     pattern_match_star(
         const t_pattern& a_pattern,
         const t_message& a_message
