@@ -727,6 +727,220 @@ namespace milocli::command::benchmark
         );
     }
     
+    template<
+        milo::meta::primitive::aead t_impl
+    >
+    auto
+    primitive_aead_encrypt_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_iv_ptr,
+        size_t a_iv_size,
+        const char* a_aad_ptr,
+        size_t a_aad_size,
+        const char* a_plaintext_ptr,
+        size_t a_plaintext_size,
+        char* a_ciphertext_ptr,
+        char* a_digest_ptr
+    )
+    {
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size,
+            a_iv_ptr,
+            a_iv_size
+        );
+        a_impl.aad(
+            a_aad_ptr,
+            a_aad_size
+        );
+        a_impl.aadover();
+        a_impl.encrypt(
+            a_plaintext_ptr,
+            a_plaintext_size,
+            a_ciphertext_ptr
+        );
+        a_impl.finalize();
+        
+        return a_impl.digest(
+            a_digest_ptr
+        );
+    }
+    
+    template<
+        milo::meta::primitive::aead t_impl
+    >
+    auto
+    primitive_aead_encrypt(
+        const memory_type& a_aad,
+        const memory_type& a_bytes
+    )
+    {
+        t_impl impl;
+        
+        milo::container::chars_static<t_impl::key_size> key;
+        milo::container::chars_static<t_impl::iv_size> iv;
+        milo::container::chars_static<t_impl::digest_size> digest;
+        
+        std::iota(
+            key.begin(),
+            key.end(),
+            0
+        );
+        std::iota(
+            iv.begin(),
+            iv.end(),
+            0
+        );
+        
+        auto [ciphertext, mac] = milo::primitive::aead::encrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            a_aad,
+            a_bytes
+        );
+        
+        auto plaintext = milo::primitive::aead::decrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            a_aad,
+            ciphertext,
+            mac
+        );
+        
+        return std::make_tuple(
+            measure(
+                primitive_aead_encrypt_call<t_impl>,
+                impl,
+                key.data(),
+                key.size(),
+                iv.data(),
+                iv.size(),
+                a_aad.data(),
+                a_aad.size(),
+                plaintext.data(),
+                plaintext.size(),
+                ciphertext.data(),
+                digest.data()
+            ),
+            options.repeats_measure * (a_aad.size() + a_bytes.size())
+        );
+    }
+    
+    template<
+        milo::meta::primitive::aead t_impl
+    >
+    auto
+    primitive_aead_decrypt_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_iv_ptr,
+        size_t a_iv_size,
+        const char* a_aad_ptr,
+        size_t a_aad_size,
+        const char* a_ciphertext_ptr,
+        size_t a_ciphertext_size,
+        char* a_plaintext_ptr,
+        char* a_digest_ptr
+    )
+    {
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size,
+            a_iv_ptr,
+            a_iv_size
+        );
+        a_impl.aad(
+            a_aad_ptr,
+            a_aad_size
+        );
+        a_impl.aadover();
+        a_impl.decrypt(
+            a_ciphertext_ptr,
+            a_ciphertext_size,
+            a_plaintext_ptr
+        );
+        a_impl.finalize();
+        
+        return a_impl.digest(
+            a_digest_ptr
+        );
+    }
+    
+    template<
+        milo::meta::primitive::aead t_impl
+    >
+    auto
+    primitive_aead_decrypt(
+        const memory_type& a_aad,
+        const memory_type& a_bytes
+    )
+    {
+        t_impl impl;
+        
+        milo::container::chars_static<t_impl::key_size> key;
+        milo::container::chars_static<t_impl::iv_size> iv;
+        milo::container::chars_static<t_impl::digest_size> digest;
+        
+        std::iota(
+            key.begin(),
+            key.end(),
+            0
+        );
+        std::iota(
+            iv.begin(),
+            iv.end(),
+            0
+        );
+        
+        auto [ciphertext, mac] = milo::primitive::aead::encrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            a_aad,
+            a_bytes
+        );
+        
+        auto plaintext = milo::primitive::aead::decrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            a_aad,
+            ciphertext,
+            mac
+        );
+        
+        return std::make_tuple(
+            measure(
+                primitive_aead_decrypt_call<t_impl>,
+                impl,
+                key.data(),
+                key.size(),
+                iv.data(),
+                iv.size(),
+                a_aad.data(),
+                a_aad.size(),
+                ciphertext.data(),
+                ciphertext.size(),
+                plaintext.data(),
+                digest.data()
+            ),
+            options.repeats_measure * (a_aad.size() + a_bytes.size())
+        );
+    }
+    
     auto
     primitive(
     ) -> void
@@ -736,6 +950,34 @@ namespace milocli::command::benchmark
             std::string_view,
             std::function<void()>
         >{
+            {
+                "aead",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"aad-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"bytes-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_aead_encrypt<milo::primitive::aead::chacha_20_poly_1305<>>)>(
+                            /*
+                             * @formatter:off
+                             */
+                            {
+                                {"aead-chacha-20-poly-1305-encrypt", primitive_aead_encrypt<milo::primitive::aead::chacha_20_poly_1305<>>},
+                                {"aead-chacha-20-poly-1305-decrypt", primitive_aead_decrypt<milo::primitive::aead::chacha_20_poly_1305<>>},
+                            },
+                            {
+                            }
+                            /*
+                             * @formatter:on
+                             */
+                        )
+                    );
+                }
+            },
             {
                 "codec",
                 [&]()
