@@ -47,7 +47,8 @@ namespace milocli
         };
         app::options = {
             .verbose = app::args.option("verbose"),
-            .developer = app::args.option("developer")
+            .advanced = app::args.option("advanced"),
+            .suppress = false
         };
         
         auto commands = app_callmap<void()>{

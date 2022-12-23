@@ -8,15 +8,20 @@
 #include <milocli/app.h>
 #include <milocli/dep.h>
 #include <milocli/pattern.h>
+#include <milocli/parameter.h>
 #include <milocli/type.h>
 
 
 namespace milocli::command::benchmark
 {
+    using memory_type = milo::container::chars_dynamic;
+    
     struct
     {
-        size_t iterations;
-    } config;
+        size_t repeats_warmup;
+        
+        size_t repeats_measure;
+    } options;
     
     template<
         typename t_invocable,
@@ -25,10 +30,11 @@ namespace milocli::command::benchmark
     MILO_INTERNAL_INLINE
     auto
     measure(
-        size_t a_iterations,
+        size_t a_repeats_warmup,
+        size_t a_repeats_measure,
         t_invocable&& a_invocable,
         t_args&& ... a_args
-    ) noexcept(milo::meta::invocable_noexcept<t_invocable, t_args...>) -> uint64_t
+    ) noexcept(true) -> uint64_t
     {
         using clock_type = std::chrono::steady_clock;
         using guard_type = milo::meta::invocable_result<t_invocable, t_args...>;
@@ -38,10 +44,10 @@ namespace milocli::command::benchmark
         guard_type guard [[maybe_unused]] = 0;
         guard_type volatile guard_vol [[maybe_unused]];
         
-        for (size_t i = 0; i < 128; i += 1)
+        for (size_t i = 0; i < a_repeats_warmup; i += 1)
         {
             guard += a_invocable(
-                milo::internal::forward<
+                std::forward<
                     t_args
                 >(
                     a_args
@@ -51,17 +57,12 @@ namespace milocli::command::benchmark
         
         guard_vol = guard;
         
-        /*
-         * TODO
-         *  Consider adding fences around clock calls for reliability.
-         */
-        
         auto beg = clock_type::now();
         
-        for (size_t i = 0; i < a_iterations; i += 1)
+        for (size_t i = 0; i < a_repeats_measure; i += 1)
         {
             guard += a_invocable(
-                milo::internal::forward<
+                std::forward<
                     t_args
                 >(
                     a_args
@@ -77,11 +78,159 @@ namespace milocli::command::benchmark
     }
     
     template<
+        typename t_invocable,
+        typename... t_args
+    >
+    auto
+    measure(
+        t_invocable&& a_invocable,
+        t_args&& ... a_args
+    ) noexcept(true) -> uint64_t
+    {
+        return measure(
+            options.repeats_warmup,
+            options.repeats_measure,
+            a_invocable,
+            std::forward<
+                t_args
+            >(
+                a_args
+            )...
+        );
+    }
+    
+    template<
+        typename t_signature,
+        typename t_container = std::map<
+            std::string_view,
+            std::function<t_signature>
+        >
+    >
+    auto
+    declare(
+        std::initializer_list<typename t_container::value_type> a_basic,
+        std::initializer_list<typename t_container::value_type> a_advanced
+    )
+    {
+        t_container container(
+            a_basic
+        );
+        
+        if (app::options.advanced)
+        {
+            container.insert(
+                a_advanced
+            );
+        }
+        
+        return container;
+    }
+    
+    template<
+        typename t_parameters,
+        typename t_pattern,
+        typename t_benchmarks
+    >
+    auto
+    invoke(
+        const t_pattern& a_pattern,
+        const t_benchmarks& a_benchmarks
+    ) -> void
+    {
+        if (a_pattern == "list")
+        {
+            app::options.suppress = true;
+            
+            for (const auto& [name, _]: a_benchmarks)
+            {
+                std::cout << name << "\n";
+            }
+            
+            std::cout << std::flush;
+            
+            return;
+        }
+        
+        if (std::find_if(
+            a_benchmarks.begin(),
+            a_benchmarks.end(),
+            [&](auto item)
+            {
+                return pattern_match_star(
+                    a_pattern,
+                    item.first
+                );
+            }
+        ) == a_benchmarks.end())
+        {
+            return;
+        }
+        
+        auto repeats_warmup = options.repeats_warmup;
+        auto repeats_measure = options.repeats_measure;
+        auto config = type::object{
+            {
+                "benchmark",
+                {
+                    {"repeats-warmup", repeats_warmup},
+                    {"repeats-measure", repeats_measure}
+                }}
+        };
+        
+        auto parameters = parameter::parse(
+            t_parameters{},
+            config["input"]
+        );
+        
+        auto& results = app::context["result"]["benchmark"]["primitive"];
+        
+        for (const auto& [name, benchmark]: a_benchmarks)
+        {
+            if (!pattern_match_star(
+                a_pattern,
+                name
+            ))
+            {
+                continue;
+            }
+            
+            auto [
+                nanoseconds,
+                processed
+            ] = std::apply(
+                benchmark,
+                parameters
+            );
+            
+            auto duration_total = nanoseconds;
+            auto duration_average = double(duration_total) / double(repeats_measure);
+            
+            auto& result = results[name];
+            result["config"] = config;
+            result["metrics"]["duration"] = {
+                {"average", duration_average},
+                {"total",   duration_total}
+            };
+            
+            if (processed != -1)
+            {
+                auto throughput_gigabytes_per_second = double(processed) / double(duration_total);
+                auto throughput_megabytes_per_second = double(processed * 1000) / double(duration_total);
+                
+                result["metrics"]["throughput"] = {
+                    {"gigabytes_per_second", throughput_gigabytes_per_second},
+                    {"megabytes_per_second", throughput_megabytes_per_second}
+                };
+            }
+        }
+    }
+    
+    template<
         milo::meta::primitive::hash t_impl
     >
     MILO_INTERNAL_INLINE
     auto
-    primitive_hash_call_core(
+    primitive_hash_call(
         t_impl& a_impl,
         const char* a_message_ptr,
         size_t a_message_size
@@ -103,199 +252,11 @@ namespace milocli::command::benchmark
     }
     
     template<
-        milo::meta::primitive::hash t_impl
-    >
-    auto
-    primitive_hash_call(
-        size_t a_iterations,
-        const std::string& a_message
-    )
-    {
-        t_impl impl;
-        
-        return measure(
-            a_iterations,
-            primitive_hash_call_core<t_impl>,
-            impl,
-            a_message.data(),
-            a_message.size()
-        );
-    }
-    
-    auto
-    primitive_hash(
-    ) -> void
-    {
-        auto benchmarks = app_callmap<
-            uint64_t(
-                size_t,
-                const std::string&
-            )
-        >{
-            /*
-             * @formatter:off
-             */
-            {"sha-1-160",            primitive_hash_call<milo::primitive::hash::sha_1_160<>>},
-            {"sha-2-224",            primitive_hash_call<milo::primitive::hash::sha_2_224<>>},
-            {"sha-2-256",            primitive_hash_call<milo::primitive::hash::sha_2_256<>>},
-            {"sha-2-384",            primitive_hash_call<milo::primitive::hash::sha_2_384<>>},
-            {"sha-2-512",            primitive_hash_call<milo::primitive::hash::sha_2_512<>>},
-            {"sha-2-512-224",        primitive_hash_call<milo::primitive::hash::sha_2_512_224<>>},
-            {"sha-2-512-256",        primitive_hash_call<milo::primitive::hash::sha_2_512_256<>>}
-            /*
-             * @formatter:on
-             */
-        };
-        
-        if (app::options.developer)
-        {
-            benchmarks.insert(
-                {
-                    /*
-                     * @formatter:off
-                     */
-                    {"sha-1-160-sw",         primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>},
-                    {"sha-2-224-sw",         primitive_hash_call<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>},
-                    {"sha-2-256-sw",         primitive_hash_call<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>},
-                    {"sha-2-384-sw",         primitive_hash_call<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
-                    {"sha-2-512-sw",         primitive_hash_call<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
-                    {"sha-2-512-224-sw",     primitive_hash_call<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
-                    {"sha-2-512-256-sw",     primitive_hash_call<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>}
-                    /*
-                     * @formatter:on
-                     */
-                }
-            );
-            
-            if constexpr (MILO_INTERNAL_ARCH_X86)
-            {
-                benchmarks.insert(
-                    {
-                        /*
-                         * @formatter:off
-                         */
-                        {"sha-1-160-hw-x86-v-1", primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>},
-                        {"sha-1-160-hw-x86-v-2", primitive_hash_call<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>},
-                        {"sha-2-224-hw-x86-v-1", primitive_hash_call<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>},
-                        {"sha-2-256-hw-x86-v-1", primitive_hash_call<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>}
-                        /*
-                         * @formatter:on
-                         */
-                    }
-                );
-            }
-        }
-        
-        if (app::args.peek() == "list")
-        {
-            for (const auto& [name, _]: benchmarks)
-            {
-                std::cout << name << "\n";
-            }
-            
-            std::cout << std::flush;
-            
-            return;
-        }
-        
-        /*
-         * Result.
-         */
-        auto& result = app::context["result"]["benchmark"]["primitive"]["hash"];
-        
-        /*
-         * Configuration.
-         */
-        auto message_size = app::args.parameter<size_t>("message-size");
-        auto pattern = app::args.command();
-        
-        /*
-         * Parameters.
-         */
-        auto iterations = config.iterations;
-        auto message = std::string(
-            message_size,
-            ' '
-        );
-        
-        for (const auto& [name, benchmark]: benchmarks)
-        {
-            if (!pattern_match_star(
-                pattern,
-                name
-            ))
-            {
-                continue;
-            }
-            
-            auto nanoseconds = benchmark(
-                iterations,
-                message
-            );
-            
-            auto duration_total = nanoseconds;
-            auto duration_average = double(duration_total) / double(iterations);
-            
-            auto processed_bytes = iterations * message_size;
-            auto throughput_gigabytes_per_second = double(processed_bytes) / double(duration_total);
-            auto throughput_megabytes_per_second = double(processed_bytes * 1000) / double(duration_total);
-            
-            /*
-             * @formatter:off
-             */
-            result[name] = {
-                {
-                    "config",
-                    {
-                        {
-                            "benchmark",
-                            {
-                                {"iterations", iterations}
-                            }},
-                        {
-                            "input",
-                            {
-                                {"message_size", message_size}
-                            }}
-                    }},
-                {
-                    "metric",
-                    {
-                        {
-                         "duration",
-                            {
-                                {"average", duration_average},
-                                {"total", duration_total}
-                            }},
-                        {
-                         "throughput",
-                            {
-                                {"gigabytes_per_second", throughput_gigabytes_per_second},
-                                {"megabytes_per_second", throughput_megabytes_per_second}
-                            }}
-                    }},
-            };
-            /*
-             * @formatter:on
-             */
-        }
-        
-        if (app::options.verbose)
-        {
-            std::cout << type::to_json(app::context) << std::endl;
-        }
-        else
-        {
-            std::cout << type::to_json(app::context["result"]) << std::endl;
-        }
-    }
-    
-    template<
         milo::meta::primitive::mac t_impl
     >
     MILO_INTERNAL_INLINE
     auto
-    primitive_mac_call_core(
+    primitive_mac_call(
         t_impl& a_impl,
         const char* a_key_ptr,
         size_t a_key_size,
@@ -322,226 +283,389 @@ namespace milocli::command::benchmark
     }
     
     template<
-        milo::meta::primitive::mac t_impl
+        milo::meta::primitive::kdf_hkdf t_impl
     >
     auto
-    primitive_mac_call(
+    primitive_kdf_call(
+        t_impl& a_impl,
+        const char* a_ikm_ptr,
+        size_t a_ikm_size,
+        const char* a_salt_ptr,
+        size_t a_salt_size,
+        const char* a_info_ptr,
+        size_t a_info_size,
+        char* a_key_ptr,
+        size_t a_key_size
+    )
+    {
+        a_impl.initialize(
+            a_ikm_ptr,
+            a_ikm_size,
+            a_salt_ptr,
+            a_salt_size,
+            a_info_ptr,
+            a_info_size
+        );
+        a_impl.derive(
+            a_key_ptr,
+            a_key_size
+        );
+        
+        return a_key_ptr[0];
+    }
+    
+    template<
+        milo::meta::primitive::kdf_pbkdf_2 t_impl
+    >
+    auto
+    primitive_kdf_call(
+        t_impl& a_impl,
+        const char* a_ikm_ptr,
+        size_t a_ikm_size,
+        const char* a_salt_ptr,
+        size_t a_salt_size,
         size_t a_iterations,
-        const std::string& a_key,
-        const std::string& a_message
+        char* a_key_ptr,
+        size_t a_key_size
+    )
+    {
+        a_impl.initialize(
+            a_ikm_ptr,
+            a_ikm_size,
+            a_salt_ptr,
+            a_salt_size,
+            a_iterations
+        );
+        a_impl.derive(
+            a_key_ptr,
+            a_key_size
+        );
+        
+        return a_key_ptr[0];
+    }
+    
+    template<
+        milo::meta::primitive::hash t_impl
+    >
+    auto
+    primitive_hash(
+        const memory_type& a_message
     )
     {
         t_impl impl;
         
-        return measure(
-            a_iterations,
-            primitive_mac_call_core<t_impl>,
-            impl,
-            a_key.data(),
-            a_key.size(),
-            a_message.data(),
-            a_message.size()
+        return std::make_tuple(
+            measure(
+                primitive_hash_call<t_impl>,
+                impl,
+                a_message.data(),
+                a_message.size()
+            ),
+            options.repeats_measure * a_message.size()
         );
     }
     
+    template<
+        milo::meta::primitive::mac t_impl
+    >
     auto
     primitive_mac(
-    ) -> void
+        const memory_type& a_key,
+        const memory_type& a_message
+    )
     {
-        auto benchmarks = app_callmap<
-            uint64_t(
-                size_t,
-                const std::string&,
-                const std::string&
-            )
-        >{
-            /*
-             * @formatter:off
-             */
-            {"hmac-sha-1-160",            primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>},
-            {"hmac-sha-2-224",            primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>},
-            {"hmac-sha-2-256",            primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>},
-            {"hmac-sha-2-384",            primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>},
-            {"hmac-sha-2-512",            primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>},
-            {"hmac-sha-2-512-224",        primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>},
-            {"hmac-sha-2-512-256",        primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>},
-            {"poly-1305",                 primitive_mac_call<milo::primitive::mac::poly_1305<>>}
-            /*
-             * @formatter:on
-             */
-        };
+        t_impl impl;
         
-        if (app::options.developer)
-        {
-            benchmarks.insert(
-                {
-                    /*
-                     * @formatter:off
-                     */
-                    {"hmac-sha-1-160-sw",         primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>},
-                    {"hmac-sha-2-224-sw",         primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>},
-                    {"hmac-sha-2-256-sw",         primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>},
-                    {"hmac-sha-2-384-sw",         primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                    {"hmac-sha-2-512-sw",         primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                    {"hmac-sha-2-512-224-sw",     primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                    {"hmac-sha-2-512-256-sw",     primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                    {"poly-1305-sw",              primitive_mac_call<milo::primitive::mac::poly_1305<milo::option::impl_runtime<milo::primitive::detail::mac_poly_1305_impl_sw>>>}
-                    /*
-                     * @formatter:on
-                     */
-                }
-            );
-            
-            if constexpr (MILO_INTERNAL_ARCH_X86)
-            {
-                benchmarks.insert(
-                    {
-                        /*
-                         * @formatter:off
-                         */
-                        {"hmac-sha-1-160-hw-x86-v-1", primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>},
-                        {"hmac-sha-1-160-hw-x86-v-2", primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>},
-                        {"hmac-sha-2-224-hw-x86-v-1", primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>},
-                        {"hmac-sha-2-256-hw-x86-v-1", primitive_mac_call<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>}
-                        /*
-                         * @formatter:on
-                         */
-                    }
-                );
-            }
-        }
-        
-        if (app::args.peek() == "list")
-        {
-            for (const auto& [name, _]: benchmarks)
-            {
-                std::cout << name << "\n";
-            }
-            
-            std::cout << std::flush;
-            
-            return;
-        }
-        
-        /*
-         * Result.
-         */
-        auto& result = app::context["result"]["benchmark"]["primitive"]["mac"];
-        
-        /*
-         * Configuration.
-         */
-        auto key_size = app::args.parameter<size_t>("key-size");
-        auto message_size = app::args.parameter<size_t>("message-size");
-        auto pattern = app::args.command();
-        
-        /*
-         * Parameters.
-         */
-        auto iterations = config.iterations;
-        auto message = std::string(
-            message_size,
-            ' '
+        return std::make_tuple(
+            measure(
+                primitive_mac_call<t_impl>,
+                impl,
+                a_key.data(),
+                a_key.size(),
+                a_message.data(),
+                a_message.size()
+            ),
+            options.repeats_measure * a_message.size()
         );
-        auto key = std::string(
-            key_size,
-            ' '
+    }
+    
+    template<
+        milo::meta::primitive::kdf_hkdf t_impl
+    >
+    auto
+    primitive_kdf(
+        const memory_type& a_ikm,
+        const memory_type& a_salt,
+        const memory_type& a_info,
+        memory_type& a_key
+    )
+    {
+        t_impl impl;
+        
+        return std::make_tuple(
+            measure(
+                primitive_kdf_call<t_impl>,
+                impl,
+                a_ikm.data(),
+                a_ikm.size(),
+                a_salt.data(),
+                a_salt.size(),
+                a_info.data(),
+                a_info.size(),
+                a_key.data(),
+                a_key.size()
+            ),
+            options.repeats_measure * a_key.size()
         );
+    }
+    
+    template<
+        milo::meta::primitive::kdf_pbkdf_2 t_impl
+    >
+    auto
+    primitive_kdf(
+        const memory_type& a_ikm,
+        const memory_type& a_salt,
+        size_t a_iterations,
+        memory_type& a_key
+    )
+    {
+        t_impl impl;
         
-        for (const auto& [name, benchmark]: benchmarks)
-        {
-            if (!pattern_match_star(
-                pattern,
-                name
-            ))
-            {
-                continue;
-            }
-            
-            auto nanoseconds = benchmark(
-                iterations,
-                key,
-                message
-            );
-            
-            auto duration_total = nanoseconds;
-            auto duration_average = double(duration_total) / double(iterations);
-            
-            auto processed_bytes = iterations * message_size;
-            auto throughput_gigabytes_per_second = double(processed_bytes) / double(duration_total);
-            auto throughput_megabytes_per_second = double(processed_bytes * 1000) / double(duration_total);
-            
-            /*
-             * @formatter:off
-             */
-            result[name] = {
-                {
-                    "config",
-                    {
-                        {
-                            "benchmark",
-                            {
-                                {"iterations", iterations}
-                            }},
-                        {
-                            "input",
-                            {
-                                {"key_size", key_size},
-                                {"message_size", message_size}
-                            }}
-                    }},
-                {
-                    "metric",
-                    {
-                        {
-                            "duration",
-                            {
-                                {"average", duration_average},
-                                {"total", duration_total}
-                            }},
-                        {
-                            "throughput",
-                            {
-                                {"gigabytes_per_second", throughput_gigabytes_per_second},
-                                {"megabytes_per_second", throughput_megabytes_per_second}
-                            }}
-                    }},
-            };
-            /*
-             * @formatter:on
-             */
-        }
-        
-        if (app::options.verbose)
-        {
-            std::cout << type::to_json(app::context) << std::endl;
-        }
-        else
-        {
-            std::cout << type::to_json(app::context["result"]) << std::endl;
-        }
+        return std::make_tuple(
+            measure(
+                primitive_kdf_call<t_impl>,
+                impl,
+                a_ikm.data(),
+                a_ikm.size(),
+                a_salt.data(),
+                a_salt.size(),
+                a_iterations,
+                a_key.data(),
+                a_key.size()
+            ),
+            options.repeats_measure * a_key.size()
+        );
     }
     
     auto
     primitive(
     ) -> void
     {
-        auto benchmarks = app_callmap<void()>{
-            {"hash", primitive_hash},
-            {"mac",  primitive_mac},
+        auto pattern = app::args.command();
+        auto benchmarks = std::map<
+            std::string_view,
+            std::function<void()>
+        >{
+            {
+                "hash",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"message-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_hash<milo::primitive::hash::sha_1_160<>>)>(
+                            /*
+                             * @formatter:off
+                             */
+                            {
+                                {"hash-sha-1-160",              primitive_hash<milo::primitive::hash::sha_1_160<>>},
+                                {"hash-sha-2-224",              primitive_hash<milo::primitive::hash::sha_2_224<>>},
+                                {"hash-sha-2-256",              primitive_hash<milo::primitive::hash::sha_2_256<>>},
+                                {"hash-sha-2-384",              primitive_hash<milo::primitive::hash::sha_2_384<>>},
+                                {"hash-sha-2-512",              primitive_hash<milo::primitive::hash::sha_2_512<>>},
+                                {"hash-sha-2-512-224",          primitive_hash<milo::primitive::hash::sha_2_512_224<>>},
+                                {"hash-sha-2-512-256",          primitive_hash<milo::primitive::hash::sha_2_512_256<>>},
+                            },
+                            {
+                                {"hash-sha-1-160-sw",           primitive_hash<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>},
+                                {"hash-sha-2-224-sw",           primitive_hash<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>},
+                                {"hash-sha-2-256-sw",           primitive_hash<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>},
+                                {"hash-sha-2-384-sw",           primitive_hash<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
+                                {"hash-sha-2-512-sw",           primitive_hash<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
+                                {"hash-sha-2-512-224-sw",       primitive_hash<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
+                                {"hash-sha-2-512-256-sw",       primitive_hash<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
+                                #if MILO_INTERNAL_ARCH_X86
+                                {"hash-sha-1-160-hw-x86-v-1",   primitive_hash<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>},
+                                {"hash-sha-1-160-hw-x86-v-2",   primitive_hash<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>},
+                                {"hash-sha-2-224-hw-x86-v-1",   primitive_hash<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>},
+                                {"hash-sha-2-256-hw-x86-v-1",   primitive_hash<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>},
+                                #endif
+                            }
+                            /*
+                             * @formatter:on
+                             */
+                        )
+                    );
+                }
+            },
+            {
+                "mac",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"key-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"message-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>)>(
+                            /*
+                             * @formatter:off
+                             */
+                            {
+                                {"mac-hmac-sha-1-160",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>},
+                                {"mac-hmac-sha-2-224",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>},
+                                {"mac-hmac-sha-2-256",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>},
+                                {"mac-hmac-sha-2-384",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>},
+                                {"mac-hmac-sha-2-512",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>},
+                                {"mac-hmac-sha-2-512-224",          primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>},
+                                {"mac-hmac-sha-2-512-256",          primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>},
+                                {"mac-poly-1305",                   primitive_mac<milo::primitive::mac::poly_1305<>>}
+                            },
+                            {
+                                {"mac-hmac-sha-1-160-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>},
+                                {"mac-hmac-sha-2-224-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>},
+                                {"mac-hmac-sha-2-256-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>},
+                                {"mac-hmac-sha-2-384-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
+                                {"mac-hmac-sha-2-512-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
+                                {"mac-hmac-sha-2-512-224-sw",       primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
+                                {"mac-hmac-sha-2-512-256-sw",       primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
+                                {"mac-poly-1305-sw",                primitive_mac<milo::primitive::mac::poly_1305<milo::option::impl_runtime<milo::primitive::detail::mac_poly_1305_impl_sw>>>},
+                                #if MILO_INTERNAL_ARCH_X86
+                                {"mac-hmac-sha-1-160-hw-x86-v-1",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>},
+                                {"mac-hmac-sha-1-160-hw-x86-v-2",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>},
+                                {"mac-hmac-sha-2-224-hw-x86-v-1",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>},
+                                {"mac-hmac-sha-2-256-hw-x86-v-1",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>}
+                                #endif
+                            }
+                            /*
+                             * @formatter:on
+                             */
+                        )
+                    );
+                }
+            },
+            {
+                "kdf-hkdf",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"ikm-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"salt-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"info-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"key-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>)>(
+                            /*
+                             * @formatter:off
+                             */
+                            {
+                                {"kdf-hkdf-hmac-sha-1-160",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>},
+                                {"kdf-hkdf-hmac-sha-2-224",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>>},
+                                {"kdf-hkdf-hmac-sha-2-256",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>},
+                                {"kdf-hkdf-hmac-sha-2-384",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>>},
+                                {"kdf-hkdf-hmac-sha-2-512",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>>},
+                                {"kdf-hkdf-hmac-sha-2-512-224",        primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>>},
+                                {"kdf-hkdf-hmac-sha-2-512-256",        primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>>}
+                            },
+                            {
+                                {"kdf-hkdf-hmac-sha-1-160-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-224-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-256-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-384-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-512-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-512-224-sw",       primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-512-256-sw",       primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                #if MILO_INTERNAL_ARCH_X86
+                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>>},
+                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-2",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>},
+                                {"kdf-hkdf-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>}
+                                #endif
+                            }
+                            /*
+                             * @formatter:on
+                             */
+                        )
+                    );
+                }
+            },
+            {
+                "kdf-pbkdf-2",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"ikm-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"salt-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"iterations", size_t>,
+                            parameter::parameter<"key-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>)>(
+                            /*
+                             * @formatter:off
+                             */
+                            {
+                                {"kdf-pbkdf-2-hmac-sha-1-160",            primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-224",            primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256",            primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-384",            primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512",            primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-224",        primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-256",        primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>>}
+                            },
+                            {
+                                {"kdf-pbkdf-2-hmac-sha-1-160-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-224-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-384-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-224-sw",       primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-256-sw",       primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                #if MILO_INTERNAL_ARCH_X86
+                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-2",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>}
+                                #endif
+                            }
+                            /*
+                             * @formatter:on
+                             */
+                        )
+                    );
+                }
+            },
         };
         
-        benchmarks[app::args.command()]();
+        for (const auto& [id, callback]: benchmarks)
+        {
+            callback();
+        }
     }
     
     auto
     run(
     ) -> void
     {
-        config = {
-            .iterations = app::args.parameter<size_t>(
-                "iterations",
-                16384
+        options = {
+            .repeats_warmup = app::args.parameter<size_t>(
+                "repeats-warmup",
+                128
+            ),
+            .repeats_measure = app::args.parameter<size_t>(
+                "repeats-measure",
+                1024
             )
         };
         
@@ -550,5 +674,17 @@ namespace milocli::command::benchmark
         };
         
         benchmarks[app::args.command()]();
+        
+        if (!app::options.suppress)
+        {
+            if (app::options.verbose)
+            {
+                std::cout << type::to_json(app::context) << std::endl;
+            }
+            else
+            {
+                std::cout << type::to_json(app::context["result"]) << std::endl;
+            }
+        }
     }
 }

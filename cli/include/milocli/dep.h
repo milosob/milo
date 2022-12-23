@@ -8,5 +8,7 @@
 #include <milo/meta.h>
 #include <milo/option.h>
 #include <milo/primitive/hash/sha.h>
+#include <milo/primitive/kdf/hkdf.h>
+#include <milo/primitive/kdf/pbkdf.h>
 #include <milo/primitive/mac/hmac.h>
 #include <milo/primitive/mac/poly.h>

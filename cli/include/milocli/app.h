@@ -279,7 +279,9 @@ namespace milocli
         {
             bool verbose = false;
             
-            bool developer = false;
+            bool advanced = false;
+            
+            bool suppress = false;
         };
     }
     

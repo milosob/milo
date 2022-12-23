@@ -161,6 +161,10 @@ namespace milocli::type
         var(
             const std::vector<t_val>& a_val
         );
+        
+        var(
+            const object& a_val
+        );
     
     public:
         
@@ -766,6 +770,13 @@ namespace milocli::type
         const std::vector<t_val>& a_val
     ):
         m_var(array(a_val))
+    {
+    }
+    
+    var::var(
+        const object& a_val
+    ) :
+        m_var(a_val)
     {
     }
     
