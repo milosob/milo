@@ -383,6 +383,64 @@ namespace milocli::command::benchmark
     }
     
     template<
+        milo::meta::primitive::cipher t_impl
+    >
+    auto
+    primitive_cipher_encrypt_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_iv_ptr,
+        size_t a_iv_size,
+        const char* a_plaintext_ptr,
+        size_t a_plaintext_size,
+        char* a_ciphertext_ptr
+    )
+    {
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size,
+            a_iv_ptr,
+            a_iv_size
+        );
+        
+        return a_impl.encrypt(
+            a_plaintext_ptr,
+            a_plaintext_size,
+            a_ciphertext_ptr
+        );
+    }
+    
+    template<
+        milo::meta::primitive::cipher t_impl
+    >
+    auto
+    primitive_cipher_decrypt_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_iv_ptr,
+        size_t a_iv_size,
+        const char* a_ciphertext_ptr,
+        size_t a_ciphertext_size,
+        char* a_plaintext_ptr
+    )
+    {
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size,
+            a_iv_ptr,
+            a_iv_size
+        );
+        
+        return a_impl.decrypt(
+            a_ciphertext_ptr,
+            a_ciphertext_size,
+            a_plaintext_ptr
+        );
+    }
+    
+    template<
         milo::meta::primitive::codec t_impl
     >
     auto
@@ -550,6 +608,122 @@ namespace milocli::command::benchmark
                 a_key.size()
             ),
             options.repeats_measure * a_key.size()
+        );
+    }
+    
+    template<
+        milo::meta::primitive::cipher t_impl
+    >
+    auto
+    primitive_cipher_encrypt(
+        const memory_type& a_message
+    )
+    {
+        t_impl impl;
+        
+        milo::container::chars_static<t_impl::key_size> key;
+        milo::container::chars_static<t_impl::iv_size> iv;
+        
+        std::iota(
+            key.begin(),
+            key.end(),
+            0
+        );
+        std::iota(
+            iv.begin(),
+            iv.end(),
+            0
+        );
+        
+        auto ciphertext = milo::primitive::cipher::encrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            a_message
+        );
+        
+        auto plaintext = milo::primitive::cipher::decrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            ciphertext
+        );
+        
+        return std::make_tuple(
+            measure(
+                primitive_cipher_encrypt_call<t_impl>,
+                impl,
+                key.data(),
+                key.size(),
+                iv.data(),
+                iv.size(),
+                plaintext.data(),
+                plaintext.size(),
+                ciphertext.data()
+            ),
+            options.repeats_measure * a_message.size()
+        );
+    }
+    
+    template<
+        milo::meta::primitive::cipher t_impl
+    >
+    auto
+    primitive_cipher_decrypt(
+        const memory_type& a_bytes
+    )
+    {
+        t_impl impl;
+        
+        milo::container::chars_static<t_impl::key_size> key;
+        milo::container::chars_static<t_impl::iv_size> iv;
+        
+        std::iota(
+            key.begin(),
+            key.end(),
+            0
+        );
+        std::iota(
+            iv.begin(),
+            iv.end(),
+            0
+        );
+        
+        auto ciphertext = milo::primitive::cipher::encrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            a_bytes
+        );
+        
+        auto plaintext = milo::primitive::cipher::decrypt<
+            t_impl,
+            memory_type
+        >(
+            key,
+            iv,
+            ciphertext
+        );
+        
+        return std::make_tuple(
+            measure(
+                primitive_cipher_decrypt_call<t_impl>,
+                impl,
+                key.data(),
+                key.size(),
+                iv.data(),
+                iv.size(),
+                ciphertext.data(),
+                ciphertext.size(),
+                plaintext.data()
+            ),
+            options.repeats_measure * a_bytes.size()
         );
     }
     
@@ -772,6 +946,35 @@ namespace milocli::command::benchmark
                                 {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>},
                                 {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>}
                                 #endif
+                            }
+                            /*
+                             * @formatter:on
+                             */
+                        )
+                    );
+                }
+            },
+            {
+                "cipher",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"bytes-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_cipher_encrypt<milo::primitive::cipher::chacha_20<>>)>(
+                            /*
+                             * @formatter:off
+                             */
+                            {
+                                {"cipher-chacha-20-encrypt", primitive_cipher_encrypt<milo::primitive::cipher::chacha_20<>>},
+                                {"cipher-chacha-20-decrypt", primitive_cipher_decrypt<milo::primitive::cipher::chacha_20<>>},
+                            },
+                            {
+                                {"cipher-chacha-20-encrypt-sw", primitive_cipher_encrypt<milo::primitive::cipher::chacha_20<milo::option::impl_runtime<milo::primitive::detail::cipher_chacha_20_impl_sw>>>},
+                                {"cipher-chacha-20-decrypt-sw", primitive_cipher_decrypt<milo::primitive::cipher::chacha_20<milo::option::impl_runtime<milo::primitive::detail::cipher_chacha_20_impl_sw>>>},
                             }
                             /*
                              * @formatter:on

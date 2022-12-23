@@ -9,6 +9,8 @@
 #include <milo/option.h>
 #include <milo/primitive/codec/apie.h>
 #include <milo/primitive/codec/base.h>
+#include <milo/primitive/cipher/apie.h>
+#include <milo/primitive/cipher/chacha.h>
 #include <milo/primitive/hash/apie.h>
 #include <milo/primitive/hash/sha.h>
 #include <milo/primitive/kdf/apie.h>
