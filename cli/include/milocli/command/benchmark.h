@@ -101,9 +101,11 @@ namespace milocli::command::benchmark
     
     template<
         typename t_signature,
-        typename t_container = std::map<
-            std::string_view,
-            std::function<t_signature>
+        typename t_container = std::vector<
+            std::pair<
+                std::string_view,
+                std::function<t_signature>
+            >
         >
     >
     auto
@@ -119,6 +121,7 @@ namespace milocli::command::benchmark
         if (app::options.advanced)
         {
             container.insert(
+                container.end(),
                 a_advanced
             );
         }
@@ -946,9 +949,11 @@ namespace milocli::command::benchmark
     ) -> void
     {
         auto pattern = app::args.command();
-        auto benchmarks = std::map<
-            std::string_view,
-            std::function<void()>
+        auto benchmarks = std::vector<
+            std::pair<
+                std::string_view,
+                std::function<void()>
+            >
         >{
             {
                 "aead",
