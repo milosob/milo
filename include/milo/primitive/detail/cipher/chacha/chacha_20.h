@@ -60,11 +60,11 @@ namespace milo::primitive::detail
     
     private:
         
-        uint32_t m_state[16];
+        uint32_t m_state[16]{};
         
-        uint8_t m_buffer[block_size];
+        uint8_t m_buffer[block_size]{};
         
-        size_t m_buffer_size;
+        size_t m_buffer_size = 0;
     
     public:
         
