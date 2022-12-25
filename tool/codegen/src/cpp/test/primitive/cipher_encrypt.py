@@ -138,7 +138,7 @@ def gen(
                                 src.cpp.lang.gen_continue()
                             ),
                             '',
-                            'if MILO_CONSTEVAL',
+                            'if MILO_INTERNAL_CONSTEVAL',
                             src.cpp.lang.gen_block(
                                 [
                                     'return test_vectors[i].id;'

@@ -1910,7 +1910,7 @@ test(
             continue;
         }
         
-        if MILO_CONSTEVAL
+        if MILO_INTERNAL_CONSTEVAL
         {
             return test_vectors[i].id;
         }
