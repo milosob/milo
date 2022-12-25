@@ -16,11 +16,150 @@ namespace milocli::command::benchmark
 {
     using memory_type = milo::container::chars_dynamic;
     
+    /*
+     * @formatter:off
+     * TODO Move this to some internal library header, useful for tests.
+     */
+    
+    /*
+     * primitive-codec
+     */
+    
+    using primitive_codec_any                               = milo::primitive::codec::base_16<>;
+    using primitive_codec_base_16                           = milo::primitive::codec::base_16<>;
+    using primitive_codec_base_64                           = milo::primitive::codec::base_64<>;
+    
+    /*
+     * primitive-hash
+     */
+    
+    using primitive_hash_any                                = milo::primitive::hash::sha_1_160<>;
+    using primitive_hash_sha_1_160                          = milo::primitive::hash::sha_1_160<>;
+    using primitive_hash_sha_2_224                          = milo::primitive::hash::sha_2_224<>;
+    using primitive_hash_sha_2_256                          = milo::primitive::hash::sha_2_256<>;
+    using primitive_hash_sha_2_384                          = milo::primitive::hash::sha_2_384<>;
+    using primitive_hash_sha_2_512                          = milo::primitive::hash::sha_2_512<>;
+    using primitive_hash_sha_2_512_224                      = milo::primitive::hash::sha_2_512_224<>;
+    using primitive_hash_sha_2_512_256                      = milo::primitive::hash::sha_2_512_256<>;
+    
+    using primitive_hash_sha_1_160_sw                       = milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>;
+    using primitive_hash_sha_2_224_sw                       = milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>;
+    using primitive_hash_sha_2_256_sw                       = milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>;
+    using primitive_hash_sha_2_384_sw                       = milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>;
+    using primitive_hash_sha_2_512_sw                       = milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>;
+    using primitive_hash_sha_2_512_224_sw                   = milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>;
+    using primitive_hash_sha_2_512_256_sw                   = milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>;
+    
+    using primitive_hash_sha_1_160_hw_x86_v_1               = milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>;
+    using primitive_hash_sha_1_160_hw_x86_v_2               = milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>;
+    using primitive_hash_sha_2_224_hw_x86_v_1               = milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>;
+    using primitive_hash_sha_2_256_hw_x86_v_1               = milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>;
+    
+    /*
+     * primitive-mac
+     */
+    
+    using primitive_mac_any                                 = milo::primitive::mac::hmac<primitive_hash_any>;
+    using primitive_mac_hmac_sha_1_160                      = milo::primitive::mac::hmac<primitive_hash_sha_1_160>;
+    using primitive_mac_hmac_sha_2_224                      = milo::primitive::mac::hmac<primitive_hash_sha_2_224>;
+    using primitive_mac_hmac_sha_2_256                      = milo::primitive::mac::hmac<primitive_hash_sha_2_256>;
+    using primitive_mac_hmac_sha_2_384                      = milo::primitive::mac::hmac<primitive_hash_sha_2_384>;
+    using primitive_mac_hmac_sha_2_512                      = milo::primitive::mac::hmac<primitive_hash_sha_2_512>;
+    using primitive_mac_hmac_sha_2_512_224                  = milo::primitive::mac::hmac<primitive_hash_sha_2_512_224>;
+    using primitive_mac_hmac_sha_2_512_256                  = milo::primitive::mac::hmac<primitive_hash_sha_2_512_256>;
+    using primitive_mac_poly_1305                           = milo::primitive::mac::poly_1305<>;
+    
+    using primitive_mac_hmac_sha_1_160_sw                   = milo::primitive::mac::hmac<primitive_hash_sha_1_160_sw>;
+    using primitive_mac_hmac_sha_2_224_sw                   = milo::primitive::mac::hmac<primitive_hash_sha_2_224_sw>;
+    using primitive_mac_hmac_sha_2_256_sw                   = milo::primitive::mac::hmac<primitive_hash_sha_2_256_sw>;
+    using primitive_mac_hmac_sha_2_384_sw                   = milo::primitive::mac::hmac<primitive_hash_sha_2_384_sw>;
+    using primitive_mac_hmac_sha_2_512_sw                   = milo::primitive::mac::hmac<primitive_hash_sha_2_512_sw>;
+    using primitive_mac_hmac_sha_2_512_224_sw               = milo::primitive::mac::hmac<primitive_hash_sha_2_512_224_sw>;
+    using primitive_mac_hmac_sha_2_512_256_sw               = milo::primitive::mac::hmac<primitive_hash_sha_2_512_256_sw>;
+    using primitive_mac_poly_1305_sw                        = milo::primitive::mac::poly_1305<milo::option::impl_runtime<milo::primitive::detail::mac_poly_1305_impl_sw>>;
+    
+    using primitive_mac_hmac_sha_1_160_hw_x86_v_1           = milo::primitive::mac::hmac<primitive_hash_sha_1_160_hw_x86_v_1>;
+    using primitive_mac_hmac_sha_1_160_hw_x86_v_2           = milo::primitive::mac::hmac<primitive_hash_sha_1_160_hw_x86_v_2>;
+    using primitive_mac_hmac_sha_2_224_hw_x86_v_1           = milo::primitive::mac::hmac<primitive_hash_sha_2_224_hw_x86_v_1>;
+    using primitive_mac_hmac_sha_2_256_hw_x86_v_1           = milo::primitive::mac::hmac<primitive_hash_sha_2_256_hw_x86_v_1>;
+    
+    /*
+     * primitive-kdf-hkdf
+     */
+     
+    using primitive_kdf_hkdf_any                            = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_1_160>;
+    using primitive_kdf_hkdf_hmac_sha_1_160                 = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_1_160>;
+    using primitive_kdf_hkdf_hmac_sha_2_224                 = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_224>;
+    using primitive_kdf_hkdf_hmac_sha_2_256                 = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_256>;
+    using primitive_kdf_hkdf_hmac_sha_2_384                 = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_384>;
+    using primitive_kdf_hkdf_hmac_sha_2_512                 = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_512>;
+    using primitive_kdf_hkdf_hmac_sha_2_512_224             = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_512_224>;
+    using primitive_kdf_hkdf_hmac_sha_2_512_256             = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_512_256>;
+    
+    using primitive_kdf_hkdf_hmac_sha_1_160_sw              = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_1_160_sw>;
+    using primitive_kdf_hkdf_hmac_sha_2_224_sw              = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_224_sw>;
+    using primitive_kdf_hkdf_hmac_sha_2_256_sw              = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_256_sw>;
+    using primitive_kdf_hkdf_hmac_sha_2_384_sw              = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_384_sw>;
+    using primitive_kdf_hkdf_hmac_sha_2_512_sw              = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_512_sw>;
+    using primitive_kdf_hkdf_hmac_sha_2_512_224_sw          = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_512_224_sw>;
+    using primitive_kdf_hkdf_hmac_sha_2_512_256_sw          = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_512_256_sw>;
+    
+    using primitive_kdf_hkdf_hmac_sha_1_160_hw_x86_v_1      = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_1_160_hw_x86_v_1>;
+    using primitive_kdf_hkdf_hmac_sha_1_160_hw_x86_v_2      = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_1_160_hw_x86_v_2>;
+    using primitive_kdf_hkdf_hmac_sha_2_224_hw_x86_v_1      = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_224_hw_x86_v_1>;
+    using primitive_kdf_hkdf_hmac_sha_2_256_hw_x86_v_1      = milo::primitive::kdf::hkdf<primitive_mac_hmac_sha_2_256_hw_x86_v_1>;
+    
+    /*
+     * primitive-kdf-pbkdf-2
+     */
+    
+    using primitive_kdf_pbkdf_2_any                         = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_1_160>;
+    using primitive_kdf_pbkdf_2_hmac_sha_1_160              = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_1_160>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_224              = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_224>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_256              = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_256>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_384              = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_384>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_512              = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_512>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_512_224          = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_512_224>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_512_256          = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_512_256>;
+    
+    using primitive_kdf_pbkdf_2_hmac_sha_1_160_sw           = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_1_160_sw>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_224_sw           = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_224_sw>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_256_sw           = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_256_sw>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_384_sw           = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_384_sw>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_512_sw           = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_512_sw>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_512_224_sw       = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_512_224_sw>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_512_256_sw       = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_512_256_sw>;
+    
+    using primitive_kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_1   = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_1_160_hw_x86_v_1>;
+    using primitive_kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_2   = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_1_160_hw_x86_v_2>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_224_hw_x86_v_1   = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_224_hw_x86_v_1>;
+    using primitive_kdf_pbkdf_2_hmac_sha_2_256_hw_x86_v_1   = milo::primitive::kdf::pbkdf_2<primitive_mac_hmac_sha_2_256_hw_x86_v_1>;
+    
+    /*
+     * primitive-cipher
+     */
+    
+    using primitive_cipher_any                              = milo::primitive::cipher::chacha_20<>;
+    using primitive_cipher_chacha_20                        = milo::primitive::cipher::chacha_20<>;
+    using primitive_cipher_chacha_20_sw                     = milo::primitive::cipher::chacha_20<milo::option::impl_runtime<milo::primitive::detail::cipher_chacha_20_impl_sw>>;
+    
+    /*
+     * primitive-aead
+     */
+    
+    using primitive_aead_any                                = milo::primitive::aead::chacha_20_poly_1305<>;
+    using primitive_aead_chacha_20_poly_1305                = milo::primitive::aead::chacha_20_poly_1305<>;
+    using primitive_aead_chacha_20_sw_poly_1305_sw          = milo::primitive::detail::aead_chacha_20_poly_1305<primitive_cipher_chacha_20_sw, primitive_mac_poly_1305_sw>;
+    
+    /*
+     * @formatter:on
+     */
+
     struct
     {
-        size_t repeats_warmup;
-        
-        size_t repeats_measure;
+        size_t repeats_warm;
+    
+        size_t repeats_time;
     } options;
     
     template<
@@ -30,8 +169,8 @@ namespace milocli::command::benchmark
     MILO_INTERNAL_INLINE
     auto
     measure(
-        size_t a_repeats_warmup,
-        size_t a_repeats_measure,
+        size_t a_repeats_warm,
+        size_t a_repeats_time,
         t_invocable&& a_invocable,
         t_args&& ... a_args
     ) noexcept(true) -> uint64_t
@@ -44,7 +183,7 @@ namespace milocli::command::benchmark
         guard_type guard [[maybe_unused]] = 0;
         guard_type volatile guard_vol [[maybe_unused]];
         
-        for (size_t i = 0; i < a_repeats_warmup; i += 1)
+        for (size_t i = 0; i < a_repeats_warm; i += 1)
         {
             guard += a_invocable(
                 std::forward<
@@ -59,7 +198,7 @@ namespace milocli::command::benchmark
         
         auto beg = clock_type::now();
         
-        for (size_t i = 0; i < a_repeats_measure; i += 1)
+        for (size_t i = 0; i < a_repeats_time; i += 1)
         {
             guard += a_invocable(
                 std::forward<
@@ -81,6 +220,7 @@ namespace milocli::command::benchmark
         typename t_invocable,
         typename... t_args
     >
+    MILO_INTERNAL_INLINE
     auto
     measure(
         t_invocable&& a_invocable,
@@ -88,8 +228,8 @@ namespace milocli::command::benchmark
     ) noexcept(true) -> uint64_t
     {
         return measure(
-            options.repeats_warmup,
-            options.repeats_measure,
+            options.repeats_warm,
+            options.repeats_time,
             a_invocable,
             std::forward<
                 t_args
@@ -169,14 +309,14 @@ namespace milocli::command::benchmark
             return;
         }
         
-        auto repeats_warmup = options.repeats_warmup;
-        auto repeats_measure = options.repeats_measure;
+        auto repeats_warm = options.repeats_warm;
+        auto repeats_time = options.repeats_time;
         auto config = type::object{
             {
                 "benchmark",
                 {
-                    {"repeats-warmup", repeats_warmup},
-                    {"repeats-measure", repeats_measure}
+                    {"repeats-warm", repeats_warm},
+                    {"repeats-time", repeats_time}
                 }}
         };
         
@@ -206,7 +346,7 @@ namespace milocli::command::benchmark
             );
             
             auto duration_total = nanoseconds;
-            auto duration_average = double(duration_total) / double(repeats_measure);
+            auto duration_average = double(duration_total) / double(repeats_time);
             
             auto& result = results[name];
             result["config"] = config;
@@ -249,203 +389,6 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::codec t_impl
     >
-    MILO_INTERNAL_INLINE
-    auto
-    primitive_codec_decode_call(
-        const char* a_from_ptr,
-        size_t a_from_size,
-        char* a_to_ptr,
-        milo::error& a_error
-    ) noexcept(true)
-    {
-        return t_impl::decode(
-            a_from_ptr,
-            a_from_size,
-            a_to_ptr,
-            a_error
-        );
-    }
-    
-    template<
-        milo::meta::primitive::hash t_impl
-    >
-    MILO_INTERNAL_INLINE
-    auto
-    primitive_hash_call(
-        t_impl& a_impl,
-        const char* a_message_ptr,
-        size_t a_message_size
-    ) noexcept(true)
-    {
-        char digest[t_impl::digest_size];
-        
-        a_impl.initialize();
-        a_impl.update(
-            a_message_ptr,
-            a_message_size
-        );
-        a_impl.finalize();
-        a_impl.digest(
-            digest
-        );
-        
-        return digest[0];
-    }
-    
-    template<
-        milo::meta::primitive::mac t_impl
-    >
-    MILO_INTERNAL_INLINE
-    auto
-    primitive_mac_call(
-        t_impl& a_impl,
-        const char* a_key_ptr,
-        size_t a_key_size,
-        const char* a_message_ptr,
-        size_t a_message_size
-    ) noexcept(true)
-    {
-        char digest[t_impl::digest_size];
-        
-        a_impl.initialize(
-            a_key_ptr,
-            a_key_size
-        );
-        a_impl.update(
-            a_message_ptr,
-            a_message_size
-        );
-        a_impl.finalize();
-        a_impl.digest(
-            digest
-        );
-        
-        return digest[0];
-    }
-    
-    template<
-        milo::meta::primitive::kdf_hkdf t_impl
-    >
-    auto
-    primitive_kdf_call(
-        t_impl& a_impl,
-        const char* a_ikm_ptr,
-        size_t a_ikm_size,
-        const char* a_salt_ptr,
-        size_t a_salt_size,
-        const char* a_info_ptr,
-        size_t a_info_size,
-        char* a_key_ptr,
-        size_t a_key_size
-    )
-    {
-        a_impl.initialize(
-            a_ikm_ptr,
-            a_ikm_size,
-            a_salt_ptr,
-            a_salt_size,
-            a_info_ptr,
-            a_info_size
-        );
-        a_impl.derive(
-            a_key_ptr,
-            a_key_size
-        );
-        
-        return a_key_ptr[0];
-    }
-    
-    template<
-        milo::meta::primitive::kdf_pbkdf_2 t_impl
-    >
-    auto
-    primitive_kdf_call(
-        t_impl& a_impl,
-        const char* a_ikm_ptr,
-        size_t a_ikm_size,
-        const char* a_salt_ptr,
-        size_t a_salt_size,
-        size_t a_iterations,
-        char* a_key_ptr,
-        size_t a_key_size
-    )
-    {
-        a_impl.initialize(
-            a_ikm_ptr,
-            a_ikm_size,
-            a_salt_ptr,
-            a_salt_size,
-            a_iterations
-        );
-        a_impl.derive(
-            a_key_ptr,
-            a_key_size
-        );
-        
-        return a_key_ptr[0];
-    }
-    
-    template<
-        milo::meta::primitive::cipher t_impl
-    >
-    auto
-    primitive_cipher_encrypt_call(
-        t_impl& a_impl,
-        const char* a_key_ptr,
-        size_t a_key_size,
-        const char* a_iv_ptr,
-        size_t a_iv_size,
-        const char* a_plaintext_ptr,
-        size_t a_plaintext_size,
-        char* a_ciphertext_ptr
-    )
-    {
-        a_impl.initialize(
-            a_key_ptr,
-            a_key_size,
-            a_iv_ptr,
-            a_iv_size
-        );
-        
-        return a_impl.encrypt(
-            a_plaintext_ptr,
-            a_plaintext_size,
-            a_ciphertext_ptr
-        );
-    }
-    
-    template<
-        milo::meta::primitive::cipher t_impl
-    >
-    auto
-    primitive_cipher_decrypt_call(
-        t_impl& a_impl,
-        const char* a_key_ptr,
-        size_t a_key_size,
-        const char* a_iv_ptr,
-        size_t a_iv_size,
-        const char* a_ciphertext_ptr,
-        size_t a_ciphertext_size,
-        char* a_plaintext_ptr
-    )
-    {
-        a_impl.initialize(
-            a_key_ptr,
-            a_key_size,
-            a_iv_ptr,
-            a_iv_size
-        );
-        
-        return a_impl.decrypt(
-            a_ciphertext_ptr,
-            a_ciphertext_size,
-            a_plaintext_ptr
-        );
-    }
-    
-    template<
-        milo::meta::primitive::codec t_impl
-    >
     auto
     primitive_codec_encode(
         const memory_type& a_bytes
@@ -471,7 +414,27 @@ namespace milocli::command::benchmark
                 decoded.size(),
                 encoded.data()
             ),
-            options.repeats_measure * a_bytes.size()
+            options.repeats_time * a_bytes.size()
+        );
+    }
+    
+    template<
+        milo::meta::primitive::codec t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_codec_decode_call(
+        const char* a_from_ptr,
+        size_t a_from_size,
+        char* a_to_ptr,
+        milo::error& a_error
+    ) noexcept(true)
+    {
+        return t_impl::decode(
+            a_from_ptr,
+            a_from_size,
+            a_to_ptr,
+            a_error
         );
     }
     
@@ -506,8 +469,34 @@ namespace milocli::command::benchmark
                 decoded.data(),
                 error
             ),
-            options.repeats_measure * a_bytes.size()
+            options.repeats_time * a_bytes.size()
         );
+    }
+    
+    template<
+        milo::meta::primitive::hash t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_hash_call(
+        t_impl& a_impl,
+        const char* a_message_ptr,
+        size_t a_message_size
+    ) noexcept(true)
+    {
+        char digest[t_impl::digest_size];
+        
+        a_impl.initialize();
+        a_impl.update(
+            a_message_ptr,
+            a_message_size
+        );
+        a_impl.finalize();
+        a_impl.digest(
+            digest
+        );
+        
+        return digest[0];
     }
     
     template<
@@ -527,8 +516,39 @@ namespace milocli::command::benchmark
                 a_message.data(),
                 a_message.size()
             ),
-            options.repeats_measure * a_message.size()
+            options.repeats_time * a_message.size()
         );
+    }
+    
+    template<
+        milo::meta::primitive::mac t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_mac_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_message_ptr,
+        size_t a_message_size
+    ) noexcept(true)
+    {
+        char digest[t_impl::digest_size];
+        
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size
+        );
+        a_impl.update(
+            a_message_ptr,
+            a_message_size
+        );
+        a_impl.finalize();
+        a_impl.digest(
+            digest
+        );
+        
+        return digest[0];
     }
     
     template<
@@ -551,8 +571,41 @@ namespace milocli::command::benchmark
                 a_message.data(),
                 a_message.size()
             ),
-            options.repeats_measure * a_message.size()
+            options.repeats_time * a_message.size()
         );
+    }
+    
+    template<
+        milo::meta::primitive::kdf_hkdf t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_kdf_call(
+        t_impl& a_impl,
+        const char* a_ikm_ptr,
+        size_t a_ikm_size,
+        const char* a_salt_ptr,
+        size_t a_salt_size,
+        const char* a_info_ptr,
+        size_t a_info_size,
+        char* a_key_ptr,
+        size_t a_key_size
+    )
+    {
+        a_impl.initialize(
+            a_ikm_ptr,
+            a_ikm_size,
+            a_salt_ptr,
+            a_salt_size,
+            a_info_ptr,
+            a_info_size
+        );
+        a_impl.derive(
+            a_key_ptr,
+            a_key_size
+        );
+        
+        return a_key_ptr[0];
     }
     
     template<
@@ -581,8 +634,39 @@ namespace milocli::command::benchmark
                 a_key.data(),
                 a_key.size()
             ),
-            options.repeats_measure * a_key.size()
+            options.repeats_time * a_key.size()
         );
+    }
+    
+    template<
+        milo::meta::primitive::kdf_pbkdf_2 t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_kdf_call(
+        t_impl& a_impl,
+        const char* a_ikm_ptr,
+        size_t a_ikm_size,
+        const char* a_salt_ptr,
+        size_t a_salt_size,
+        size_t a_iterations,
+        char* a_key_ptr,
+        size_t a_key_size
+    )
+    {
+        a_impl.initialize(
+            a_ikm_ptr,
+            a_ikm_size,
+            a_salt_ptr,
+            a_salt_size,
+            a_iterations
+        );
+        a_impl.derive(
+            a_key_ptr,
+            a_key_size
+        );
+        
+        return a_key_ptr[0];
     }
     
     template<
@@ -610,7 +694,37 @@ namespace milocli::command::benchmark
                 a_key.data(),
                 a_key.size()
             ),
-            options.repeats_measure * a_key.size()
+            options.repeats_time * a_key.size()
+        );
+    }
+    
+    template<
+        milo::meta::primitive::cipher t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_cipher_encrypt_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_iv_ptr,
+        size_t a_iv_size,
+        const char* a_plaintext_ptr,
+        size_t a_plaintext_size,
+        char* a_ciphertext_ptr
+    )
+    {
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size,
+            a_iv_ptr,
+            a_iv_size
+        );
+        
+        return a_impl.encrypt(
+            a_plaintext_ptr,
+            a_plaintext_size,
+            a_ciphertext_ptr
         );
     }
     
@@ -668,7 +782,37 @@ namespace milocli::command::benchmark
                 plaintext.size(),
                 ciphertext.data()
             ),
-            options.repeats_measure * a_message.size()
+            options.repeats_time * a_message.size()
+        );
+    }
+    
+    template<
+        milo::meta::primitive::cipher t_impl
+    >
+    MILO_INTERNAL_INLINE
+    auto
+    primitive_cipher_decrypt_call(
+        t_impl& a_impl,
+        const char* a_key_ptr,
+        size_t a_key_size,
+        const char* a_iv_ptr,
+        size_t a_iv_size,
+        const char* a_ciphertext_ptr,
+        size_t a_ciphertext_size,
+        char* a_plaintext_ptr
+    )
+    {
+        a_impl.initialize(
+            a_key_ptr,
+            a_key_size,
+            a_iv_ptr,
+            a_iv_size
+        );
+        
+        return a_impl.decrypt(
+            a_ciphertext_ptr,
+            a_ciphertext_size,
+            a_plaintext_ptr
         );
     }
     
@@ -726,13 +870,14 @@ namespace milocli::command::benchmark
                 ciphertext.size(),
                 plaintext.data()
             ),
-            options.repeats_measure * a_bytes.size()
+            options.repeats_time * a_bytes.size()
         );
     }
     
     template<
         milo::meta::primitive::aead t_impl
     >
+    MILO_INTERNAL_INLINE
     auto
     primitive_aead_encrypt_call(
         t_impl& a_impl,
@@ -833,13 +978,14 @@ namespace milocli::command::benchmark
                 ciphertext.data(),
                 digest.data()
             ),
-            options.repeats_measure * (a_aad.size() + a_bytes.size())
+            options.repeats_time * (a_aad.size() + a_bytes.size())
         );
     }
     
     template<
         milo::meta::primitive::aead t_impl
     >
+    MILO_INTERNAL_INLINE
     auto
     primitive_aead_decrypt_call(
         t_impl& a_impl,
@@ -940,7 +1086,7 @@ namespace milocli::command::benchmark
                 plaintext.data(),
                 digest.data()
             ),
-            options.repeats_measure * (a_aad.size() + a_bytes.size())
+            options.repeats_time * (a_aad.size() + a_bytes.size())
         );
     }
     
@@ -955,34 +1101,9 @@ namespace milocli::command::benchmark
                 std::function<void()>
             >
         >{
-            {
-                "aead",
-                [&]()
-                {
-                    invoke<
-                        parameter::group<
-                            parameter::parameter<"aad-size", size_t, parameter::convert<memory_type>>,
-                            parameter::parameter<"bytes-size", size_t, parameter::convert<memory_type>>
-                        >
-                    >(
-                        pattern,
-                        declare<decltype(primitive_aead_encrypt<milo::primitive::aead::chacha_20_poly_1305<>>)>(
-                            /*
-                             * @formatter:off
-                             */
-                            {
-                                {"aead-chacha-20-poly-1305-encrypt", primitive_aead_encrypt<milo::primitive::aead::chacha_20_poly_1305<>>},
-                                {"aead-chacha-20-poly-1305-decrypt", primitive_aead_decrypt<milo::primitive::aead::chacha_20_poly_1305<>>},
-                            },
-                            {
-                            }
-                            /*
-                             * @formatter:on
-                             */
-                        )
-                    );
-                }
-            },
+            /*
+             * @formatter:off
+             */
             {
                 "codec",
                 [&]()
@@ -993,21 +1114,15 @@ namespace milocli::command::benchmark
                         >
                     >(
                         pattern,
-                        declare<decltype(primitive_codec_encode<milo::primitive::codec::base_16<>>)>(
-                            /*
-                             * @formatter:off
-                             */
+                        declare<decltype(primitive_codec_encode<primitive_codec_any>)>(
                             {
-                                {"codec-base-16-encode", primitive_codec_encode<milo::primitive::codec::base_16<>>},
-                                {"codec-base-16-decode", primitive_codec_decode<milo::primitive::codec::base_16<>>},
-                                {"codec-base-64-encode", primitive_codec_encode<milo::primitive::codec::base_64<>>},
-                                {"codec-base-64-decode", primitive_codec_decode<milo::primitive::codec::base_64<>>},
+                                {"codec-base-16-encode",                    primitive_codec_encode<primitive_codec_base_16>},
+                                {"codec-base-16-decode",                    primitive_codec_decode<primitive_codec_base_16>},
+                                {"codec-base-64-encode",                    primitive_codec_encode<primitive_codec_base_64>},
+                                {"codec-base-64-decode",                    primitive_codec_decode<primitive_codec_base_64>},
                             },
                             {
                             }
-                            /*
-                             * @formatter:on
-                             */
                         )
                     );
                 }
@@ -1022,37 +1137,31 @@ namespace milocli::command::benchmark
                         >
                     >(
                         pattern,
-                        declare<decltype(primitive_hash<milo::primitive::hash::sha_1_160<>>)>(
-                            /*
-                             * @formatter:off
-                             */
+                        declare<decltype(primitive_hash<primitive_hash_any>)>(
                             {
-                                {"hash-sha-1-160",              primitive_hash<milo::primitive::hash::sha_1_160<>>},
-                                {"hash-sha-2-224",              primitive_hash<milo::primitive::hash::sha_2_224<>>},
-                                {"hash-sha-2-256",              primitive_hash<milo::primitive::hash::sha_2_256<>>},
-                                {"hash-sha-2-384",              primitive_hash<milo::primitive::hash::sha_2_384<>>},
-                                {"hash-sha-2-512",              primitive_hash<milo::primitive::hash::sha_2_512<>>},
-                                {"hash-sha-2-512-224",          primitive_hash<milo::primitive::hash::sha_2_512_224<>>},
-                                {"hash-sha-2-512-256",          primitive_hash<milo::primitive::hash::sha_2_512_256<>>},
+                                {"hash-sha-1-160",                          primitive_hash<primitive_hash_sha_1_160>},
+                                {"hash-sha-2-224",                          primitive_hash<primitive_hash_sha_2_224>},
+                                {"hash-sha-2-256",                          primitive_hash<primitive_hash_sha_2_256>},
+                                {"hash-sha-2-384",                          primitive_hash<primitive_hash_sha_2_384>},
+                                {"hash-sha-2-512",                          primitive_hash<primitive_hash_sha_2_512>},
+                                {"hash-sha-2-512-224",                      primitive_hash<primitive_hash_sha_2_512_224>},
+                                {"hash-sha-2-512-256",                      primitive_hash<primitive_hash_sha_2_512_256>},
                             },
                             {
-                                {"hash-sha-1-160-sw",           primitive_hash<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>},
-                                {"hash-sha-2-224-sw",           primitive_hash<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>},
-                                {"hash-sha-2-256-sw",           primitive_hash<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>},
-                                {"hash-sha-2-384-sw",           primitive_hash<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
-                                {"hash-sha-2-512-sw",           primitive_hash<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
-                                {"hash-sha-2-512-224-sw",       primitive_hash<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
-                                {"hash-sha-2-512-256-sw",       primitive_hash<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>},
+                                {"hash-sha-1-160-sw",                       primitive_hash<primitive_hash_sha_1_160_sw>},
+                                {"hash-sha-2-224-sw",                       primitive_hash<primitive_hash_sha_2_224_sw>},
+                                {"hash-sha-2-256-sw",                       primitive_hash<primitive_hash_sha_2_256_sw>},
+                                {"hash-sha-2-384-sw",                       primitive_hash<primitive_hash_sha_2_384_sw>},
+                                {"hash-sha-2-512-sw",                       primitive_hash<primitive_hash_sha_2_512_sw>},
+                                {"hash-sha-2-512-224-sw",                   primitive_hash<primitive_hash_sha_2_512_224_sw>},
+                                {"hash-sha-2-512-256-sw",                   primitive_hash<primitive_hash_sha_2_512_256_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
-                                {"hash-sha-1-160-hw-x86-v-1",   primitive_hash<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>},
-                                {"hash-sha-1-160-hw-x86-v-2",   primitive_hash<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>},
-                                {"hash-sha-2-224-hw-x86-v-1",   primitive_hash<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>},
-                                {"hash-sha-2-256-hw-x86-v-1",   primitive_hash<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>},
+                                {"hash-sha-1-160-hw-x86-v-1",               primitive_hash<primitive_hash_sha_1_160_hw_x86_v_1>},
+                                {"hash-sha-1-160-hw-x86-v-2",               primitive_hash<primitive_hash_sha_1_160_hw_x86_v_2>},
+                                {"hash-sha-2-224-hw-x86-v-1",               primitive_hash<primitive_hash_sha_2_224_hw_x86_v_1>},
+                                {"hash-sha-2-256-hw-x86-v-1",               primitive_hash<primitive_hash_sha_2_256_hw_x86_v_1>},
                                 #endif
                             }
-                            /*
-                             * @formatter:on
-                             */
                         )
                     );
                 }
@@ -1068,39 +1177,33 @@ namespace milocli::command::benchmark
                         >
                     >(
                         pattern,
-                        declare<decltype(primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>)>(
-                            /*
-                             * @formatter:off
-                             */
+                        declare<decltype(primitive_mac<primitive_mac_any>)>(
                             {
-                                {"mac-hmac-sha-1-160",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>},
-                                {"mac-hmac-sha-2-224",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>},
-                                {"mac-hmac-sha-2-256",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>},
-                                {"mac-hmac-sha-2-384",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>},
-                                {"mac-hmac-sha-2-512",              primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>},
-                                {"mac-hmac-sha-2-512-224",          primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>},
-                                {"mac-hmac-sha-2-512-256",          primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>},
-                                {"mac-poly-1305",                   primitive_mac<milo::primitive::mac::poly_1305<>>}
+                                {"mac-hmac-sha-1-160",                      primitive_mac<primitive_mac_hmac_sha_1_160>},
+                                {"mac-hmac-sha-2-224",                      primitive_mac<primitive_mac_hmac_sha_2_224>},
+                                {"mac-hmac-sha-2-256",                      primitive_mac<primitive_mac_hmac_sha_2_256>},
+                                {"mac-hmac-sha-2-384",                      primitive_mac<primitive_mac_hmac_sha_2_384>},
+                                {"mac-hmac-sha-2-512",                      primitive_mac<primitive_mac_hmac_sha_2_512>},
+                                {"mac-hmac-sha-2-512-224",                  primitive_mac<primitive_mac_hmac_sha_2_512_224>},
+                                {"mac-hmac-sha-2-512-256",                  primitive_mac<primitive_mac_hmac_sha_2_512_256>},
+                                {"mac-poly-1305",                           primitive_mac<primitive_mac_poly_1305>}
                             },
                             {
-                                {"mac-hmac-sha-1-160-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>},
-                                {"mac-hmac-sha-2-224-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>},
-                                {"mac-hmac-sha-2-256-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>},
-                                {"mac-hmac-sha-2-384-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                                {"mac-hmac-sha-2-512-sw",           primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                                {"mac-hmac-sha-2-512-224-sw",       primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                                {"mac-hmac-sha-2-512-256-sw",       primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>},
-                                {"mac-poly-1305-sw",                primitive_mac<milo::primitive::mac::poly_1305<milo::option::impl_runtime<milo::primitive::detail::mac_poly_1305_impl_sw>>>},
+                                {"mac-hmac-sha-1-160-sw",                   primitive_mac<primitive_mac_hmac_sha_1_160_sw>},
+                                {"mac-hmac-sha-2-224-sw",                   primitive_mac<primitive_mac_hmac_sha_2_224_sw>},
+                                {"mac-hmac-sha-2-256-sw",                   primitive_mac<primitive_mac_hmac_sha_2_256_sw>},
+                                {"mac-hmac-sha-2-384-sw",                   primitive_mac<primitive_mac_hmac_sha_2_384_sw>},
+                                {"mac-hmac-sha-2-512-sw",                   primitive_mac<primitive_mac_hmac_sha_2_512_sw>},
+                                {"mac-hmac-sha-2-512-224-sw",               primitive_mac<primitive_mac_hmac_sha_2_512_224_sw>},
+                                {"mac-hmac-sha-2-512-256-sw",               primitive_mac<primitive_mac_hmac_sha_2_512_256_sw>},
+                                {"mac-poly-1305-sw",                        primitive_mac<primitive_mac_poly_1305_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
-                                {"mac-hmac-sha-1-160-hw-x86-v-1",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>},
-                                {"mac-hmac-sha-1-160-hw-x86-v-2",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>},
-                                {"mac-hmac-sha-2-224-hw-x86-v-1",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>},
-                                {"mac-hmac-sha-2-256-hw-x86-v-1",   primitive_mac<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>}
+                                {"mac-hmac-sha-1-160-hw-x86-v-1",           primitive_mac<primitive_mac_hmac_sha_1_160_hw_x86_v_1>},
+                                {"mac-hmac-sha-1-160-hw-x86-v-2",           primitive_mac<primitive_mac_hmac_sha_1_160_hw_x86_v_2>},
+                                {"mac-hmac-sha-2-224-hw-x86-v-1",           primitive_mac<primitive_mac_hmac_sha_2_224_hw_x86_v_1>},
+                                {"mac-hmac-sha-2-256-hw-x86-v-1",           primitive_mac<primitive_mac_hmac_sha_2_256_hw_x86_v_1>}
                                 #endif
                             }
-                            /*
-                             * @formatter:on
-                             */
                         )
                     );
                 }
@@ -1118,37 +1221,31 @@ namespace milocli::command::benchmark
                         >
                     >(
                         pattern,
-                        declare<decltype(primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>)>(
-                            /*
-                             * @formatter:off
-                             */
+                        declare<decltype(primitive_kdf<primitive_kdf_hkdf_any>)>(
                             {
-                                {"kdf-hkdf-hmac-sha-1-160",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>},
-                                {"kdf-hkdf-hmac-sha-2-224",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>>},
-                                {"kdf-hkdf-hmac-sha-2-256",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>},
-                                {"kdf-hkdf-hmac-sha-2-384",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>>},
-                                {"kdf-hkdf-hmac-sha-2-512",            primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>>},
-                                {"kdf-hkdf-hmac-sha-2-512-224",        primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>>},
-                                {"kdf-hkdf-hmac-sha-2-512-256",        primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>>}
+                                {"kdf-hkdf-hmac-sha-1-160",                 primitive_kdf<primitive_kdf_hkdf_hmac_sha_1_160>},
+                                {"kdf-hkdf-hmac-sha-2-224",                 primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_224>},
+                                {"kdf-hkdf-hmac-sha-2-256",                 primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_256>},
+                                {"kdf-hkdf-hmac-sha-2-384",                 primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_384>},
+                                {"kdf-hkdf-hmac-sha-2-512",                 primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_512>},
+                                {"kdf-hkdf-hmac-sha-2-512-224",             primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_512_224>},
+                                {"kdf-hkdf-hmac-sha-2-512-256",             primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_512_256>}
                             },
                             {
-                                {"kdf-hkdf-hmac-sha-1-160-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-224-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-256-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-384-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-512-sw",           primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-512-224-sw",       primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-512-256-sw",       primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-hkdf-hmac-sha-1-160-sw",              primitive_kdf<primitive_kdf_hkdf_hmac_sha_1_160_sw>},
+                                {"kdf-hkdf-hmac-sha-2-224-sw",              primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_224_sw>},
+                                {"kdf-hkdf-hmac-sha-2-256-sw",              primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_256_sw>},
+                                {"kdf-hkdf-hmac-sha-2-384-sw",              primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_384_sw>},
+                                {"kdf-hkdf-hmac-sha-2-512-sw",              primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_512_sw>},
+                                {"kdf-hkdf-hmac-sha-2-512-224-sw",          primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_512_224_sw>},
+                                {"kdf-hkdf-hmac-sha-2-512-256-sw",          primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_512_256_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
-                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>>},
-                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-2",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>},
-                                {"kdf-hkdf-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>}
+                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-1",      primitive_kdf<primitive_kdf_hkdf_hmac_sha_1_160_hw_x86_v_1>},
+                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-2",      primitive_kdf<primitive_kdf_hkdf_hmac_sha_1_160_hw_x86_v_2>},
+                                {"kdf-hkdf-hmac-sha-2-224-hw-x86-v-1",      primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_224_hw_x86_v_1>},
+                                {"kdf-hkdf-hmac-sha-2-256-hw-x86-v-1",      primitive_kdf<primitive_kdf_hkdf_hmac_sha_2_256_hw_x86_v_1>}
                                 #endif
                             }
-                            /*
-                             * @formatter:on
-                             */
                         )
                     );
                 }
@@ -1166,37 +1263,31 @@ namespace milocli::command::benchmark
                         >
                     >(
                         pattern,
-                        declare<decltype(primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>)>(
-                            /*
-                             * @formatter:off
-                             */
+                        declare<decltype(primitive_kdf<primitive_kdf_pbkdf_2_any>)>(
                             {
-                                {"kdf-pbkdf-2-hmac-sha-1-160",              primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-224",              primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-256",              primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-384",              primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-512",              primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-512-224",          primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-512-256",          primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<>>>>}
+                                {"kdf-pbkdf-2-hmac-sha-1-160",              primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_1_160>},
+                                {"kdf-pbkdf-2-hmac-sha-2-224",              primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_224>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256",              primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_256>},
+                                {"kdf-pbkdf-2-hmac-sha-2-384",              primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_384>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512",              primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_512>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-224",          primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_512_224>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-256",          primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_512_256>}
                             },
                             {
-                                {"kdf-pbkdf-2-hmac-sha-1-160-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_sw>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-224-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-256-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_sw>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-384-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-512-sw",           primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-512-224-sw",       primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-512-256-sw",       primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_512_impl_sw>>>>>},
+                                {"kdf-pbkdf-2-hmac-sha-1-160-sw",           primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_1_160_sw>},
+                                {"kdf-pbkdf-2-hmac-sha-2-224-sw",           primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_224_sw>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256-sw",           primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_256_sw>},
+                                {"kdf-pbkdf-2-hmac-sha-2-384-sw",           primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_384_sw>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-sw",           primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_512_sw>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-224-sw",       primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_512_224_sw>},
+                                {"kdf-pbkdf-2-hmac-sha-2-512-256-sw",       primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_512_256_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
-                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_1>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-2",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<milo::option::impl_runtime<milo::primitive::detail::hash_sha_1_160_impl_hw_x86_v_2>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_224<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>},
-                                {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_256<milo::option::impl_runtime<milo::primitive::detail::hash_sha_2_256_impl_hw_x86_v_1>>>>>}
+                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-1",   primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_1>},
+                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-2",   primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_2>},
+                                {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_224_hw_x86_v_1>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<primitive_kdf_pbkdf_2_hmac_sha_2_256_hw_x86_v_1>}
                                 #endif
                             }
-                            /*
-                             * @formatter:on
-                             */
                         )
                     );
                 }
@@ -1211,25 +1302,46 @@ namespace milocli::command::benchmark
                         >
                     >(
                         pattern,
-                        declare<decltype(primitive_cipher_encrypt<milo::primitive::cipher::chacha_20<>>)>(
-                            /*
-                             * @formatter:off
-                             */
+                        declare<decltype(primitive_cipher_encrypt<primitive_cipher_any>)>(
                             {
-                                {"cipher-chacha-20-encrypt", primitive_cipher_encrypt<milo::primitive::cipher::chacha_20<>>},
-                                {"cipher-chacha-20-decrypt", primitive_cipher_decrypt<milo::primitive::cipher::chacha_20<>>},
+                                {"cipher-chacha-20-encrypt",                primitive_cipher_encrypt<primitive_cipher_chacha_20>},
+                                {"cipher-chacha-20-decrypt",                primitive_cipher_decrypt<primitive_cipher_chacha_20>},
                             },
                             {
-                                {"cipher-chacha-20-encrypt-sw", primitive_cipher_encrypt<milo::primitive::cipher::chacha_20<milo::option::impl_runtime<milo::primitive::detail::cipher_chacha_20_impl_sw>>>},
-                                {"cipher-chacha-20-decrypt-sw", primitive_cipher_decrypt<milo::primitive::cipher::chacha_20<milo::option::impl_runtime<milo::primitive::detail::cipher_chacha_20_impl_sw>>>},
+                                {"cipher-chacha-20-sw-encrypt",             primitive_cipher_encrypt<primitive_cipher_chacha_20_sw>},
+                                {"cipher-chacha-20-sw-decrypt",             primitive_cipher_decrypt<primitive_cipher_chacha_20_sw>},
                             }
-                            /*
-                             * @formatter:on
-                             */
                         )
                     );
                 }
             },
+            {
+                "aead",
+                [&]()
+                {
+                    invoke<
+                        parameter::group<
+                            parameter::parameter<"aad-size", size_t, parameter::convert<memory_type>>,
+                            parameter::parameter<"bytes-size", size_t, parameter::convert<memory_type>>
+                        >
+                    >(
+                        pattern,
+                        declare<decltype(primitive_aead_encrypt<primitive_aead_any>)>(
+                            {
+                                {"aead-chacha-20-poly-1305-encrypt",        primitive_aead_encrypt<primitive_aead_chacha_20_poly_1305>},
+                                {"aead-chacha-20-poly-1305-decrypt",        primitive_aead_decrypt<primitive_aead_chacha_20_poly_1305>},
+                            },
+                            {
+                                {"aead-chacha-20-sw-poly-1305-sw-encrypt",  primitive_aead_encrypt<primitive_aead_chacha_20_sw_poly_1305_sw>},
+                                {"aead-chacha-20-sw-poly-1305-sw-decrypt",  primitive_aead_decrypt<primitive_aead_chacha_20_sw_poly_1305_sw>},
+                            }
+                        )
+                    );
+                }
+            },
+            /*
+             * @formatter:on
+             */
         };
         
         for (const auto& [id, callback]: benchmarks)
@@ -1243,12 +1355,12 @@ namespace milocli::command::benchmark
     ) -> void
     {
         options = {
-            .repeats_warmup = app::args.parameter<size_t>(
-                "repeats-warmup",
+            .repeats_warm = app::args.parameter<size_t>(
+                "repeats-warm",
                 128
             ),
-            .repeats_measure = app::args.parameter<size_t>(
-                "repeats-measure",
+            .repeats_time = app::args.parameter<size_t>(
+                "repeats-time",
                 1024
             )
         };
