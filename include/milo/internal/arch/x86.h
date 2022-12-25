@@ -88,6 +88,8 @@
 
 namespace milo::internal
 {
+    #if MILO_INTERNAL_ARCH_X86
+    
     inline
     const
     class arch_x86_cpuid_basic
@@ -513,8 +515,20 @@ namespace milo::internal
     struct arch_x86
     {
         static
-        constexpr bool value = MILO_INTERNAL_ARCH_X86;
+        constexpr bool value = true;
         
         using ise = arch_x86_ise;
     };
+    
+    #else
+    
+    struct arch_x86
+    {
+        static
+        constexpr bool value = false;
+        
+        using ise = void;
+    };
+    
+    #endif
 }
