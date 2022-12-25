@@ -309,7 +309,7 @@ int main()
     /*
      * Declare alias.
      */
-    using mac_type = milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384>;
+    using mac_type = milo::primitive::mac::hmac<milo::primitive::hash::sha_2_384<>>;
     
     std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::mac::digest<mac_type>("first key"sv,"message"sv)) << "\n";
     std::cout << milo::primitive::codec::encode<milo::primitive::codec::base_16<>, std::string>(milo::primitive::mac::digest<mac_type>("first key"sv,"message"sv, 16)) << "\n";

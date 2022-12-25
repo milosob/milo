@@ -16,11 +16,6 @@ namespace milo::primitive::mac
      */
     template<
         meta::primitive::mac t_impl
-        // detail::mac::impl
-        // detail::impl_mac
-        // detail::concept::impl_mac
-        // detail::concept::impl_cipher
-        // detail::meta::
     >
     class apie
     {

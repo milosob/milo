@@ -31,7 +31,7 @@ Tested compilers:
 The library aims to provide modern and user-friendly interfaces:
 
 ```c++
-auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256>("message"sv);
+auto digest = milo::primitive::hash::digest<milo::primitive::hash::sha_2_256<>>("message"sv);
 ```
 
 ```c++
