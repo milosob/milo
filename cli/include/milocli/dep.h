@@ -3,6 +3,22 @@
 #pragma once
 
 
+#include <algorithm>
+#include <any>
+#include <charconv>
+#include <chrono>
+#include <functional>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <sstream>
+#include <string>
+#include <string_view>
+#include <typeinfo>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include <milo/def.h>
 #include <milo/internal.h>
 #include <milo/meta.h>

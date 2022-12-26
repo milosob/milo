@@ -2,16 +2,7 @@
 #pragma once
 
 
-#include <any>
-#include <functional>
-#include <sstream>
-#include <string>
-#include <string_view>
-#include <typeinfo>
-#include <unordered_map>
-#include <utility>
-
-#include <milo/meta.h>
+#include <milocli/dep.h>
 
 
 namespace milocli::type
