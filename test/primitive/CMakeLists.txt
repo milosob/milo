@@ -36,7 +36,7 @@ file(
 
 file(
         GLOB
-        CODEC_TEST
+        CODEC_TESTS
         codec_*.cpp
 )
 
