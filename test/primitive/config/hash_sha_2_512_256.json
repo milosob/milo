@@ -1,9 +1,17 @@
 {
     "scheme": "test-primitive-hash",
     "payload": {
-        "impl": "milo::primitive::hash::sha_2_512_256<>",
+        "impl": {
+            "cpltime": [
+                "hash_sha_2_512_256"
+            ],
+            "runtime": [
+                "hash_sha_2_512_256",
+                "hash_sha_2_512_256_sw"
+            ]
+        },
         "include": [
-            "<milo/primitive/hash/sha.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

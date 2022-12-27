@@ -1,51 +1,51 @@
 def gen_beg(
 ) -> str:
-    return "\n\n"
+    return '\n\n'
 
 
 def gen_end(
 ) -> str:
-    return ""
+    return ''
 
 
 def gen_break(
 ) -> str:
-    return "break;"
+    return 'break;'
 
 
 def gen_continue(
 ) -> str:
-    return "continue;"
+    return 'continue;'
 
 
 def gen_goto(
-    a_label: str
+        a_label: str
 ) -> str:
-    return f"goto {a_label};"
+    return f'goto {a_label};'
 
 
 def gen_newline(
 ) -> str:
-    return "\n"
+    return '\n'
 
 
 def gen_include(
-    a_includes
+        a_includes
 ) -> tuple:
     return tuple(
         [
-            f"#include {include}"
+            f'#include {include}'
             for include in a_includes
         ]
     )
 
 
 def gen_body(
-    a_body,
-    a_ident: int = 0
+        a_body,
+        a_ident: int = 0
 ) -> str:
-    pad: str = " " * a_ident * 4
-    code: str = ""
+    pad: str = ' ' * a_ident * 4
+    code: str = ''
 
     for part in a_body:
         part_type = type(part)
@@ -64,33 +64,46 @@ def gen_body(
             )
             continue
         else:
-            code += pad + part + "\n"
+            code += pad + part + '\n'
     return code
 
 
 def gen_block(
-    a_body,
-    end: str = ''
+        a_body,
+        end: str = ''
 ) -> tuple:
     return (
-        "{",
+        '{',
         a_body if type(a_body) is list else [a_body],
-        "}" + end,
+        '}' + end,
     )
 
 
 def gen_loop_for(
-    a_expression: list[str],
-    a_body
+        a_expression: list[str],
+        a_body
 ) -> tuple:
     expression_len = len(a_expression)
-    expression: list[str] = a_expression + ["", "", ""]
+    expression: list[str] = a_expression + ['', '', '']
 
-    fill_1 = " " if expression_len > 1 else ""
-    fill_2 = " " if expression_len > 2 else ""
+    fill_1 = ' ' if expression_len > 1 else ''
+    fill_2 = ' ' if expression_len > 2 else ''
 
     return (
-        f"for ({expression[0]};{fill_1}{expression[1]};{fill_2}{expression[2]})",
+        f'for ({expression[0]};{fill_1}{expression[1]};{fill_2}{expression[2]})',
+        gen_block(
+            a_body
+        )
+    )
+
+
+def gen_loop_for_range(
+        a_range_decl,
+        a_range_expr,
+        a_body
+) -> tuple:
+    return (
+        f'for (auto&& {a_range_decl} :{a_range_expr})',
         gen_block(
             a_body
         )
@@ -98,13 +111,13 @@ def gen_loop_for(
 
 
 def gen_loop_while(
-    a_expression: str,
-    a_body
+        a_expression: str,
+        a_body
 ) -> tuple:
     assert a_expression
 
     return (
-        f"while ({a_expression})",
+        f'while ({a_expression})',
         gen_block(
             a_body
         )
@@ -112,14 +125,14 @@ def gen_loop_while(
 
 
 def gen_if(
-    a_expression: str,
-    a_body,
-    a_body_else=None
+        a_expression: str,
+        a_body,
+        a_body_else=None
 ) -> tuple:
     assert a_expression
 
     code = (
-        f"if ({a_expression})",
+        f'if ({a_expression})',
         gen_block(
             a_body
         )
@@ -127,7 +140,7 @@ def gen_if(
 
     if a_body_else:
         code = code + (
-            "else",
+            'else',
             gen_block(
                 a_body_else
             )
@@ -137,12 +150,12 @@ def gen_if(
 
 
 def gen_type(
-    a_type: str,
-    a_name: str,
-    a_definition=None
+        a_type: str,
+        a_name: str,
+        a_definition=None
 ) -> tuple:
     return (
-        f"{a_type} {a_name}",
+        f'{a_type} {a_name}',
         gen_block(
             a_definition if a_definition is not None else [],
             end=';'
@@ -151,9 +164,9 @@ def gen_type(
 
 
 def gen_str(
-    a_str: str,
-    wrap: int = 64,
-    end: str = ''
+        a_str: str,
+        wrap: int = 64,
+        end: str = ''
 ) -> tuple:
     chunks = [
         f'"{a_str[i: i + wrap]}"'
@@ -169,9 +182,9 @@ def gen_str(
 
 
 def gen_bytes_to_hex_str(
-    a_bytes: bytes,
-    wrap: int = 16,
-    end: str = ''
+        a_bytes: bytes,
+        wrap: int = 16,
+        end: str = ''
 ) -> tuple:
     parts = [
         a_bytes[i: i + wrap]
@@ -195,57 +208,64 @@ def gen_bytes_to_hex_str(
 
 
 def gen_struct(
-    a_name: str,
-    a_definition=None
+        a_name: str,
+        a_definition=None
 ) -> tuple:
     return gen_type(
-        "struct",
+        'struct',
         a_name,
         a_definition
     )
 
 
 def gen_class(
-    a_name: str,
-    a_definition=None
+        a_name: str,
+        a_definition=None
 ) -> tuple:
     return gen_type(
-        "class",
+        'class',
         a_name,
         a_definition
     )
 
 
 def gen_function(
-    a_name: str,
-    a_args,
-    a_returns: str,
-    a_body,
-    a_noexcept: bool = False
-) -> tuple:
-    return (
-        f"auto",
-        f"{a_name}(",
+        a_name: str,
         a_args,
-        f") noexcept({str(a_noexcept).lower()}) -> {a_returns}",
-        gen_block(
-            a_body
-        )
-    )
-
-
-def gen_function_constexpr(
-    a_name: str,
-    a_args,
-    a_returns: str,
-    a_body,
-    a_noexcept: bool = False
+        a_body,
+        **kwargs
 ) -> tuple:
+    returns = 'auto'
+    constexpr = ''
+    noexcept = 'noexcept(false)'
+    static = ()
+
+    try:
+        returns = kwargs['a_returns']
+    except KeyError:
+        pass
+
+    try:
+        constexpr = 'constexpr' if kwargs['a_constexpr'] else constexpr
+    except KeyError:
+        pass
+
+    try:
+        noexcept = 'noexcept(true)' if kwargs['a_noexcept'] else noexcept
+    except KeyError:
+        pass
+
+    try:
+        static = ('static',) if kwargs['a_static'] else static
+    except KeyError:
+        pass
+
     return (
-        f"constexpr auto",
-        f"{a_name}(",
+        static,
+        f'{constexpr} auto'.strip(),
+        f'{a_name}(',
         a_args,
-        f") noexcept({str(a_noexcept).lower()}) -> {a_returns}",
+        f') {noexcept} -> {returns}',
         gen_block(
             a_body
         )
@@ -253,25 +273,29 @@ def gen_function_constexpr(
 
 
 def gen_main(
-    a_body
+        a_body
 ) -> tuple:
     return gen_function(
-        "main",
+        'main',
         [
-            "int a_argc,",
-            "const char* a_argv[]"
+            '[[maybe_unused]]',
+            'int a_argc,',
+            '[[maybe_unused]]',
+            'const char* a_argv[]'
         ],
-        "int",
-        a_body
+        a_body,
+        a_noexcept=False,
+        a_returns='int'
     )
 
 
-def gen_main_paramless(
-    a_body
+def gen_main_argless(
+        a_body
 ) -> tuple:
     return gen_function(
-        "main",
+        'main',
         [],
-        "int",
-        a_body
+        a_body,
+        a_noexcept=False,
+        a_returns='int'
     )

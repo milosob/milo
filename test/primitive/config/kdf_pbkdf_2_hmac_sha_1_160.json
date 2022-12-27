@@ -1,11 +1,19 @@
 {
     "scheme": "test-primitive-kdf-pbkdf-2",
     "payload": {
-        "impl": "milo::primitive::kdf::pbkdf_2<milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>>",
+        "impl": {
+            "cpltime": [
+                "kdf_pbkdf_2_hmac_sha_1_160"
+            ],
+            "runtime": [
+                "kdf_pbkdf_2_hmac_sha_1_160",
+                "kdf_pbkdf_2_hmac_sha_1_160_sw",
+                "kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_1",
+                "kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_2"
+            ]
+        },
         "include": [
-            "<milo/primitive/hash/sha.h>",
-            "<milo/primitive/mac/hmac.h>",
-            "<milo/primitive/kdf/pbkdf.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

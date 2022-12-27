@@ -1,9 +1,16 @@
 {
     "scheme": "test-primitive-codec-encode",
     "payload": {
-        "impl": "milo::primitive::codec::base_64<>",
+        "impl": {
+            "cpltime": [
+                "codec_base_64"
+            ],
+            "runtime": [
+                "codec_base_64"
+            ]
+        },
         "include": [
-            "<milo/primitive/codec/base.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

@@ -1,11 +1,17 @@
 {
     "scheme": "test-primitive-kdf-hkdf",
     "payload": {
-        "impl": "milo::primitive::kdf::hkdf<milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>>",
+        "impl": {
+            "cpltime": [
+                "kdf_hkdf_hmac_sha_2_512"
+            ],
+            "runtime": [
+                "kdf_hkdf_hmac_sha_2_512",
+                "kdf_hkdf_hmac_sha_2_512_sw"
+            ]
+        },
         "include": [
-            "<milo/primitive/hash/sha.h>",
-            "<milo/primitive/mac/hmac.h>",
-            "<milo/primitive/kdf/hkdf.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

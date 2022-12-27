@@ -1,9 +1,16 @@
 {
     "scheme": "test-primitive-codec-decode",
     "payload": {
-        "impl": "milo::primitive::codec::base_16<>",
+        "impl": {
+            "cpltime": [
+                "codec_base_16"
+            ],
+            "runtime": [
+                "codec_base_16"
+            ]
+        },
         "include": [
-            "<milo/primitive/codec/base.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

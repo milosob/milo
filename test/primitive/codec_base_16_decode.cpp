@@ -5,7 +5,7 @@
 #include <milo/internal.h>
 #include <milo/literal.h>
 
-#include <milo/primitive/codec/base.h>
+#include <milo/primitive/detail/alias.h>
 #include <milo/primitive/codec/test.h>
 
 
@@ -499,55 +499,46 @@ constexpr milo::container::array<test_vector, 40> test_vectors
             },
     };
 
+template<
+    typename t_impl
+>
 constexpr auto
 test(
 ) noexcept(true) -> size_t
 {
-    size_t test_vectors_size = test_vectors.size();
-    size_t test_vectors_failed = 0;
-    
-    for (size_t i = 0; i < test_vectors_size; i += 1)
+    for (auto&& test_vector :test_vectors)
     {
-        auto result = milo::primitive::codec::test<milo::primitive::codec::base_16<>>::decode(
-            test_vectors[i].from,
-            test_vectors[i].to
+        auto result = milo::primitive::codec::test<t_impl>::decode(
+            test_vector.from,
+            test_vector.to
         );
         
-        if (result)
+        if (!result)
         {
-            continue;
+            return test_vector.id;
         }
-        
-        if MILO_INTERNAL_CONSTEVAL
-        {
-            return test_vectors[i].id;
-        }
-        else
-        {
-            if (test_vectors_failed == 0)
-            {
-                std::cerr << "Tests that failed:\n";
-            }
-            
-            std::cerr << "  - " << test_vectors[i].id << "\n";
-        }
-        
-        test_vectors_failed += 1;
     }
     
-    return test_vectors_failed;
+    return 0;
 }
+
+#ifdef MILO_TEST_CONSTEXPR
+#define TEST_CPLTIME(a_impl) {static_assert(test<a_impl>() == 0, "cpltime error of " #a_impl);}
+#else
+#define TEST_CPLTIME(a_impl) {static_assert(true, "cpltime error of " #a_impl);}
+#endif
+#define TEST_RUNTIME(a_impl) {volatile auto test_cb = test<a_impl>;if (test_cb() != 0){std::cerr << "runtime error of " #a_impl "\n";return 1;}}
 
 auto
 main(
 ) noexcept(false) -> int
 {
-    #ifdef MILO_TEST_CONSTEXPR
-    static_assert(test() == 0);
-    #endif
+    using namespace milo::primitive;
     
-    volatile auto test_cb = test;
+    TEST_CPLTIME(codec_base_16);
     
-    return test_cb() > 0;
+    TEST_RUNTIME(codec_base_16);
+    
+    return 0;
 }
 

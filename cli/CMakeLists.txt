@@ -30,5 +30,6 @@ target_link_libraries(
 target_compile_options(
         ${PROJECT_NAME}
         PRIVATE
+        -Wall
         -march=native
 )

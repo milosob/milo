@@ -1,8 +1,9 @@
 import src.cpp.lang
+import src.cpp.milo
 
 
 def gen(
-    a_config: dict
+        a_config: dict
 ) -> str:
     test_impl = a_config['impl']
     test_include = a_config['include']
@@ -113,68 +114,23 @@ def gen(
                 )
             ],
             '',
-            src.cpp.lang.gen_function_constexpr(
-                'test',
-                [],
-                'size_t',
+            src.cpp.milo.gen_test_primitive_core(
                 [
-                    'size_t test_vectors_size = test_vectors.size();',
-                    'size_t test_vectors_failed = 0;',
-                    '',
-                    src.cpp.lang.gen_loop_for(
-                        ['size_t i = 0', 'i < test_vectors_size', 'i += 1'],
-                        [
-                            f'auto result = milo::primitive::cipher::test<{test_impl}>::decrypt(',
-                            [
-                                'test_vectors[i].key,',
-                                'test_vectors[i].iv,',
-                                'test_vectors[i].ciphertext,',
-                                'test_vectors[i].plaintext'
-                            ],
-                            ');',
-                            '',
-                            src.cpp.lang.gen_if(
-                                'result',
-                                src.cpp.lang.gen_continue()
-                            ),
-                            '',
-                            'if MILO_INTERNAL_CONSTEVAL',
-                            src.cpp.lang.gen_block(
-                                [
-                                    'return test_vectors[i].id;'
-                                ]
-                            ),
-                            'else',
-                            src.cpp.lang.gen_block(
-                                [
-                                    src.cpp.lang.gen_if(
-                                        'test_vectors_failed == 0',
-                                        'std::cerr << "Tests that failed:\\n";'
-                                    ),
-                                    '',
-                                    'std::cerr << "  - " << test_vectors[i].id << "\\n";'
-                                ]
-                            ),
-                            '',
-                            'test_vectors_failed += 1;'
-                        ]
-                    ),
-                    '',
-                    'return test_vectors_failed;'
-                ],
-                True
+                    'milo::primitive::cipher::test<t_impl>::decrypt',
+                    [
+                        'key,',
+                        'iv,',
+                        'ciphertext,',
+                        'plaintext'
+                    ]
+                ]
             ),
             '',
-            src.cpp.lang.gen_main_paramless(
-                [
-                    '#ifdef MILO_TEST_CONSTEXPR',
-                    'static_assert(test() == 0);',
-                    '#endif',
-                    '',
-                    'volatile auto test_cb = test;',
-                    '',
-                    'return test_cb() > 0;'
-                ]
+            src.cpp.milo.gen_test_primitive_macros(),
+            '',
+            src.cpp.milo.gen_test_primitive_main(
+                test_impl['cpltime'],
+                test_impl['runtime']
             ),
             ''
         ]

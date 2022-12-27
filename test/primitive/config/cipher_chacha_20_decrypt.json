@@ -1,9 +1,17 @@
 {
     "scheme": "test-primitive-cipher-decrypt",
     "payload": {
-        "impl": "milo::primitive::cipher::chacha_20<>",
+        "impl": {
+            "cpltime": [
+                "cipher_chacha_20"
+            ],
+            "runtime": [
+                "cipher_chacha_20",
+                "cipher_chacha_20_sw"
+            ]
+        },
         "include": [
-            "<milo/primitive/cipher/chacha.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

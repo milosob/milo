@@ -1,9 +1,17 @@
 {
     "scheme": "test-primitive-aead-encrypt",
     "payload": {
-        "impl": "milo::primitive::aead::chacha_20_poly_1305<>",
+        "impl": {
+            "cpltime": [
+                "aead_chacha_20_poly_1305"
+            ],
+            "runtime": [
+                "aead_chacha_20_poly_1305",
+                "aead_chacha_20_sw_poly_1305_sw"
+            ]
+        },
         "include": [
-            "<milo/primitive/aead/chacha.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

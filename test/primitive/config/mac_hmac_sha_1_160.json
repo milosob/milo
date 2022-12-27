@@ -1,10 +1,19 @@
 {
     "scheme": "test-primitive-mac",
     "payload": {
-        "impl": "milo::primitive::mac::hmac<milo::primitive::hash::sha_1_160<>>",
+        "impl": {
+            "cpltime": [
+                "mac_hmac_sha_1_160"
+            ],
+            "runtime": [
+                "mac_hmac_sha_1_160",
+                "mac_hmac_sha_1_160_sw",
+                "mac_hmac_sha_1_160_hw_x86_v_1",
+                "mac_hmac_sha_1_160_hw_x86_v_2"
+            ]
+        },
         "include": [
-            "<milo/primitive/hash/sha.h>",
-            "<milo/primitive/mac/hmac.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

@@ -1,10 +1,17 @@
 {
     "scheme": "test-primitive-mac",
     "payload": {
-        "impl": "milo::primitive::mac::hmac<milo::primitive::hash::sha_2_512<>>",
+        "impl": {
+            "cpltime": [
+                "mac_hmac_sha_2_512"
+            ],
+            "runtime": [
+                "mac_hmac_sha_2_512",
+                "mac_hmac_sha_2_512_sw"
+            ]
+        },
         "include": [
-            "<milo/primitive/hash/sha.h>",
-            "<milo/primitive/mac/hmac.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {

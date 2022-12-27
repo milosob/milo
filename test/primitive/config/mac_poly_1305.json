@@ -1,9 +1,17 @@
 {
     "scheme": "test-primitive-mac",
     "payload": {
-        "impl": "milo::primitive::mac::poly_1305<>",
+        "impl": {
+            "cpltime": [
+                "mac_poly_1305"
+            ],
+            "runtime": [
+                "mac_poly_1305",
+                "mac_poly_1305_sw"
+            ]
+        },
         "include": [
-            "<milo/primitive/mac/poly.h>"
+            "<milo/primitive/detail/alias.h>"
         ],
         "vectors": [
             {
