@@ -201,29 +201,24 @@ At the moment, each algorithm supports the constexpr compile-time evaluation.
 
 ### Testing
 
-Each algorithm's test program in the library is generated using the Python application `milo-codegen`,
-which sources are placed in the `tool` directory.
-Tests are generated based on configuration files, located in the `tests/configs` directory.
-
-Each configuration file contains information about the source of
-the vectors or the software with which they were generated.
-
-Automatically generated tests make up about "75%" of the code base.
+Each algorithm's test program in the library is generated using the Python application `codegen`,
+which sources are placed in the `tool/codegen` directory.
+Tests are generated based on configuration files.
+Some configuration files are located in the `test/primitive/config` directory.
 
 To regenerate tests:
 
 ```shell
 pip install --user pipenv
 pipenv install
-bash tests/configs/generate.sh
+bash test/primitive/config/generate.sh
 ```
 
 Tests are detected by CMake when `MILO_TEST` option is set to `ON`.
 Testing constexpr cases can be done when `MILO_TEST_CONSTEXPR` option is set `ON`.
-It often takes a few minutes, and the evaluation of `pbkdf_2` consumes most of the time.
 
 To understand how to generate custom test programs, analyze
-the configuration files and `generate.sh` the script in the library.
+the configuration files and `generate.sh` script in the library.
 
 ### Performance
 

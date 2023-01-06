@@ -37,7 +37,7 @@ target_link_libraries(
 Follow the instructions to install the project:
 
 ```shell
-git clone --branch 0.1.0 https://github.com/milosob/milo.git milo
+git clone --branch master https://github.com/milosob/milo.git milo
 ```
 
 ```shell
@@ -49,7 +49,7 @@ cd milo-build
 ```
 
 ```shell
-cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON && make && ctest --test-dir tests
+cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON && make && ctest
 ```
 
 Skip `-DMILO_TEST_CONSTEXPR=ON` if testing for `constexpr` correctness is not necessary.
