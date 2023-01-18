@@ -8,7 +8,7 @@
 
 namespace milo::primitive::detail
 {
-    struct hash_impl_chooser
+    struct hash_impl_chooser_block
     {
         template<
             typename t_impl
@@ -23,11 +23,13 @@ namespace milo::primitive::detail
         hook(
         ) noexcept(true)
         {
-            return t_impl::template process<uint8_t>;
+            return t_impl::template blocks<
+                uint8_t
+            >;
         }
     };
     
-    struct hash_impl_invoker
+    struct hash_impl_invoker_block
     {
         template<
             unsigned t_id,
@@ -40,13 +42,28 @@ namespace milo::primitive::detail
             t_args&& ...a_args
         ) noexcept(true)
         {
-            return t_impl::process(
-                internal::forward<
-                    t_args
-                >(
-                    a_args
-                )...
-            );
+            if MILO_INTERNAL_CONSTEVAL
+            {
+                return t_impl::blocks(
+                    internal::forward<
+                        t_args
+                    >(
+                        a_args
+                    )...
+                );
+            }
+            else
+            {
+                return t_impl::blocks(
+                    internal::forward<
+                        t_args,
+                        meta::type_map_char_ptr_to_unsigned_char_ptr,
+                        meta::type_map_const_char_ptr_to_const_unsigned_char_ptr
+                    >(
+                        a_args
+                    )...
+                );
+            }
         }
         
         template<

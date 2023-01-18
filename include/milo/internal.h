@@ -4,6 +4,7 @@
 
 
 #include <milo/internal/arch.h>
+#include <milo/internal/attribute.h>
 #include <milo/internal/base.h>
 #include <milo/internal/bit.h>
 #include <milo/internal/compiler.h>

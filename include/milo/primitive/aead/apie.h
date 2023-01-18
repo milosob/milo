@@ -935,10 +935,10 @@ namespace milo::primitive::aead
             a_digest_ptr
         );
         
-        return container::tuple<size_t, size_t>(
+        return container::tuple{
             ciphertext_size,
             digest_size
-        );
+        };
     }
     
     /**
@@ -1015,10 +1015,10 @@ namespace milo::primitive::aead
             a_digest
         );
         
-        return container::tuple<size_t, size_t>(
+        return container::tuple{
             ciphertext_size,
             digest_size
-        );
+        };
     }
     
     /**
@@ -1081,10 +1081,10 @@ namespace milo::primitive::aead
         
         auto digest = apie.template digest<t_digest>();
         
-        return container::tuple<t_ciphertext, t_digest>(
+        return container::tuple{
             internal::move(ciphertext),
             internal::move(digest)
-        );
+        };
     }
     
     /**

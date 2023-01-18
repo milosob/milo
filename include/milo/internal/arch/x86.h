@@ -15,77 +15,6 @@
     #define MILO_INTERNAL_ARCH_X86 false;
 #endif
 
-/*
- * TODO
- *  This won't work for MSVC.
- */
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SSE__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_1 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_1 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SSE2__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_2 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_2 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SSE3__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_3 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_3 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SSSE3__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSSE_3 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSSE_3 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SSE4_1__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SSE4_2__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_2 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SSE_4_2 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __AVX__
-    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_1 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_1 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __AVX2__
-    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __AVX2__
-    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_AVX_2 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SHA__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_1 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_1 false
-#endif
-
-#if MILO_INTERNAL_ARCH_X86 && defined __SHA__
-    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_2 true
-#else
-    #define MILO_INTERNAL_ARCH_X86_ISE_SHA_2 false
-#endif
-
 namespace milo::internal
 {
     #if MILO_INTERNAL_ARCH_X86
@@ -232,224 +161,7 @@ namespace milo::internal
         }
     } arch_x86_cpuid;
     
-    template<
-        typename t_mode,
-        typename t_impl
-    >
-    static
-    constexpr auto
-    arch_x86_ise_check(
-    ) noexcept(true) -> bool
-    {
-        if constexpr (requires{
-            typename t_impl::requirements::arch::x86;
-        })
-        {
-            if constexpr (requires{
-                typename t_impl::requirements::arch::x86::ise;
-            })
-            {
-                using mode_type = t_mode;
-                using impl_type = typename t_impl::requirements::arch::x86::ise;
-                
-                if constexpr (requires {
-                    typename impl_type::sse_1;
-                })
-                {
-                    if (!mode_type::sse_1)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::sse_2;
-                })
-                {
-                    if (!mode_type::sse_2)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::sse_3;
-                })
-                {
-                    if (!mode_type::sse_3)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::ssse_3;
-                })
-                {
-                    if (!mode_type::ssse_3)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::sse_4_1;
-                })
-                {
-                    if (!mode_type::sse_4_1)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::sse_4_2;
-                })
-                {
-                    if (!mode_type::sse_4_2)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::avx_1;
-                })
-                {
-                    if (!mode_type::avx_1)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::avx_2;
-                })
-                {
-                    if (!mode_type::avx_2)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::sha_1;
-                })
-                {
-                    if (!mode_type::sha_1)
-                    {
-                        return false;
-                    }
-                }
-                
-                if constexpr (requires {
-                    typename impl_type::sha_2;
-                })
-                {
-                    if (!mode_type::sha_2)
-                    {
-                        return false;
-                    }
-                }
-            }
-            
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    struct arch_x86_ise_strict
-    {
-        static
-        constexpr bool sse_1 = false;
-        
-        static
-        constexpr bool sse_2 = false;
-        
-        static
-        constexpr bool sse_3 = false;
-        
-        static
-        constexpr bool ssse_3 = false;
-        
-        static
-        constexpr bool sse_4_1 = false;
-        
-        static
-        constexpr bool sse_4_2 = false;
-        
-        static
-        constexpr bool avx_1 = false;
-        
-        static
-        constexpr bool avx_2 = false;
-        
-        static
-        constexpr bool sha_1 = false;
-        
-        static
-        constexpr bool sha_2 = false;
-        
-        template<
-            typename t_impl
-        >
-        static
-        constexpr auto
-        check(
-        ) noexcept(true) -> bool
-        {
-            return arch_x86_ise_check<arch_x86_ise_strict, t_impl>();
-        }
-    };
-    
-    struct arch_x86_ise_native
-    {
-        static
-        constexpr bool sse_1 = MILO_INTERNAL_ARCH_X86_ISE_SSE_1;
-        
-        static
-        constexpr bool sse_2 = MILO_INTERNAL_ARCH_X86_ISE_SSE_2;
-        
-        static
-        constexpr bool sse_3 = MILO_INTERNAL_ARCH_X86_ISE_SSE_3;
-        
-        static
-        constexpr bool ssse_3 = MILO_INTERNAL_ARCH_X86_ISE_SSSE_3;
-        
-        static
-        constexpr bool sse_4_1 = MILO_INTERNAL_ARCH_X86_ISE_SSE_4_1;
-        
-        static
-        constexpr bool sse_4_2 = MILO_INTERNAL_ARCH_X86_ISE_SSE_4_2;
-        
-        static
-        constexpr bool avx_1 = MILO_INTERNAL_ARCH_X86_ISE_AVX_1;
-        
-        static
-        constexpr bool avx_2 = MILO_INTERNAL_ARCH_X86_ISE_AVX_2;
-        
-        static
-        constexpr bool sha_1 = MILO_INTERNAL_ARCH_X86_ISE_SHA_1;
-        
-        static
-        constexpr bool sha_2 = MILO_INTERNAL_ARCH_X86_ISE_SHA_2;
-        
-        template<
-            typename t_impl
-        >
-        static
-        constexpr auto
-        check(
-        ) noexcept(true) -> bool
-        {
-            return arch_x86_ise_check<arch_x86_ise_native, t_impl>();
-        }
-    };
-    
-    struct arch_x86_ise_runtime
+    struct arch_x86_ise
     {
         inline
         static
@@ -461,11 +173,7 @@ namespace milo::internal
         
         inline
         static
-        const bool sse_3 = arch_x86_cpuid.sse_3();
-        
-        inline
-        static
-        const bool ssse_3 = arch_x86_cpuid.ssse_3();
+        const bool sse_3 = arch_x86_cpuid.sse_3() && arch_x86_cpuid.ssse_3();
         
         inline
         static
@@ -474,6 +182,10 @@ namespace milo::internal
         inline
         static
         const bool sse_4_2 = arch_x86_cpuid.sse_4_2();
+        
+        inline
+        static
+        const bool sse_4 = arch_x86_cpuid.sse_4_1() && arch_x86_cpuid.sse_4_2();
         
         inline
         static
@@ -499,17 +211,124 @@ namespace milo::internal
         check(
         ) noexcept(true) -> bool
         {
-            return arch_x86_ise_check<arch_x86_ise_runtime, t_impl>();
+            if constexpr (requires{
+                typename t_impl::requirements::arch::x86;
+            })
+            {
+                if constexpr (requires{
+                    typename t_impl::requirements::arch::x86::ise;
+                })
+                {
+                    using impl_type = typename t_impl::requirements::arch::x86::ise;
+                    
+                    if constexpr (requires {
+                        typename impl_type::sse_1;
+                    })
+                    {
+                        if (!sse_1)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sse_2;
+                    })
+                    {
+                        if (!sse_2)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sse_3;
+                    })
+                    {
+                        if (!sse_3)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sse_4_1;
+                    })
+                    {
+                        if (!sse_4_1)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sse_4_2;
+                    })
+                    {
+                        if (!sse_4_2)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sse_4;
+                    })
+                    {
+                        if (!sse_4)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::avx_1;
+                    })
+                    {
+                        if (!avx_1)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::avx_2;
+                    })
+                    {
+                        if (!avx_2)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sha_1;
+                    })
+                    {
+                        if (!sha_1)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    if constexpr (requires {
+                        typename impl_type::sha_2;
+                    })
+                    {
+                        if (!sha_2)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-    };
-    
-    struct arch_x86_ise
-    {
-        using strict = arch_x86_ise_strict;
-        
-        using native = arch_x86_ise_native;
-        
-        using runtime = arch_x86_ise_runtime;
     };
     
     struct arch_x86

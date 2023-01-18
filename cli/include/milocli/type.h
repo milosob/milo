@@ -250,17 +250,17 @@ namespace milocli::type
             {
                 if (is<long>())
                 {
-                    return as<long>() == a_var;
+                    return as<long>() == (long)(a_var);
                 }
                 
                 if (is<long unsigned>())
                 {
-                    return as<long unsigned>() == a_var;
+                    return as<long unsigned>() == (long unsigned)(a_var);
                 }
                 
                 if (is<double>())
                 {
-                    return as<double>() == a_var;
+                    return as<double>() == (double)(a_var);
                 }
             }
             

@@ -21,9 +21,8 @@ namespace milo::primitive::detail
         
         struct impl_type
             : internal::impl_proxy<
-                internal::impl_domain_runtime,
-                hash_impl_chooser,
-                hash_impl_invoker,
+                hash_impl_chooser_block,
+                hash_impl_invoker_block,
                 internal::impl_cpltime<
                     hash_sha_2_512_impl_sw
                 >,

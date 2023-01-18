@@ -41,108 +41,6 @@ namespace milo::primitive::detail
             0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817
         };
     
-    private:
-        
-        static
-        constexpr auto
-        ch(
-            uint64_t a_0,
-            uint64_t a_1,
-            uint64_t a_2
-        ) noexcept(true) -> uint64_t
-        {
-            return a_2 ^ (a_0 & (a_1 ^ a_2));
-        }
-        
-        static
-        constexpr auto
-        maj(
-            uint64_t a_0,
-            uint64_t a_1,
-            uint64_t a_2
-        ) noexcept(true) -> uint64_t
-        {
-            return (a_0 & a_1) ^ (a_2 & (a_0 ^ a_1));
-        }
-        
-        static
-        constexpr auto
-        sigma_lower_0(
-            uint64_t a_0
-        ) noexcept(true) -> uint64_t
-        {
-            return
-                internal::bit_rotr(
-                    a_0,
-                    1
-                ) ^
-                internal::bit_rotr(
-                    a_0,
-                    8
-                ) ^
-                a_0 >> 7;
-        }
-        
-        static
-        constexpr auto
-        sigma_lower_1(
-            uint64_t a_0
-        ) noexcept(true) -> uint64_t
-        {
-            return
-                internal::bit_rotr(
-                    a_0,
-                    19
-                ) ^
-                internal::bit_rotr(
-                    a_0,
-                    61
-                ) ^
-                a_0 >> 6;
-        }
-        
-        static
-        constexpr auto
-        sigma_upper_0(
-            uint64_t a_0
-        ) noexcept(true) -> uint64_t
-        {
-            return
-                internal::bit_rotr(
-                    a_0,
-                    28
-                ) ^
-                internal::bit_rotr(
-                    a_0,
-                    34
-                ) ^
-                internal::bit_rotr(
-                    a_0,
-                    39
-                );
-        }
-        
-        static
-        constexpr auto
-        sigma_upper_1(
-            uint64_t a_w_0
-        ) noexcept(true) -> uint64_t
-        {
-            return
-                internal::bit_rotr(
-                    a_w_0,
-                    14
-                ) ^
-                internal::bit_rotr(
-                    a_w_0,
-                    18
-                ) ^
-                internal::bit_rotr(
-                    a_w_0,
-                    41
-                );
-        }
-    
     public:
         
         template<
@@ -150,7 +48,7 @@ namespace milo::primitive::detail
         >
         static
         constexpr auto
-        process(
+        blocks(
             const t_src* a_src_ptr,
             size_t a_blocks,
             uint64_t* a_h_ptr
@@ -159,6 +57,8 @@ namespace milo::primitive::detail
             uint64_t schedule[80];
             uint64_t a, b, c, d, e, f, g, h;
             uint64_t ap, bp, cp, dp, ep, fp, gp, hp;
+            uint64_t t_1;
+            uint64_t t_2;
             
             a = a_h_ptr[0];
             b = a_h_ptr[1];
@@ -168,6 +68,70 @@ namespace milo::primitive::detail
             f = a_h_ptr[5];
             g = a_h_ptr[6];
             h = a_h_ptr[7];
+            
+            /*
+             * @formatter:off
+             */
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_CH(a_0, a_1, a_2) \
+                    ((a_2) ^ ((a_0) & ((a_1) ^ (a_2))))                       \
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_MAJ(a_0, a_1, a_2) \
+                    (((a_0) & (a_1)) ^ ((a_2) & ((a_0) ^ (a_1))))              \
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_LOWER_0(a_0) \
+                    (internal::bit_rotr(a_0,  1) ^ internal::bit_rotr(a_0,  8) ^ (a_0) >> 7)
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_LOWER_1(a_0) \
+                    (internal::bit_rotr(a_0, 19) ^ internal::bit_rotr(a_0, 61) ^ (a_0) >> 6)
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_UPPER_0(a_0) \
+                    (internal::bit_rotr(a_0, 28) ^ internal::bit_rotr(a_0, 34) ^ internal::bit_rotr(a_0, 39))
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_UPPER_1(a_0) \
+                    (internal::bit_rotr(a_0, 14) ^ internal::bit_rotr(a_0, 18) ^ internal::bit_rotr(a_0, 41))
+    
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_T_1(a_e, a_f, a_g, a_h, a_k, a_s) \
+                    (                                                                         \
+                        MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_UPPER_1(a_e) +          \
+                        MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_CH(a_e, a_f, a_g) +           \
+                        a_h +                                                                 \
+                        a_k +                                                                 \
+                        a_s                                                                   \
+                    )                                                                         \
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_T_2(a_a, a_b, a_c)                \
+                    (                                                                         \
+                        MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_UPPER_0(a_a) +          \
+                        MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_MAJ(a_a, a_b, a_c)            \
+                    )                                                                         \
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SCHEDULE_00_15(a_i) \
+                    schedule[a_i] = internal::memory_load_be<uint64_t>(a_src_ptr, a_i);
+    
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SCHEDULE_16_79(a_i) \
+                    schedule[a_i] =                                                                 \
+                        schedule[a_i - 7] +                                                         \
+                        schedule[a_i - 16] +                                                        \
+                        MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_LOWER_1(schedule[a_i - 2]) +  \
+                        MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SIGMA_LOWER_0(schedule[a_i - 15]);  \
+            
+            #define MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_ROUND(a_i) \
+                    t_1 = MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_T_1(e, f, g, h, k[a_i], schedule[a_i]); \
+                    t_2 = MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_T_2(a, b, c);                           \
+                                                                       \
+                    h = g;                                             \
+                    g = f;                                             \
+                    f = e;                                             \
+                    e = d + t_1;                                       \
+                    d = c;                                             \
+                    c = b;                                             \
+                    b = a;                                             \
+                    a = t_1 + t_2;                                     \
+            
+            /*
+             * @formatter:on
+             */
             
             for (size_t i = 0; i < a_blocks; i += 1)
             {
@@ -180,86 +144,25 @@ namespace milo::primitive::detail
                 gp = g;
                 hp = h;
                 
+                /*
+                 * @formatter:off
+                 */
+                
                 for (size_t j = 0; j < 16; j += 1)
                 {
-                    schedule[j] = internal::memory_load_be<uint64_t>(
-                        a_src_ptr,
-                        j
-                    );
-                    
-                    uint64_t t_1 =
-                        h +
-                        sigma_upper_1(
-                            e
-                        ) +
-                        ch(
-                            e,
-                            f,
-                            g
-                        ) +
-                        k[j] +
-                        schedule[j];
-                    
-                    uint64_t t_2 =
-                        sigma_upper_0(
-                            a
-                        ) +
-                        maj(
-                            a,
-                            b,
-                            c
-                        );
-                    
-                    h = g;
-                    g = f;
-                    f = e;
-                    e = d + t_1;
-                    d = c;
-                    c = b;
-                    b = a;
-                    a = t_1 + t_2;
+                    MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SCHEDULE_00_15(j)
+                    MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_ROUND(j)
                 }
                 
                 for (size_t j = 16; j < 80; j += 1)
                 {
-                    schedule[j] =
-                        sigma_lower_1(schedule[j - 2]) +
-                        schedule[j - 7] +
-                        sigma_lower_0(schedule[j - 15]) +
-                        schedule[j - 16];
-                    
-                    uint64_t t_1 =
-                        h +
-                        sigma_upper_1(
-                            e
-                        ) +
-                        ch(
-                            e,
-                            f,
-                            g
-                        ) +
-                        k[j] +
-                        schedule[j];
-                    
-                    uint64_t t_2 =
-                        sigma_upper_0(
-                            a
-                        ) +
-                        maj(
-                            a,
-                            b,
-                            c
-                        );
-                    
-                    h = g;
-                    g = f;
-                    f = e;
-                    e = d + t_1;
-                    d = c;
-                    c = b;
-                    b = a;
-                    a = t_1 + t_2;
+                    MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_SCHEDULE_16_79(j)
+                    MILO_PRIMITIVE_DETAIL_HASH_SHA_2_512_SW_ROUND(j)
                 }
+    
+                /*
+                 * @formatter:on
+                 */
                 
                 a += ap;
                 b += bp;

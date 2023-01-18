@@ -20,7 +20,6 @@ namespace milo::primitive::detail
         
         struct impl_type
             : internal::impl_proxy<
-                internal::impl_domain_runtime,
                 mac_poly_1305_impl_chooser,
                 mac_poly_1305_impl_invoker,
                 internal::impl_cpltime<

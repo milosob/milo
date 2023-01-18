@@ -7,7 +7,7 @@
 
 #include <milo/primitive/detail/hash/impl.h>
 #include <milo/primitive/detail/hash/sha/sha_2_256_impl_sw.h>
-#include <milo/primitive/detail/hash/sha/sha_2_256_impl_hw_x86_v_1.h>
+#include <milo/primitive/detail/hash/sha/sha_2_256_impl_hw_x86.h>
 
 
 namespace milo::primitive::detail
@@ -22,9 +22,8 @@ namespace milo::primitive::detail
         
         struct impl_type
             : internal::impl_proxy<
-                internal::impl_domain_runtime,
-                hash_impl_chooser,
-                hash_impl_invoker,
+                hash_impl_chooser_block,
+                hash_impl_invoker_block,
                 internal::impl_cpltime<
                     hash_sha_2_256_impl_sw
                 >,

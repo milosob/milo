@@ -6,10 +6,7 @@
 #include <milo/internal.h>
 
 
-#if MILO_INTERNAL_ARCH_X86_ISE_SSE_1 && \
-    MILO_INTERNAL_ARCH_X86_ISE_SSE_2 && \
-    MILO_INTERNAL_ARCH_X86_ISE_SSSE_3 && \
-    MILO_INTERNAL_ARCH_X86_ISE_SHA_2
+#if MILO_INTERNAL_ARCH_X86
 
 
 #include <immintrin.h>
@@ -33,7 +30,7 @@ namespace milo::primitive::detail
                         
                         using sse_2 = int;
                         
-                        using ssse_3 = int;
+                        using sse_3 = int;
                         
                         using sha_2 = int;
                     };
@@ -74,9 +71,11 @@ namespace milo::primitive::detail
         template<
             meta::byte t_src
         >
+        MILO_INTERNAL_ATTRIBUTE_INLINE(false)
+        MILO_INTERNAL_ATTRIBUTE_TARGET("sse,sse2,sse3,ssse3,sha")
         static
-        constexpr auto
-        process(
+        auto
+        blocks(
             const t_src* a_src_ptr,
             size_t a_blocks,
             uint32_t* a_h_ptr

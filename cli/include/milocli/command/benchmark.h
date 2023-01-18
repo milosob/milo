@@ -24,7 +24,7 @@ namespace milocli::command::benchmark
         typename t_invocable,
         typename... t_args
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     measure(
         size_t a_repeats_warm,
@@ -78,7 +78,7 @@ namespace milocli::command::benchmark
         typename t_invocable,
         typename... t_args
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     measure(
         t_invocable&& a_invocable,
@@ -213,7 +213,7 @@ namespace milocli::command::benchmark
                 {"total",   duration_total}
             };
             
-            if (processed != -1)
+            if (processed != size_t(-1))
             {
                 auto throughput_gigabytes_per_second = double(processed) / double(duration_total);
                 auto throughput_megabytes_per_second = double(processed * 1000) / double(duration_total);
@@ -229,7 +229,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::codec t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_codec_encode_call(
         const char* a_from_ptr,
@@ -279,7 +279,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::codec t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_codec_decode_call(
         const char* a_from_ptr,
@@ -334,7 +334,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::hash t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_hash_call(
         t_impl& a_impl,
@@ -381,7 +381,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::mac t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_mac_call(
         t_impl& a_impl,
@@ -436,7 +436,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::kdf_hkdf t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_kdf_call(
         t_impl& a_impl,
@@ -499,7 +499,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::kdf_pbkdf_2 t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_kdf_call(
         t_impl& a_impl,
@@ -559,7 +559,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::cipher t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_cipher_encrypt_call(
         t_impl& a_impl,
@@ -647,7 +647,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::cipher t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_cipher_decrypt_call(
         t_impl& a_impl,
@@ -735,7 +735,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::aead t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_aead_encrypt_call(
         t_impl& a_impl,
@@ -843,7 +843,7 @@ namespace milocli::command::benchmark
     template<
         milo::meta::primitive::aead t_impl
     >
-    MILO_INTERNAL_INLINE
+    MILO_INTERNAL_ATTRIBUTE_INLINE(true)
     auto
     primitive_aead_decrypt_call(
         t_impl& a_impl,
@@ -1015,7 +1015,6 @@ namespace milocli::command::benchmark
                                 {"hash-sha-2-512-256-sw",                   primitive_hash<milo::primitive::hash_sha_2_512_256_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
                                 {"hash-sha-1-160-hw-x86-v-1",               primitive_hash<milo::primitive::hash_sha_1_160_hw_x86_v_1>},
-                                {"hash-sha-1-160-hw-x86-v-2",               primitive_hash<milo::primitive::hash_sha_1_160_hw_x86_v_2>},
                                 {"hash-sha-2-224-hw-x86-v-1",               primitive_hash<milo::primitive::hash_sha_2_224_hw_x86_v_1>},
                                 {"hash-sha-2-256-hw-x86-v-1",               primitive_hash<milo::primitive::hash_sha_2_256_hw_x86_v_1>},
                                 #endif
@@ -1057,7 +1056,6 @@ namespace milocli::command::benchmark
                                 {"mac-poly-1305-sw",                        primitive_mac<milo::primitive::mac_poly_1305_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
                                 {"mac-hmac-sha-1-160-hw-x86-v-1",           primitive_mac<milo::primitive::mac_hmac_sha_1_160_hw_x86_v_1>},
-                                {"mac-hmac-sha-1-160-hw-x86-v-2",           primitive_mac<milo::primitive::mac_hmac_sha_1_160_hw_x86_v_2>},
                                 {"mac-hmac-sha-2-224-hw-x86-v-1",           primitive_mac<milo::primitive::mac_hmac_sha_2_224_hw_x86_v_1>},
                                 {"mac-hmac-sha-2-256-hw-x86-v-1",           primitive_mac<milo::primitive::mac_hmac_sha_2_256_hw_x86_v_1>}
                                 #endif
@@ -1099,7 +1097,6 @@ namespace milocli::command::benchmark
                                 {"kdf-hkdf-hmac-sha-2-512-256-sw",          primitive_kdf<milo::primitive::kdf_hkdf_hmac_sha_2_512_256_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
                                 {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-1",      primitive_kdf<milo::primitive::kdf_hkdf_hmac_sha_1_160_hw_x86_v_1>},
-                                {"kdf-hkdf-hmac-sha-1-160-hw-x86-v-2",      primitive_kdf<milo::primitive::kdf_hkdf_hmac_sha_1_160_hw_x86_v_2>},
                                 {"kdf-hkdf-hmac-sha-2-224-hw-x86-v-1",      primitive_kdf<milo::primitive::kdf_hkdf_hmac_sha_2_224_hw_x86_v_1>},
                                 {"kdf-hkdf-hmac-sha-2-256-hw-x86-v-1",      primitive_kdf<milo::primitive::kdf_hkdf_hmac_sha_2_256_hw_x86_v_1>}
                                 #endif
@@ -1141,7 +1138,6 @@ namespace milocli::command::benchmark
                                 {"kdf-pbkdf-2-hmac-sha-2-512-256-sw",       primitive_kdf<milo::primitive::kdf_pbkdf_2_hmac_sha_2_512_256_sw>},
                                 #if MILO_INTERNAL_ARCH_X86
                                 {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_1>},
-                                {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-v-2",   primitive_kdf<milo::primitive::kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_2>},
                                 {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf_pbkdf_2_hmac_sha_2_224_hw_x86_v_1>},
                                 {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<milo::primitive::kdf_pbkdf_2_hmac_sha_2_256_hw_x86_v_1>}
                                 #endif
@@ -1167,7 +1163,7 @@ namespace milocli::command::benchmark
                             },
                             {
                                 {"cipher-chacha-20-sw-encrypt",             primitive_cipher_encrypt<milo::primitive::cipher_chacha_20_sw>},
-                                {"cipher-chacha-20-sw-decrypt",             primitive_cipher_decrypt<milo::primitive::cipher_chacha_20_sw>},
+                                {"cipher-chacha-20-sw-decrypt",             primitive_cipher_decrypt<milo::primitive::cipher_chacha_20_sw>}
                             }
                         )
                     );

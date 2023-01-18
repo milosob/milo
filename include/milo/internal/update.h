@@ -50,9 +50,7 @@ namespace milo::internal
                 return a_buf_size + todo_size;
             }
             
-            impl_type::template invoke<
-                0
-            >(
+            impl_type::template invoke<0>(
                 a_buf_ptr,
                 1,
                 forward<
@@ -66,28 +64,26 @@ namespace milo::internal
             a_src_size -= todo_size;
         }
         
-        auto full_size = a_src_size / block_size;
+        auto full_blks = a_src_size / block_size;
         auto last_size = a_src_size % block_size;
         
-        if (full_size)
+        if (full_blks)
         {
-            impl_type::template invoke<
-                0
-            >(
+            impl_type::template invoke<0>(
                 a_src_ptr,
-                full_size,
+                full_blks,
                 forward<
                     t_args
                 >(
                     a_args
                 )...
             );
+    
+            a_src_ptr += full_blks * block_size;
         }
         
         if (last_size)
         {
-            a_src_ptr += full_size * block_size;
-            
             memory_copy(
                 a_buf_ptr,
                 a_src_ptr,
@@ -103,6 +99,7 @@ namespace milo::internal
         meta::byte t_buf,
         meta::byte t_dst,
         meta::byte t_src,
+        typename t_state_cb,
         typename... t_args
     >
     constexpr auto
@@ -112,12 +109,13 @@ namespace milo::internal
         t_dst* a_dst_ptr,
         const t_src* a_src_ptr,
         size_t a_src_size,
+        t_state_cb a_state_cb,
         t_args&& ... a_args
     ) noexcept(true) -> size_t
     {
         using impl_type = t_impl;
         
-        constexpr auto block_size = impl_type::block_size;
+        auto block_size = impl_type::template invoke<0>();
         
         if (a_buf_size > 0)
         {
@@ -144,46 +142,44 @@ namespace milo::internal
             a_src_size -= todo_size;
         }
         
-        uint8_t block[block_size];
-        
-        auto full_size = a_src_size / block_size;
+        auto full_blks = a_src_size / block_size;
         auto last_size = a_src_size % block_size;
         
-        for (size_t i = 0; i < full_size; i += 1)
+        if (full_blks)
         {
-            impl_type::template invoke<
-                0
-            >(
-                block,
+            auto done_blks = impl_type::template invoke<1>(
                 forward<
                     t_args
                 >(
                     a_args
-                )...
-            );
-            
-            memory_xor(
+                )...,
+                full_blks,
                 a_dst_ptr,
-                a_src_ptr,
-                block,
-                block_size
+                a_src_ptr
             );
             
-            a_dst_ptr += block_size;
-            a_src_ptr += block_size;
+            a_state_cb(
+                done_blks
+            );
+            
+            a_dst_ptr += full_blks * block_size;
+            a_src_ptr += full_blks * block_size;
         }
         
         if (last_size)
         {
-            impl_type::template invoke<
-                0
-            >(
-                a_buf_ptr,
+            auto done_blks = impl_type::template invoke<2>(
                 forward<
                     t_args
                 >(
                     a_args
-                )...
+                )...,
+                1,
+                a_buf_ptr
+            );
+            
+            a_state_cb(
+                done_blks
             );
             
             memory_xor(

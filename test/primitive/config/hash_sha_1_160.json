@@ -8,8 +8,7 @@
             "runtime": [
                 "hash_sha_1_160",
                 "hash_sha_1_160_sw",
-                "hash_sha_1_160_hw_x86_v_1",
-                "hash_sha_1_160_hw_x86_v_2"
+                "hash_sha_1_160_hw_x86_v_1"
             ]
         },
         "include": [

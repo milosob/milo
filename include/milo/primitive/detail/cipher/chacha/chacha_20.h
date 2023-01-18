@@ -5,7 +5,7 @@
 
 #include <milo/internal.h>
 
-#include <milo/primitive/detail/cipher/chacha/chacha_20_impl.h>
+#include <milo/primitive/detail/cipher/impl.h>
 #include <milo/primitive/detail/cipher/chacha/chacha_20_impl_sw.h>
 
 
@@ -20,9 +20,8 @@ namespace milo::primitive::detail
         
         struct impl_type
             : internal::impl_proxy<
-                internal::impl_domain_runtime,
-                cipher_chacha_20_impl_chooser,
-                cipher_chacha_20_impl_invoker,
+                cipher_impl_chooser_stream,
+                cipher_impl_invoker_stream,
                 internal::impl_cpltime<
                     cipher_chacha_20_impl_sw
                 >,
@@ -62,7 +61,7 @@ namespace milo::primitive::detail
         
         uint32_t m_state[16]{};
         
-        uint8_t m_buffer[block_size]{};
+        uint8_t m_buffer[block_size * 4]{};
         
         size_t m_buffer_size = 0;
     
@@ -143,6 +142,12 @@ namespace milo::primitive::detail
                 a_ciphertext_ptr,
                 a_plaintext_ptr,
                 a_plaintext_size,
+                [this](
+                    size_t a_blocks
+                ) constexpr noexcept -> void
+                {
+                    m_state[12] += a_blocks;
+                },
                 m_state
             );
             
@@ -181,6 +186,12 @@ namespace milo::primitive::detail
                 a_plaintext_ptr,
                 a_ciphertext_ptr,
                 a_ciphertext_size,
+                [this](
+                    size_t a_blocks
+                ) constexpr noexcept -> void
+                {
+                    m_state[12] += a_blocks;
+                },
                 m_state
             );
             

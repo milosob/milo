@@ -8,14 +8,12 @@
 #include <array>
 #include <span>
 #include <vector>
-#include <tuple>
 
 
 namespace milo::container
 {
     using std::array;
     using std::vector;
-    using std::tuple;
     
     template<typename t_value, size_t t_size>
     using view_static = std::span<t_value, t_size>;
@@ -52,4 +50,79 @@ namespace milo::container
     using chars_const_view_static = view_static<const char, t_size>;
     
     using chars_const_view_dynamic = view_dynamic<const char>;
+    
+    template<
+        typename... t_args
+    >
+    struct tuple;
+    
+    template<>
+    struct tuple<>
+    {
+    };
+    
+    template<
+        typename t_0
+    >
+    struct tuple<
+        t_0
+    >
+    {
+        t_0 item_0;
+    };
+    
+    template<
+        typename t_0,
+        typename t_1
+    >
+    struct tuple<
+        t_0,
+        t_1
+    >
+    {
+        t_0 item_0;
+        t_1 item_1;
+    };
+    
+    template<
+        typename t_0,
+        typename t_1,
+        typename t_2
+    >
+    struct tuple<
+        t_0,
+        t_1,
+        t_2
+    >
+    {
+        t_0 item_0;
+        t_1 item_1;
+        t_2 item_2;
+    };
+    
+    template<
+        typename t_0,
+        typename t_1,
+        typename t_2,
+        typename t_3
+    >
+    struct tuple<
+        t_0,
+        t_1,
+        t_2,
+        t_3
+    >
+    {
+        t_0 item_0;
+        t_1 item_1;
+        t_2 item_2;
+        t_3 item_3;
+    };
+    
+    template<
+        typename... t_args
+    >
+    tuple(
+        t_args&& ... a_args
+    ) -> tuple<t_args...>;
 }

@@ -12,12 +12,6 @@
 
 namespace milo::internal
 {
-    using impl_domain_strict = arch_active::ise::strict;
-    
-    using impl_domain_native = arch_active::ise::native;
-    
-    using impl_domain_runtime = arch_active::ise::runtime;
-    
     template<
         typename t_impl
     >
@@ -53,7 +47,6 @@ namespace milo::internal
     }
     
     template<
-        typename t_domain,
         typename t_chooser,
         typename t_impl,
         typename... t_impls
@@ -76,7 +69,7 @@ namespace milo::internal
             }
             else
             {
-                if (t_domain::template check<t_impl>())
+                if (arch_active::ise::check<t_impl>())
                 {
                     return t_chooser::template hook<t_impl>();
                 }
@@ -86,7 +79,6 @@ namespace milo::internal
         if constexpr (sizeof...(t_impls) > 0)
         {
             return impl_choose_hook<
-                t_domain,
                 t_chooser,
                 t_impls...
             >();
@@ -100,7 +92,6 @@ namespace milo::internal
     }
     
     template<
-        typename t_domain,
         typename t_chooser,
         typename... t_impls
     >
@@ -115,8 +106,7 @@ namespace milo::internal
                             {
                                 typename t_impls::requirements::arch;
                             }
-                        ) ||
-                        t_domain::template check<t_impls>()
+                        )
                     ),
                     typename t_chooser::template type<t_impls>()
                 >...
@@ -125,7 +115,6 @@ namespace milo::internal
     };
     
     template<
-        typename t_domain,
         typename t_chooser,
         typename... t_impls
     >
@@ -133,14 +122,7 @@ namespace milo::internal
     requires
     {
         requires sizeof...(t_impls) > 0;
-        requires meta::same<
-            t_domain,
-            impl_domain_strict,
-            impl_domain_native,
-            impl_domain_runtime
-        >;
         requires impl_choose_type<
-            impl_domain_strict,
             t_chooser,
             t_impls...
         >::value;
@@ -152,7 +134,6 @@ namespace milo::internal
     using impl_cpltime = meta::args<t_impls...>;
     
     template<
-        typename t_domain,
         typename t_chooser,
         typename t_impl,
         typename... t_impls
@@ -168,7 +149,6 @@ namespace milo::internal
     using impl_runtime = meta::args<t_impls...>;
     
     template<
-        typename t_domain,
         typename t_chooser,
         typename... t_impls
     >
@@ -176,50 +156,21 @@ namespace milo::internal
     requires
     {
         requires impl_choose_assert<
-            impl_domain_strict,
             t_chooser,
             t_impls...
         >;
     }
     struct impl_runtime_reader
     {
-        using impl = typename impl_choose_type<
-            t_domain,
-            t_chooser,
-            t_impls...
-        >::type;
-    };
-    
-    template<
-        typename t_chooser,
-        typename... t_impls
-    >
-    requires
-    requires
-    {
-        requires impl_choose_assert<
-            impl_domain_strict,
-            t_chooser,
-            t_impls...
-        >;
-    }
-    struct impl_runtime_reader<
-        impl_domain_runtime,
-        t_chooser,
-        t_impls...
-    >
-    {
         inline
         static
         const auto impl = impl_choose_hook<
-            impl_domain_runtime,
             t_chooser,
             t_impls...
         >();
     };
     
     template<
-        typename t_domain,
         typename t_chooser,
         typename t_invoker,
         typename t_cpltime,
@@ -230,8 +181,6 @@ namespace milo::internal
     {
     private:
         
-        using domain = option_impl_domain_suite::query_default_t<t_domain, t_options...>;
-        
         using chooser = option_impl_chooser_suite::query_default_t<t_chooser, t_options...>;
         
         using invoker = option_impl_invoker_suite::query_default_t<t_invoker, t_options...>;
@@ -240,9 +189,9 @@ namespace milo::internal
         
         using runtime_override = option_impl_runtime_suite::query_default_t<void, t_options...>;
         
-        using cpltime_selected = typename meta::args_reader<t_cpltime, impl_cpltime_reader, domain, chooser>::type;
+        using cpltime_selected = typename meta::args_reader<t_cpltime, impl_cpltime_reader, chooser>::type;
         
-        using runtime_selected = typename meta::args_reader<t_runtime, impl_runtime_reader, domain, chooser>::type;
+        using runtime_selected = typename meta::args_reader<t_runtime, impl_runtime_reader, chooser>::type;
     
     public:
         
@@ -302,36 +251,16 @@ namespace milo::internal
                 }
                 else
                 {
-                    if constexpr (meta::same<
-                        domain,
-                        impl_domain_strict,
-                        impl_domain_native
-                    >)
-                    {
-                        return invoker::template type<
-                            t_id,
-                            typename runtime_selected::impl
+                    return invoker::template hook<
+                        t_id
+                    >(
+                        runtime_selected::impl,
+                        forward<
+                            t_args
                         >(
-                            forward<
-                                t_args
-                            >(
-                                a_args
-                            )...
-                        );
-                    }
-                    else
-                    {
-                        return invoker::template hook<
-                            t_id
-                        >(
-                            runtime_selected::impl,
-                            forward<
-                                t_args
-                            >(
-                                a_args
-                            )...
-                        );
-                    }
+                            a_args
+                        )...
+                    );
                 }
             }
         }

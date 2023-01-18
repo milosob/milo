@@ -55,7 +55,6 @@ namespace milo::primitive
     using hash_sha_2_512_256_sw                   = hash::sha_2_512_256<option::impl_runtime<detail::hash_sha_2_512_impl_sw>>;
     
     using hash_sha_1_160_hw_x86_v_1               = hash::sha_1_160<option::impl_runtime<detail::hash_sha_1_160_impl_hw_x86_v_1>>;
-    using hash_sha_1_160_hw_x86_v_2               = hash::sha_1_160<option::impl_runtime<detail::hash_sha_1_160_impl_hw_x86_v_2>>;
     using hash_sha_2_224_hw_x86_v_1               = hash::sha_2_224<option::impl_runtime<detail::hash_sha_2_256_impl_hw_x86_v_1>>;
     using hash_sha_2_256_hw_x86_v_1               = hash::sha_2_256<option::impl_runtime<detail::hash_sha_2_256_impl_hw_x86_v_1>>;
     
@@ -83,7 +82,6 @@ namespace milo::primitive
     using mac_poly_1305_sw                        = mac::poly_1305<option::impl_runtime<detail::mac_poly_1305_impl_sw>>;
     
     using mac_hmac_sha_1_160_hw_x86_v_1           = mac::hmac<hash_sha_1_160_hw_x86_v_1>;
-    using mac_hmac_sha_1_160_hw_x86_v_2           = mac::hmac<hash_sha_1_160_hw_x86_v_2>;
     using mac_hmac_sha_2_224_hw_x86_v_1           = mac::hmac<hash_sha_2_224_hw_x86_v_1>;
     using mac_hmac_sha_2_256_hw_x86_v_1           = mac::hmac<hash_sha_2_256_hw_x86_v_1>;
     
@@ -109,7 +107,6 @@ namespace milo::primitive
     using kdf_hkdf_hmac_sha_2_512_256_sw          = kdf::hkdf<mac_hmac_sha_2_512_256_sw>;
     
     using kdf_hkdf_hmac_sha_1_160_hw_x86_v_1      = kdf::hkdf<mac_hmac_sha_1_160_hw_x86_v_1>;
-    using kdf_hkdf_hmac_sha_1_160_hw_x86_v_2      = kdf::hkdf<mac_hmac_sha_1_160_hw_x86_v_2>;
     using kdf_hkdf_hmac_sha_2_224_hw_x86_v_1      = kdf::hkdf<mac_hmac_sha_2_224_hw_x86_v_1>;
     using kdf_hkdf_hmac_sha_2_256_hw_x86_v_1      = kdf::hkdf<mac_hmac_sha_2_256_hw_x86_v_1>;
     
@@ -135,7 +132,6 @@ namespace milo::primitive
     using kdf_pbkdf_2_hmac_sha_2_512_256_sw       = kdf::pbkdf_2<mac_hmac_sha_2_512_256_sw>;
     
     using kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_1   = kdf::pbkdf_2<mac_hmac_sha_1_160_hw_x86_v_1>;
-    using kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_2   = kdf::pbkdf_2<mac_hmac_sha_1_160_hw_x86_v_2>;
     using kdf_pbkdf_2_hmac_sha_2_224_hw_x86_v_1   = kdf::pbkdf_2<mac_hmac_sha_2_224_hw_x86_v_1>;
     using kdf_pbkdf_2_hmac_sha_2_256_hw_x86_v_1   = kdf::pbkdf_2<mac_hmac_sha_2_256_hw_x86_v_1>;
     
@@ -146,7 +142,7 @@ namespace milo::primitive
     using cipher_any                              = cipher::chacha_20<>;
     using cipher_chacha_20                        = cipher::chacha_20<>;
     using cipher_chacha_20_sw                     = cipher::chacha_20<option::impl_runtime<detail::cipher_chacha_20_impl_sw>>;
-    
+
     /*
      * aead
      */

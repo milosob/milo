@@ -14,6 +14,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <typeinfo>
 #include <unordered_map>
 #include <utility>
