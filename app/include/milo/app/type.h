@@ -2,10 +2,10 @@
 #pragma once
 
 
-#include <milocli/dep.h>
+#include <milo/app/dep.h>
 
 
-namespace milocli::type
+namespace milo::app::type
 {
     class array;
     
@@ -88,7 +88,7 @@ namespace milocli::type
         var(
             const t_val& a_val
         )
-        requires milo::meta::same<
+        requires meta::same<
             t_val,
             std::string,
             std::string_view
@@ -560,18 +560,18 @@ namespace milocli::type
 }
 
 template<>
-struct std::hash<milocli::type::var>
+struct std::hash<milo::app::type::var>
 {
     auto
     operator ()(
-        milocli::type::var const& a_var
+        milo::app::type::var const& a_var
     ) const noexcept -> size_t
     {
         return a_var.hash();
     }
 };
 
-namespace milocli::type
+namespace milo::app::type
 {
     class array
     {

@@ -7,16 +7,16 @@
 #include <functional>
 #include <numeric>
 #include <map>
+#include <stack>
 #include <string>
 #include <string_view>
 #include <vector>
 
-#include <milocli/dep.h>
-#include <milocli/error.h>
-#include <milocli/type.h>
+#include <milo/app/dep.h>
+#include <milo/app/type.h>
 
 
-namespace milocli
+namespace milo::app
 {
     namespace detail
     {
@@ -27,6 +27,8 @@ namespace milocli
             using arg_type = std::string_view;
             
             using args_type = std::vector<arg_type>;
+            
+            using commands_type = std::stack<std::string>;
         
         private:
             
@@ -37,6 +39,8 @@ namespace milocli
             args_type::iterator m_args_end;
             
             args_type::iterator m_args_cur;
+            
+            commands_type m_commands;
         
         public:
             
@@ -60,6 +64,9 @@ namespace milocli
                     m_args.begin()
                 )
             {
+                m_commands.emplace(
+                    MILO_NAME " application"
+                );
             }
         
         public:
@@ -108,10 +115,19 @@ namespace milocli
                 
                 if (it == m_args_end)
                 {
-                    throw error();
+                    throw std::logic_error(
+                        std::string(
+                            "Error. Expected a command token. "
+                            "Commands do not start with - or --. "
+                            "Please check argument list and try again. "
+                        )
+                    );
                 }
                 
                 m_args_cur = it + 1;
+                m_commands.push(
+                    std::string(*it) + " command"
+                );
                 
                 return *it;
             }
@@ -131,7 +147,13 @@ namespace milocli
                 
                 if (it == m_args_end)
                 {
-                    throw error();
+                    throw std::logic_error(
+                        std::string(
+                            "Error. Expected a command token. "
+                            "Commands do not start with - or --. "
+                            "Please check argument list and try again. "
+                        )
+                    );
                 }
                 
                 return *it;
@@ -172,10 +194,15 @@ namespace milocli
             requires
             requires
             {
-                requires milo::meta::integral<t_value> ||
-                         milo::meta::same<t_value, std::string, std::string_view>;
+                requires meta::integral<t_value> ||
+                         meta::same<t_value, std::string, std::string_view>;
             }
             {
+                /*
+                 * TODO
+                 *  Typeid type to name map for defined conversions for more robust error feedback.
+                 */
+                
                 using value_type = t_value;
                 
                 auto it = m_args_cur;
@@ -191,13 +218,28 @@ namespace milocli
                     }
                     else
                     {
-                        throw error();
+                        throw std::logic_error(
+                            std::string(
+                                "Error. Missing --" +
+                                std::string(a_name) +
+                                " parameter of " +
+                                m_commands.top() +
+                                "."
+                            )
+                        );
                     }
                 }
                 
                 if (it == m_args_end)
                 {
-                    throw error();
+                    throw std::logic_error(
+                        std::string("Error. Missing --") +
+                        std::string(a_name) +
+                        " parameter of " +
+                        m_commands.top() +
+                        "."
+                    
+                    );
                 }
                 else
                 {
@@ -205,7 +247,14 @@ namespace milocli
                     
                     if (pos == arg_type::npos)
                     {
-                        throw error();
+                        throw std::logic_error(
+                            std::string("Error. Missing value for --") +
+                            std::string(a_name) +
+                            " parameter of " +
+                            m_commands.top() +
+                            ". " +
+                            std::string("To specify missing value try --") + std::string(a_name) + "=<value>."
+                        );
                     }
                     
                     if (pos + 1 >= it->size())
@@ -216,7 +265,7 @@ namespace milocli
                     auto value_beg = it->data() + pos + 1;
                     auto value_end = it->data() + it->size();
                     
-                    if constexpr (milo::meta::integral<value_type>)
+                    if constexpr (meta::integral<value_type>)
                     {
                         auto value = value_type();
                         auto result = std::from_chars(
@@ -227,13 +276,23 @@ namespace milocli
                         
                         if (result.ec != decltype(result.ec)())
                         {
-                            throw error();
+                            throw std::logic_error(
+                                std::string("Error. Value conversion failure for --") +
+                                std::string(a_name) +
+                                " parameter of " +
+                                m_commands.top() +
+                                ". " +
+                                std::string("Conversion from ") + std::string(
+                                    value_beg,
+                                    value_end
+                                ) + " to type of type " + typeid(value_type).name() + " failed."
+                            );
                         }
                         
                         return value;
                     }
                     
-                    if constexpr (milo::meta::same<value_type, std::string, std::string_view>)
+                    if constexpr (meta::same<value_type, std::string, std::string_view>)
                     {
                         return value_type(
                             value_beg,
@@ -245,7 +304,17 @@ namespace milocli
                      * Missing conversion.
                      */
                     
-                    throw error();
+                    throw std::logic_error(
+                        std::string("Error. Value conversion failure for --") +
+                        std::string(a_name) +
+                        " parameter of " +
+                        m_commands.top() +
+                        ". " +
+                        std::string("Conversion from ") + std::string(
+                            value_beg,
+                            value_end
+                        ) + " to type of type " + typeid(value_type).name() + " is undefined."
+                    );
                 }
             }
             

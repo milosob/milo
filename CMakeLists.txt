@@ -7,12 +7,14 @@ project(
 
 include(GNUInstallDirs)
 
+# Testing options.
 option(MILO_TEST "Enable testing." OFF)
 option(MILO_TEST_CONSTEXPR "Enable constexpr testing." OFF)
 option(MILO_TEST_INTERNAL "Enable internal testing." OFF)
 option(MILO_TEST_PRIMITIVE "Enable primitive testing." OFF)
 
-option(MILO_CLI "Enable cli." OFF)
+# Application options.
+option(MILO_APP "Enable application." OFF)
 
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/config.h
@@ -53,8 +55,8 @@ install(
         DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake "
 )
 
-if (${MILO_CLI})
-    add_subdirectory(cli)
+if (${MILO_APP})
+    add_subdirectory(app)
 endif ()
 
 if (${MILO_TEST})

@@ -1,5 +1,6 @@
 
-#include <milocli/run.h>
+
+#include <milo/app/run.h>
 
 
 auto
@@ -8,7 +9,7 @@ main(
     char** a_argv
 ) noexcept(false) -> int
 {
-    return milocli::run(
+    return milo::app::run(
         a_argc,
         a_argv
     );

@@ -3,10 +3,10 @@
 #pragma once
 
 
-#include <milocli/dep.h>
+#include <milo/app/dep.h>
 
 
-namespace milocli
+namespace milo::app
 {
     template<
         typename t_pattern,
@@ -20,8 +20,8 @@ namespace milocli
     requires
     requires
     {
-        requires milo::meta::same<t_pattern, std::string, std::string_view>;
-        requires milo::meta::same<t_message, std::string, std::string_view>;
+        requires meta::same<t_pattern, std::string, std::string_view>;
+        requires meta::same<t_message, std::string, std::string_view>;
     }
     {
         if (a_pattern == "*")

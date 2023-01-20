@@ -3,12 +3,12 @@
 #pragma once
 
 
-#include <milocli/app.h>
-#include <milocli/dep.h>
-#include <milocli/type.h>
+#include <milo/app/app.h>
+#include <milo/app/dep.h>
+#include <milo/app/type.h>
 
 
-namespace milocli::command::version
+namespace milo::app::command::version
 {
     auto
     run(

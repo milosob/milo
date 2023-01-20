@@ -2,13 +2,13 @@
 #pragma once
 
 
-#include <milocli/app.h>
-#include <milocli/command/benchmark.h>
-#include <milocli/command/version.h>
-#include <milocli/type.h>
+#include <milo/app/app.h>
+#include <milo/app/command/benchmark.h>
+#include <milo/app/command/version.h>
+#include <milo/app/type.h>
 
 
-namespace milocli
+namespace milo::app
 {
     auto
     run(
@@ -60,15 +60,15 @@ namespace milocli
         {
             commands.at(app::args.command())();
         }
-        catch (const error& error)
+        catch (const std::exception& error)
         {
-            // TODO
-            return 2;
+            std::cerr << error.what() << "\n";
+            return 1;
         }
         catch (...)
         {
-            // TODO
-            return 1;
+            std::cerr << "Error. Unexpected behavior." << "\n";
+            return 2;
         }
         
         return 0;

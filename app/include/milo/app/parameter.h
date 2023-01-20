@@ -3,12 +3,12 @@
 #pragma once
 
 
-#include <milocli/app.h>
-#include <milocli/dep.h>
-#include <milocli/type.h>
+#include <milo/app/app.h>
+#include <milo/app/dep.h>
+#include <milo/app/type.h>
 
 
-namespace milocli::parameter
+namespace milo::app::parameter
 {
     template<
         typename t_to
@@ -77,8 +77,8 @@ namespace milocli::parameter
         
         using convert_type = t_convert;
         
-        using value_type = typename milo::meta::conditional<
-            milo::meta::same<convert_type, convert_no>,
+        using value_type = typename meta::conditional<
+            meta::same<convert_type, convert_no>,
             read_type,
             typename convert_type::type
         >::type;
@@ -87,7 +87,7 @@ namespace milocli::parameter
     template<
         typename... t_parameters
     >
-    using group = milo::meta::args<t_parameters...>;
+    using group = meta::args<t_parameters...>;
     
     template<
         typename t_invoke,
@@ -108,7 +108,7 @@ namespace milocli::parameter
         auto name = std::string_view(t_parameter::name.value);
         auto value = app::args.parameter<read_type>(name);
         
-        if constexpr (milo::meta::same<convert_type, void>)
+        if constexpr (meta::same<convert_type, void>)
         {
             std::get<t_index>(a_invoke) = value;
         }
