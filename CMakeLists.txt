@@ -52,7 +52,7 @@ install(
 
 install(
         EXPORT ${PROJECT_NAME}-config
-        DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake "
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake
 )
 
 if (${MILO_TEST})
