@@ -55,11 +55,11 @@ install(
         DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}/cmake "
 )
 
-if (${MILO_APP})
-    add_subdirectory(app)
-endif ()
-
 if (${MILO_TEST})
     enable_testing()
     add_subdirectory(test)
+endif ()
+
+if (${MILO_APP})
+    add_subdirectory(app)
 endif ()

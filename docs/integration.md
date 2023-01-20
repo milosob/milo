@@ -49,11 +49,13 @@ cd milo-build
 ```
 
 ```shell
-cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON && make && ctest
+cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON -DMILO_APP=ON && make && ctest
 ```
 
 Skip `-DMILO_TEST_CONSTEXPR=ON` if testing for `constexpr` correctness is not necessary.
 Testing constexpr cases can take up to several minutes.
+
+Skip `-DMILO_APP=ON` if building a command line application is not necessary.
 
 ```shell
 # Using sudo may be required if installing to /usr/local.

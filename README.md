@@ -67,3 +67,8 @@ Reference guide is [here](docs/reference.md).
 ## Algorithms
 
 Algorithms index is [here](docs/algorithms.md).
+
+
+## Benchmarking
+
+Benchmarking guide is [here](docs/benchmarking.md)
