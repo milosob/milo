@@ -23,9 +23,9 @@ namespace milo::primitive::detail
         
         static
         constexpr size_t block_ratio = 1;
-
-    private:
     
+    private:
+        
         enum class operation
         {
             transform [[maybe_unused]],
@@ -48,6 +48,12 @@ namespace milo::primitive::detail
         {
             uint32_t state[16];
             uint32_t state_base[16];
+            
+            /*
+             * TODO
+             *  Code alignment issues in benchmarking app.
+             *  Performance drops by 0.343 cycles per byte.
+             */
             
             for (size_t i = 0; i < 16; i += 1)
             {
@@ -107,7 +113,7 @@ namespace milo::primitive::detail
                 
                 for (size_t j = 0; j < 16; j += 1)
                 {
-                    if (t_operation == operation::transform)
+                    if constexpr (t_operation == operation::transform)
                     {
                         state[j] ^= internal::memory_load_le<uint32_t>(
                             a_src_ptr,
@@ -126,7 +132,7 @@ namespace milo::primitive::detail
                 
                 a_dst_ptr += block_size;
                 
-                if (t_operation == operation::transform)
+                if constexpr (t_operation == operation::transform)
                 {
                     a_src_ptr += block_size;
                 }
@@ -134,7 +140,7 @@ namespace milo::primitive::detail
             
             return a_blocks;
         }
-        
+    
     public:
         
         template<
