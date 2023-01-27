@@ -175,6 +175,7 @@ main(
     
     TEST_RUNTIME(cipher_chacha_20);
     TEST_RUNTIME(cipher_chacha_20_sw);
+    TEST_RUNTIME(cipher_chacha_20_hw_x86_64_ssse_3);
     
     return 0;
 }

@@ -6,7 +6,8 @@
 #include <milo/internal.h>
 
 #include <milo/primitive/detail/cipher/impl.h>
-#include <milo/primitive/detail/cipher/chacha/chacha_20_impl_sw.h>
+#include <milo/primitive/detail/cipher/chacha/chacha_impl_sw.h>
+#include <milo/primitive/detail/cipher/chacha/chacha_impl_hw_x86_64.h>
 
 
 namespace milo::primitive::detail
@@ -14,7 +15,7 @@ namespace milo::primitive::detail
     template<
         typename... t_options
     >
-    class cipher_chacha_20
+    class cipher_chacha
     {
     public:
         
@@ -23,16 +24,17 @@ namespace milo::primitive::detail
                 cipher_impl_chooser_stream,
                 cipher_impl_invoker_stream,
                 internal::impl_cpltime<
-                    cipher_chacha_20_impl_sw
+                    cipher_chacha_impl_sw_ietf
                 >,
                 internal::impl_runtime<
-                    cipher_chacha_20_impl_sw
+                    cipher_chacha_impl_hw_x86_64_ssse_3_ietf,
+                    cipher_chacha_impl_sw_ietf
                 >,
                 t_options...
             >
         {
             static
-            constexpr auto block_size = cipher_chacha_20_impl_sw::block_size;
+            constexpr auto block_size = cipher_chacha_impl_sw_ietf::block_size;
         };
     
     public:
@@ -67,13 +69,13 @@ namespace milo::primitive::detail
     
     public:
         
-        constexpr cipher_chacha_20() noexcept(true) = default;
+        constexpr cipher_chacha() noexcept(true) = default;
         
-        constexpr cipher_chacha_20(cipher_chacha_20&& object) noexcept(true) = default;
+        constexpr cipher_chacha(cipher_chacha&& object) noexcept(true) = default;
         
-        constexpr cipher_chacha_20(const cipher_chacha_20& object) noexcept(true) = default;
+        constexpr cipher_chacha(const cipher_chacha& object) noexcept(true) = default;
         
-        constexpr ~cipher_chacha_20() noexcept(true)
+        constexpr ~cipher_chacha() noexcept(true)
         {
             internal::memory_erase(m_state);
             internal::memory_erase(m_buffer);
@@ -84,8 +86,8 @@ namespace milo::primitive::detail
         
         constexpr auto
         operator =(
-            const cipher_chacha_20& object
-        ) noexcept(true) -> cipher_chacha_20& = default;
+            const cipher_chacha& object
+        ) noexcept(true) -> cipher_chacha& = default;
     
     public:
         

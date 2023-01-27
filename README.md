@@ -4,10 +4,7 @@ C++ Cryptographic Library.
 
 Features:
 
-- Header only.
-- Software only.
-- Portable.
-- Constexpr evaluation.
+- Constexpr.
 - Throwing and non-throwing overloads.
 - Allocation and allocation-free interfaces, depending on the type of parameter.
 - Support for the majority of containers implementations as inputs and outputs.
@@ -20,6 +17,7 @@ Requirements:
 
 - C++ 20 Compiler
 - C++ 20 Standard library
+- Netwide Assembler
 
 Tested compilers:
 

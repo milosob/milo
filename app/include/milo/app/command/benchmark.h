@@ -910,11 +910,11 @@ namespace milo::app::command::benchmark
     )
     {
         t_impl impl;
-    
+        
         container::chars_static<t_impl::key_size> key;
         container::chars_static<t_impl::iv_size> iv;
         container::chars_static<t_impl::digest_size> digest;
-    
+        
         std::iota(
             key.begin(),
             key.end(),
@@ -925,7 +925,7 @@ namespace milo::app::command::benchmark
             iv.end(),
             0
         );
-    
+        
         auto [ciphertext, mac] = primitive::aead::encrypt<
             t_impl,
             memory_type
@@ -935,7 +935,7 @@ namespace milo::app::command::benchmark
             a_aad,
             a_bytes
         );
-
+        
         auto plaintext = primitive::aead::decrypt<
             t_impl,
             memory_type
@@ -1181,7 +1181,10 @@ namespace milo::app::command::benchmark
                             },
                             {
                                 {"cipher-chacha-20-sw-encrypt",             primitive_cipher_encrypt<primitive::cipher_chacha_20_sw>},
-                                {"cipher-chacha-20-sw-decrypt",             primitive_cipher_decrypt<primitive::cipher_chacha_20_sw>}
+                                {"cipher-chacha-20-sw-decrypt",             primitive_cipher_decrypt<primitive::cipher_chacha_20_sw>},
+                                #if MILO_INTERNAL_ARCH_X86_64
+                                {"cipher-chacha-20-hw-x86-64-ssse-3",       primitive_cipher_decrypt<primitive::cipher_chacha_20_hw_x86_64_ssse_3>},
+                                #endif
                             }
                         )
                     );

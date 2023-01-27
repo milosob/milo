@@ -7,12 +7,24 @@
 
 
 #if defined(__i386__) || \
-    defined(__x86_64__) || \
-    defined(_WIN32) || \
+    defined(_WIN32)
+    #define MILO_INTERNAL_ARCH_X86_32 true
+#else
+    #define MILO_INTERNAL_ARCH_X86_32 false
+#endif
+
+#if defined(__x86_64__) || \
     defined(_WIN64)
+    #define MILO_INTERNAL_ARCH_X86_64 true
+#else
+    #define MILO_INTERNAL_ARCH_X86_64 false
+#endif
+
+#if MILO_INTERNAL_ARCH_X86_32 || \
+    MILO_INTERNAL_ARCH_X86_64
     #define MILO_INTERNAL_ARCH_X86 true
 #else
-    #define MILO_INTERNAL_ARCH_X86 false;
+    #define MILO_INTERNAL_ARCH_X86 false
 #endif
 
 namespace milo::internal
@@ -173,7 +185,11 @@ namespace milo::internal
         
         inline
         static
-        const bool sse_3 = arch_x86_cpuid.sse_3() && arch_x86_cpuid.ssse_3();
+        const bool sse_3 = arch_x86_cpuid.sse_3();
+    
+        inline
+        static
+        const bool ssse_3 = arch_x86_cpuid.ssse_3();
         
         inline
         static
@@ -246,6 +262,16 @@ namespace milo::internal
                     })
                     {
                         if (!sse_3)
+                        {
+                            return false;
+                        }
+                    }
+    
+                    if constexpr (requires {
+                        typename impl_type::ssse_3;
+                    })
+                    {
+                        if (!ssse_3)
                         {
                             return false;
                         }

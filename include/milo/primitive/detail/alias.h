@@ -141,7 +141,8 @@ namespace milo::primitive
     
     using cipher_any                              = cipher::chacha_20<>;
     using cipher_chacha_20                        = cipher::chacha_20<>;
-    using cipher_chacha_20_sw                     = cipher::chacha_20<option::impl_runtime<detail::cipher_chacha_20_impl_sw>>;
+    using cipher_chacha_20_sw                     = cipher::chacha_20<option::impl_runtime<detail::cipher_chacha_impl_sw_ietf>>;
+    using cipher_chacha_20_hw_x86_64_ssse_3       = cipher::chacha_20<option::impl_runtime<detail::cipher_chacha_impl_hw_x86_64_ssse_3_ietf>>;
 
     /*
      * aead

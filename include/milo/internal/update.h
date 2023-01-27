@@ -148,12 +148,12 @@ namespace milo::internal
         if (full_blks)
         {
             auto done_blks = impl_type::template invoke<1>(
+                full_blks,
                 forward<
                     t_args
                 >(
                     a_args
                 )...,
-                full_blks,
                 a_dst_ptr,
                 a_src_ptr
             );
@@ -169,12 +169,12 @@ namespace milo::internal
         if (last_size)
         {
             auto done_blks = impl_type::template invoke<2>(
+                1,
                 forward<
                     t_args
                 >(
                     a_args
                 )...,
-                1,
                 a_buf_ptr
             );
             

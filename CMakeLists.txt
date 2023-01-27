@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.23)
 project(
         milo
         VERSION 0.1.0.0
@@ -13,6 +13,9 @@ option(MILO_TEST_CONSTEXPR "Enable constexpr testing." OFF)
 option(MILO_TEST_INTERNAL "Enable internal testing." OFF)
 option(MILO_TEST_PRIMITIVE "Enable primitive testing." OFF)
 
+# Assembly options.
+option(MILO_ASM "Enable assembly." ON)
+
 # Application options.
 option(MILO_APP "Enable application." OFF)
 
@@ -23,12 +26,42 @@ configure_file(
 
 add_library(
         ${PROJECT_NAME}
-        INTERFACE
+)
+
+# Resolve sources.
+set(MILO_HDR_FILES "")
+set(MILO_SRC_FILES "")
+set(MILO_ASM_FILES "")
+
+file(GLOB_RECURSE MILO_HDR_FILES CONFIGURE_DEPENDS include/*.h)
+file(GLOB_RECURSE MILO_SRC_FILES CONFIGURE_DEPENDS include/*.cpp)
+
+if (${MILO_ASM})
+    if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
+        enable_language(ASM_NASM)
+        file(GLOB_RECURSE MILO_ASM_FILES CONFIGURE_DEPENDS include/*_x86_64.asm)
+        # TODO Portability.
+    endif ()
+
+    target_compile_definitions(
+            ${PROJECT_NAME}
+            PUBLIC
+            MILO_INTERNAL_ASM=true
+    )
+endif ()
+
+target_sources(
+        ${PROJECT_NAME}
+        PUBLIC
+        FILE_SET HEADERS BASE_DIRS include FILES ${MILO_HDR_FILES}
+        PRIVATE
+        ${MILO_SRC_FILES}
+        ${MILO_ASM_FILES}
 )
 
 target_compile_features(
         ${PROJECT_NAME}
-        INTERFACE
+        PUBLIC
         cxx_std_20
 )
 
@@ -42,12 +75,7 @@ target_include_directories(
 install(
         TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}-config
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-
-install(
-        DIRECTORY ${PROJECT_SOURCE_DIR}/include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        FILE_SET HEADERS
 )
 
 install(
