@@ -8,7 +8,7 @@
             "runtime": [
                 "kdf_hkdf_hmac_sha_1_160",
                 "kdf_hkdf_hmac_sha_1_160_sw",
-                "kdf_hkdf_hmac_sha_1_160_hw_x86_v_1"
+                "kdf_hkdf_hmac_sha_1_160_hw_x86_64_ni"
             ]
         },
         "include": [

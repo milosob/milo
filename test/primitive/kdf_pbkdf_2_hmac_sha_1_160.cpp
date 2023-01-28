@@ -852,7 +852,7 @@ main(
     
     TEST_RUNTIME(kdf_pbkdf_2_hmac_sha_1_160);
     TEST_RUNTIME(kdf_pbkdf_2_hmac_sha_1_160_sw);
-    TEST_RUNTIME(kdf_pbkdf_2_hmac_sha_1_160_hw_x86_v_1);
+    TEST_RUNTIME(kdf_pbkdf_2_hmac_sha_1_160_hw_x86_64_ni);
     
     return 0;
 }

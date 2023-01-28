@@ -745,7 +745,7 @@ main(
     
     TEST_RUNTIME(hash_sha_1_160);
     TEST_RUNTIME(hash_sha_1_160_sw);
-    TEST_RUNTIME(hash_sha_1_160_hw_x86_v_1);
+    TEST_RUNTIME(hash_sha_1_160_hw_x86_64_ni);
     
     return 0;
 }

@@ -19,10 +19,11 @@ Requirements:
 - C++ 20 Standard library
 - Netwide Assembler
 
-Tested compilers:
+Tested with:
 
 - `clang version 14.0.6`-`x86-64-linux`
 - `gcc version 12.2.0`-`x86-64-linux`
+- `nasm version 2.16.01`-`x86-64-linux`
 
 ## Motivation
 
