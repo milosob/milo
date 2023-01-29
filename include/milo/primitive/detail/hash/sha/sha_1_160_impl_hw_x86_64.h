@@ -10,6 +10,10 @@ namespace milo::primitive::detail
 {
     #if MILO_INTERNAL_ASM && MILO_INTERNAL_ARCH_X86_64
     
+    /*
+     * @formatter:off
+     */
+    
     extern "C"
     auto
     milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks(
@@ -17,6 +21,10 @@ namespace milo::primitive::detail
         uint32_t* a_h_ptr,
         const uint8_t* a_src_ptr
     ) noexcept(true) -> uint64_t;
+    
+    /*
+     * @formatter:on
+     */
     
     class hash_sha_1_160_impl_hw_x86_64_ni
     {
