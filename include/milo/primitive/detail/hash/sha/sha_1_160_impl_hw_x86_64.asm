@@ -23,12 +23,16 @@ global milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks:
 
 ; TODO Support for wabi.
 
+; Constants.
+%define     c_block_size        64
+
+; Stack.
+
 ; Variables.
 %define     x_endian_mask       xmm0
 %define     x_state_save(i)     xmm %+ %eval((i) + 1)
 %define     x_state_base(i)     xmm %+ %eval((i) + 3)
 %define     x_message(i)        xmm %+ %eval((i) + 6)
-
 %define     g_blocks            abi_arg_0
 %define     g_blocks_cnt        rax
 %define     g_state             abi_arg_1
@@ -36,14 +40,11 @@ global milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks:
 %define     g_src               abi_arg_2
 %define     m_src(i)            [g_src + (i)]
 
-; Constants
-%define     c_block_size        64
-
 %macro sha_1_160_rounds 8
 ; Args:
-;   - <1-1>     ->  function
-;   - <2-4>     ->  states
-;   - <5-8>     ->  messages
+;   1       ->  function
+;   2-4     ->  states
+;   5-8     ->  messages
 
     sha1nexte   x_state_base(%3),   x_message(%5)
     movdqa      x_state_base(%4),   x_state_base(%2)
@@ -56,9 +57,9 @@ global milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks:
 section .text
 milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks:
 ; Args:
-;   - 0 -> blocks
-;   - 1 -> state_ptr
-;   - 2 -> src_ptr
+;   0 -> blocks
+;   1 -> state_ptr
+;   2 -> src_ptr
 
 section .rodata
     align 16
@@ -74,7 +75,7 @@ section .text
     movd    x_state_base(1),    m_state(16)
     movdqa  x_endian_mask,      [rel .constant_endian_mask]
     pshufd  x_state_base(0),    x_state_base(0),    0b00011011
-    pslldq  x_state_base(1),    0x0c
+    pslldq  x_state_base(1),    12
 
     test    g_blocks,       g_blocks
     mov     g_blocks_cnt,   g_blocks
@@ -164,7 +165,7 @@ section .text
 
 ; Save state.
     pshufd  x_state_base(0),    x_state_base(0),    0b00011011
-    psrldq  x_state_base(1),    0x0c
+    psrldq  x_state_base(1),    12
     movdqu  m_state(0),         x_state_base(0)
     movd    m_state(16),        x_state_base(1)
 ; Return blocks done.

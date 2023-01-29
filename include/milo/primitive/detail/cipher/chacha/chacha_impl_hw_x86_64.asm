@@ -24,6 +24,9 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 
 ; TODO Support for wabi.
 
+; Constants.
+%define     c_ratio                 2
+
 ; Stack.
 %xdefine    stack_size              (0)
 %xdefine    s_state_temp(i)         [rsp + stack_size + 16 * (i)]
@@ -44,14 +47,11 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 %define     g_src                   abi_arg_4
 %define     m_src(i)                [g_src + (i)]
 
-; Constants.
-%define     c_ratio                 2
-
 %macro  chacha_ssse_3_rounds 18
 ; Args:
-;   - <1-16>    -> 0 based indexes of state in column top-down order
-;   - <17-17>   -> even round rotations by 16 or 8
-;   - <18-18>   -> odd  round rotations by 12 or 7
+;   1-16    -> 0 based indexes of state in column top-down order
+;   17      -> even round rotations by 16 or 8
+;   18      -> odd  round rotations by 12 or 7
 
     paddd   x_state_eval(%1),   x_state_eval(%5)
     paddd   x_state_eval(%2),   x_state_eval(%6)
@@ -77,9 +77,9 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
     movdqa  x_state_eval(%13),  x_state_eval(%5)
     movdqa  x_state_eval(%14),  x_state_eval(%6)
     pslld   x_state_eval(%5),   %18
-    psrld   x_state_eval(%13),  0x20 - %18
+    psrld   x_state_eval(%13),  32 - %18
     pslld   x_state_eval(%6),   %18
-    psrld   x_state_eval(%14),  0x20 - %18
+    psrld   x_state_eval(%14),  32 - %18
     pxor    x_state_eval(%7),   x_state_eval(%11)
     pxor    x_state_eval(%8),   x_state_eval(%12)
     pxor    x_state_eval(%5),   x_state_eval(%13)
@@ -87,9 +87,9 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
     movdqa  x_state_eval(%13),  x_state_eval(%7)
     movdqa  x_state_eval(%14),  x_state_eval(%8)
     pslld   x_state_eval(%7),   %18
-    psrld   x_state_eval(%13),  0x20 - %18
+    psrld   x_state_eval(%13),  32 - %18
     pslld   x_state_eval(%8),   %18
-    psrld   x_state_eval(%14),  0x20 - %18
+    psrld   x_state_eval(%14),  32 - %18
     pxor    x_state_eval(%7),   x_state_eval(%13)
     pxor    x_state_eval(%8),   x_state_eval(%14)
     movdqa  x_state_eval(%13),  s_state_temp(0)
@@ -98,11 +98,11 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 
 %macro chacha_ssse_3_transform_core 12
 ; Args:
-;   - <1-1>     -> unused
-;   - <2-2>     -> offset
-;   - <2-6>     -> consequential columns
-;   - <7-8>     -> scratch registers
-;   - <9-12>    -> scratch registers for memory loads
+;   1       -> unused
+;   2       -> offset
+;   2-6     -> consequential columns
+;   7-8     -> scratch registers
+;   9-12    -> scratch registers for memory loads
 
     movdqa      x_state_eval(%7),       x_state_eval(%3)
     movdqa      x_state_eval(%8),       x_state_eval(%5)
@@ -132,9 +132,6 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 %endmacro
 
 %macro chacha_ssse_3_transform 0
-; Args:
-;  - <0-0>
-
 ; States 15 and 12 are already in memory.
 ; Use them as scratch registers. This avoids 2 moves.
 ; Need 4 more registers, flush 10, 11, 13 and 14 to the stack.
@@ -181,17 +178,17 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
     chacha_ssse_3_transform_core    _ , 2, 8, 9, 3, 4, 10, 11, 12, 13, 14, 15
     movdqa  s_state_base(12),   x_state_eval(2)
     chacha_ssse_3_transform_core    _ , 3, 1, 6, 7, 0, 10, 11, 12, 13, 14, 15
-
-    add     g_dst,  0x100
-    add     g_src,  0x100
+; Advance pointers.
+    add     g_dst,  256
+    add     g_src,  256
 %endmacro
 
 %macro chacha_ssse_3_generate_core 8
 ; Args:
-;   - <1-1>   -> unused
-;   - <2-2>   -> offset
-;   - <2-6>   -> consequential columns
-;   - <7-8>   -> scratch registers
+;   1       -> unused
+;   2       -> offset
+;   2-6     -> consequential columns
+;   7-8     -> scratch registers
 
     movdqa      x_state_eval(%7),       x_state_eval(%3)
     movdqa      x_state_eval(%8),       x_state_eval(%5)
@@ -214,7 +211,7 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 
 %macro chacha_ssse_3_generate 0
 ; States 15 and 12 are already in memory.
-; Use them as scratch registers. This avoid 2 moves.
+; Use them as scratch registers. This avoids 2 moves.
     paddd   x_state_eval(0),    s_state_base(0)
     paddd   x_state_eval(1),    s_state_base(1)
     paddd   x_state_eval(2),    s_state_base(2)
@@ -247,8 +244,8 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
     chacha_ssse_3_generate_core     _, 2, 8, 9, 10, 11, 12, 15
     movdqa  s_state_base(12),   x_state_eval(2)
     chacha_ssse_3_generate_core     _, 3, 1, 13, 14, 0, 12, 15
-
-    add     g_dst,  0x100
+; Advance pointers.
+    add     g_dst,  256
 %endmacro
 
 %macro chacha_ssse_3_body 1
@@ -278,7 +275,7 @@ section .text
 
     test    g_blocks,       g_blocks
     mov     g_blocks_cnt,   g_blocks
-    jz      .blocks_end
+    jz      .blocks_loop_end
 
 .blocks_init:
 
@@ -383,17 +380,17 @@ section .text
         15, 12, 13, 14,     \
          8,  7
 
-    sub     g_rounds_cnt,   0x01
+    sub     g_rounds_cnt,   1
     jnz     .rounds_loop
 
-.rounds_end:
+.rounds_loop_end:
 
     chacha_ssse_3_%1
 
-    sub     g_blocks_cnt,   0x01
+    sub     g_blocks_cnt,   1
     jnz     .blocks_loop
 
-.blocks_end:
+.blocks_loop_end:
 
 ; Leave frame.
 ; Return blocks done.
@@ -408,19 +405,19 @@ section .text
     section .text
 milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_transform:
 ; Args:
-;   0 = rounds
-;   1 = blocks
-;   2 = state_ptr
-;   3 = dst_ptr
-;   4 = src_ptr
+;   0 -> rounds
+;   1 -> blocks
+;   2 -> state_ptr
+;   3 -> dst_ptr
+;   4 -> src_ptr
     chacha_ssse_3_body transform
 
 milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate:
 ; Args:
-;   0 = rounds
-;   1 = blocks
-;   2 = state_ptr
-;   3 = dst_ptr
+;   0 -> rounds
+;   1 -> blocks
+;   2 -> state_ptr
+;   3 -> dst_ptr
     chacha_ssse_3_body generate
 
 ; END chacha_impl_hw_x86_64_ssse_3

@@ -9,7 +9,7 @@ Features:
 - Allocation and allocation-free interfaces, depending on the type of parameter.
 - Support for the majority of containers implementations as inputs and outputs.
 - Type casting free api, no need to cast from `char*` to `unsigned char*`.
-- Can return by value the type callee wants, specified by template parameter, as long as its `char` or `unsigned char` container.
+- Can return a value of the type the user needs, specified by template parameter, as long as its `char` or `unsigned char` container.
 - Swapping algorithm by swapping the type.
 - Zeroing all sensitive data when destroying an algorithm instance.
 
