@@ -169,14 +169,12 @@ namespace milo::primitive::detail
                     block_size - m_buffer_size - 1
                 );
                 
-                impl_type::template invoke<
-                    0
-                >(
-                    m_buffer,
+                impl_type::template invoke<0>(
                     1,
                     m_key_r,
                     m_acc,
-                    0
+                    0,
+                    m_buffer
                 );
             }
             

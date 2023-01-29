@@ -18,18 +18,18 @@ namespace milo::primitive::detail
     auto
     milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks(
         uint64_t a_blocks,
-        uint32_t* a_h_ptr,
+        uint32_t* a_state_ptr,
         const uint8_t* a_src_ptr
     ) noexcept(true) -> uint64_t;
     
     /*
      * @formatter:on
      */
-    
+
     class hash_sha_1_160_impl_hw_x86_64_ni
     {
     public:
-        
+    
         struct requirements
         {
             struct arch
@@ -39,40 +39,40 @@ namespace milo::primitive::detail
                     struct ise
                     {
                         using sse_1 = int;
-                        
+                    
                         using sse_2 = int;
-                        
+                    
                         using sse_3 = int;
-                        
+                    
                         using ssse_3 = int;
-                        
+                    
                         using sha_1 = int;
                     };
                 };
             };
         };
-    
+
     public:
-        
+    
         static
         constexpr size_t block_size = 64;
-    
+
     public:
-        
+    
         template<
             meta::byte t_src
         >
         static
         auto
         blocks(
-            const t_src* a_src_ptr,
             size_t a_blocks,
-            uint32_t* a_h_ptr
+            uint32_t* a_state_ptr,
+            const t_src* a_src_ptr
         ) noexcept(true) -> void
         {
             milo_primitive_detail_hash_sha_1_160_impl_hw_x86_64_ni_blocks(
                 a_blocks,
-                a_h_ptr,
+                a_state_ptr,
                 reinterpret_cast<const uint8_t*>(a_src_ptr)
             );
         }

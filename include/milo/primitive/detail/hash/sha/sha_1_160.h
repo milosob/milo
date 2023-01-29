@@ -64,7 +64,7 @@ namespace milo::primitive::detail
     
     private:
         
-        uint32_t m_h[5]{};
+        uint32_t m_state[5]{};
         
         uint64_t m_processed_bytes = 0;
         
@@ -82,7 +82,7 @@ namespace milo::primitive::detail
         
         constexpr ~hash_sha_1_160() noexcept(true)
         {
-            internal::memory_erase(m_h);
+            internal::memory_erase(m_state);
             internal::memory_erase(m_processed_bytes);
             internal::memory_erase(m_buffer);
             internal::memory_erase(m_buffer_size);
@@ -107,11 +107,11 @@ namespace milo::primitive::detail
             
             if constexpr (bits == 160)
             {
-                m_h[0] = 0x67452301;
-                m_h[1] = 0xefcdab89;
-                m_h[2] = 0x98badcfe;
-                m_h[3] = 0x10325476;
-                m_h[4] = 0xc3d2e1f0;
+                m_state[0] = 0x67452301;
+                m_state[1] = 0xefcdab89;
+                m_state[2] = 0x98badcfe;
+                m_state[3] = 0x10325476;
+                m_state[4] = 0xc3d2e1f0;
             }
             
             m_processed_bytes = 0;
@@ -136,7 +136,7 @@ namespace milo::primitive::detail
                 m_buffer_size,
                 a_message_ptr,
                 a_message_size,
-                m_h
+                m_state
             );
         }
         
@@ -160,12 +160,10 @@ namespace milo::primitive::detail
                 m_processed_bytes << 3
             );
             
-            impl_type::template invoke<
-                0
-            >(
-                m_buffer,
+            impl_type::template invoke<0>(
                 last_size / block_size,
-                m_h
+                m_state,
+                m_buffer
             );
         }
         
@@ -185,7 +183,7 @@ namespace milo::primitive::detail
             
             internal::memory_copy_be(
                 a_digest_ptr,
-                m_h,
+                m_state,
                 a_digest_size
             );
             

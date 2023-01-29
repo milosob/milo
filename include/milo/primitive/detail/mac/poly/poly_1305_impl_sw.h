@@ -23,11 +23,11 @@ namespace milo::primitive::detail
         static
         constexpr auto
         process(
-            const t_src* a_src_ptr,
             size_t a_blocks,
             const uint32_t m_key_ptr[8],
             uint32_t a_acc_ptr[5],
-            uint32_t a_add
+            uint32_t a_add,
+            const t_src* a_src_ptr
         ) noexcept(true) -> void
         {
             uint64_t acc[5];

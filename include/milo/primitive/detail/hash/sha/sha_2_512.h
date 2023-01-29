@@ -62,7 +62,7 @@ namespace milo::primitive::detail
     
     private:
         
-        uint64_t m_h[8]{};
+        uint64_t m_state[8]{};
         
         uint64_t m_processed_bytes[2]{};
         
@@ -80,7 +80,7 @@ namespace milo::primitive::detail
         
         constexpr  ~hash_sha_2_512() noexcept(true)
         {
-            internal::memory_erase(m_h);
+            internal::memory_erase(m_state);
             internal::memory_erase(m_processed_bytes);
             internal::memory_erase(m_buffer);
             internal::memory_erase(m_buffer_size);
@@ -108,50 +108,50 @@ namespace milo::primitive::detail
             
             if constexpr (bits == 224)
             {
-                m_h[0] = 0x8c3d37c819544da2;
-                m_h[1] = 0x73e1996689dcd4d6;
-                m_h[2] = 0x1dfab7ae32ff9c82;
-                m_h[3] = 0x679dd514582f9fcf;
-                m_h[4] = 0x0f6d2b697bd44da8;
-                m_h[5] = 0x77e36f7304c48942;
-                m_h[6] = 0x3f9d85a86a1d36c8;
-                m_h[7] = 0x1112e6ad91d692a1;
+                m_state[0] = 0x8c3d37c819544da2;
+                m_state[1] = 0x73e1996689dcd4d6;
+                m_state[2] = 0x1dfab7ae32ff9c82;
+                m_state[3] = 0x679dd514582f9fcf;
+                m_state[4] = 0x0f6d2b697bd44da8;
+                m_state[5] = 0x77e36f7304c48942;
+                m_state[6] = 0x3f9d85a86a1d36c8;
+                m_state[7] = 0x1112e6ad91d692a1;
             }
             
             if constexpr (bits == 256)
             {
-                m_h[0] = 0x22312194fc2bf72c;
-                m_h[1] = 0x9f555fa3c84c64c2;
-                m_h[2] = 0x2393b86b6f53b151;
-                m_h[3] = 0x963877195940eabd;
-                m_h[4] = 0x96283ee2a88effe3;
-                m_h[5] = 0xbe5e1e2553863992;
-                m_h[6] = 0x2b0199fc2c85b8aa;
-                m_h[7] = 0x0eb72ddc81c52ca2;
+                m_state[0] = 0x22312194fc2bf72c;
+                m_state[1] = 0x9f555fa3c84c64c2;
+                m_state[2] = 0x2393b86b6f53b151;
+                m_state[3] = 0x963877195940eabd;
+                m_state[4] = 0x96283ee2a88effe3;
+                m_state[5] = 0xbe5e1e2553863992;
+                m_state[6] = 0x2b0199fc2c85b8aa;
+                m_state[7] = 0x0eb72ddc81c52ca2;
             }
             
             if constexpr (bits == 384)
             {
-                m_h[0] = 0xcbbb9d5dc1059ed8;
-                m_h[1] = 0x629a292a367cd507;
-                m_h[2] = 0x9159015a3070dd17;
-                m_h[3] = 0x152fecd8f70e5939;
-                m_h[4] = 0x67332667ffc00b31;
-                m_h[5] = 0x8eb44a8768581511;
-                m_h[6] = 0xdb0c2e0d64f98fa7;
-                m_h[7] = 0x47b5481dbefa4fa4;
+                m_state[0] = 0xcbbb9d5dc1059ed8;
+                m_state[1] = 0x629a292a367cd507;
+                m_state[2] = 0x9159015a3070dd17;
+                m_state[3] = 0x152fecd8f70e5939;
+                m_state[4] = 0x67332667ffc00b31;
+                m_state[5] = 0x8eb44a8768581511;
+                m_state[6] = 0xdb0c2e0d64f98fa7;
+                m_state[7] = 0x47b5481dbefa4fa4;
             }
             
             if constexpr (bits == 512)
             {
-                m_h[0] = 0x6a09e667f3bcc908;
-                m_h[1] = 0xbb67ae8584caa73b;
-                m_h[2] = 0x3c6ef372fe94f82b;
-                m_h[3] = 0xa54ff53a5f1d36f1;
-                m_h[4] = 0x510e527fade682d1;
-                m_h[5] = 0x9b05688c2b3e6c1f;
-                m_h[6] = 0x1f83d9abfb41bd6b;
-                m_h[7] = 0x5be0cd19137e2179;
+                m_state[0] = 0x6a09e667f3bcc908;
+                m_state[1] = 0xbb67ae8584caa73b;
+                m_state[2] = 0x3c6ef372fe94f82b;
+                m_state[3] = 0xa54ff53a5f1d36f1;
+                m_state[4] = 0x510e527fade682d1;
+                m_state[5] = 0x9b05688c2b3e6c1f;
+                m_state[6] = 0x1f83d9abfb41bd6b;
+                m_state[7] = 0x5be0cd19137e2179;
             }
             
             m_processed_bytes[0] = 0;
@@ -178,7 +178,7 @@ namespace milo::primitive::detail
                 m_buffer_size,
                 a_message_ptr,
                 a_message_size,
-                m_h
+                m_state
             );
         }
         
@@ -208,12 +208,10 @@ namespace milo::primitive::detail
                 m_processed_bytes[0] << 3
             );
             
-            impl_type::template invoke<
-                0
-            >(
-                m_buffer,
+            impl_type::template invoke<0>(
                 last_size / block_size,
-                m_h
+                m_state,
+                m_buffer
             );
         }
         
@@ -233,7 +231,7 @@ namespace milo::primitive::detail
             
             internal::memory_copy_be(
                 a_digest_ptr,
-                m_h,
+                m_state,
                 a_digest_size
             );
             

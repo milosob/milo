@@ -51,13 +51,13 @@ namespace milo::internal
             }
             
             impl_type::template invoke<0>(
-                a_buf_ptr,
                 1,
                 forward<
                     t_args
                 >(
                     a_args
-                )...
+                )...,
+                a_buf_ptr
             );
             
             a_src_ptr += todo_size;
@@ -70,13 +70,13 @@ namespace milo::internal
         if (full_blks)
         {
             impl_type::template invoke<0>(
-                a_src_ptr,
                 full_blks,
                 forward<
                     t_args
                 >(
                     a_args
-                )...
+                )...,
+                a_src_ptr
             );
     
             a_src_ptr += full_blks * block_size;

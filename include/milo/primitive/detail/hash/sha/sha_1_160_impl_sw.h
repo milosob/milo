@@ -30,9 +30,9 @@ namespace milo::primitive::detail
         static
         constexpr auto
         blocks(
-            const t_src* a_src_ptr,
             size_t a_blocks,
-            uint32_t* a_h_ptr
+            uint32_t* a_state_ptr,
+            const t_src* a_src_ptr
         ) noexcept(true) -> void
         {
             uint32_t schedule[80];
@@ -40,11 +40,11 @@ namespace milo::primitive::detail
             uint32_t ap, bp, cp, dp, ep;
             uint32_t t_1;
             
-            a = a_h_ptr[0];
-            b = a_h_ptr[1];
-            c = a_h_ptr[2];
-            d = a_h_ptr[3];
-            e = a_h_ptr[4];
+            a = a_state_ptr[0];
+            b = a_state_ptr[1];
+            c = a_state_ptr[2];
+            d = a_state_ptr[3];
+            e = a_state_ptr[4];
             
             /*
              * @formatter:off
@@ -148,11 +148,11 @@ namespace milo::primitive::detail
                 a_src_ptr += block_size;
             }
             
-            a_h_ptr[0] = a;
-            a_h_ptr[1] = b;
-            a_h_ptr[2] = c;
-            a_h_ptr[3] = d;
-            a_h_ptr[4] = e;
+            a_state_ptr[0] = a;
+            a_state_ptr[1] = b;
+            a_state_ptr[2] = c;
+            a_state_ptr[3] = d;
+            a_state_ptr[4] = e;
         }
     };
 }

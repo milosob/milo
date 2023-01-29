@@ -13,13 +13,15 @@ namespace milo::primitive::detail
     /*
      * @formatter:off
      */
+    
     extern "C"
     auto
     milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_ni_blocks(
         uint64_t a_blocks,
-        uint32_t* a_h_ptr,
+        uint32_t* a_state_ptr,
         const uint8_t* a_src_ptr
     ) noexcept(true) -> uint64_t;
+    
     /*
      * @formatter:on
      */
@@ -41,7 +43,7 @@ namespace milo::primitive::detail
                         using sse_2 = int;
                     
                         using sse_3 = int;
-                        
+                    
                         using ssse_3 = int;
                     
                         using avx_1 = int;
@@ -65,14 +67,14 @@ namespace milo::primitive::detail
         static
         auto
         blocks(
-            const t_src* a_src_ptr,
             size_t a_blocks,
-            uint32_t* a_h_ptr
+            uint32_t* a_state_ptr,
+            const t_src* a_src_ptr
         ) noexcept(true) -> void
         {
             milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_ni_blocks(
                 a_blocks,
-                a_h_ptr,
+                a_state_ptr,
                 reinterpret_cast<const uint8_t*>(a_src_ptr)
             );
         }

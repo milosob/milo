@@ -64,7 +64,7 @@ namespace milo::primitive::detail
     
     private:
         
-        uint32_t m_h[8]{};
+        uint32_t m_state[8]{};
         
         uint64_t m_processed_bytes = 0;
         
@@ -82,7 +82,7 @@ namespace milo::primitive::detail
         
         constexpr ~hash_sha_2_256() noexcept(true)
         {
-            internal::memory_erase(m_h);
+            internal::memory_erase(m_state);
             internal::memory_erase(m_processed_bytes);
             internal::memory_erase(m_buffer);
             internal::memory_erase(m_buffer_size);
@@ -108,26 +108,26 @@ namespace milo::primitive::detail
             
             if constexpr (bits == 224)
             {
-                m_h[0] = 0xc1059ed8;
-                m_h[1] = 0x367cd507;
-                m_h[2] = 0x3070dd17;
-                m_h[3] = 0xf70e5939;
-                m_h[4] = 0xffc00b31;
-                m_h[5] = 0x68581511;
-                m_h[6] = 0x64f98fa7;
-                m_h[7] = 0xbefa4fa4;
+                m_state[0] = 0xc1059ed8;
+                m_state[1] = 0x367cd507;
+                m_state[2] = 0x3070dd17;
+                m_state[3] = 0xf70e5939;
+                m_state[4] = 0xffc00b31;
+                m_state[5] = 0x68581511;
+                m_state[6] = 0x64f98fa7;
+                m_state[7] = 0xbefa4fa4;
             }
             
             if constexpr (bits == 256)
             {
-                m_h[0] = 0x6a09e667;
-                m_h[1] = 0xbb67ae85;
-                m_h[2] = 0x3c6ef372;
-                m_h[3] = 0xa54ff53a;
-                m_h[4] = 0x510e527f;
-                m_h[5] = 0x9b05688c;
-                m_h[6] = 0x1f83d9ab;
-                m_h[7] = 0x5be0cd19;
+                m_state[0] = 0x6a09e667;
+                m_state[1] = 0xbb67ae85;
+                m_state[2] = 0x3c6ef372;
+                m_state[3] = 0xa54ff53a;
+                m_state[4] = 0x510e527f;
+                m_state[5] = 0x9b05688c;
+                m_state[6] = 0x1f83d9ab;
+                m_state[7] = 0x5be0cd19;
             }
             
             m_processed_bytes = 0;
@@ -152,7 +152,7 @@ namespace milo::primitive::detail
                 m_buffer_size,
                 a_message_ptr,
                 a_message_size,
-                m_h
+                m_state
             );
         }
         
@@ -176,12 +176,10 @@ namespace milo::primitive::detail
                 m_processed_bytes << 3
             );
             
-            impl_type::template invoke<
-                0
-            >(
-                m_buffer,
+            impl_type::template invoke<0>(
                 last_size / block_size,
-                m_h
+                m_state,
+                m_buffer
             );
         }
         
@@ -201,7 +199,7 @@ namespace milo::primitive::detail
             
             internal::memory_copy_be(
                 a_digest_ptr,
-                m_h,
+                m_state,
                 a_digest_size
             );
             
