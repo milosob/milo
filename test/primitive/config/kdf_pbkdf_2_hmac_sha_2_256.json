@@ -8,7 +8,7 @@
             "runtime": [
                 "kdf_pbkdf_2_hmac_sha_2_256",
                 "kdf_pbkdf_2_hmac_sha_2_256_sw",
-                "kdf_pbkdf_2_hmac_sha_2_256_hw_x86_v_1"
+                "kdf_pbkdf_2_hmac_sha_2_256_hw_x86_64_ni"
             ]
         },
         "include": [

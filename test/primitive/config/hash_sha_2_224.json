@@ -8,7 +8,7 @@
             "runtime": [
                 "hash_sha_2_224",
                 "hash_sha_2_224_sw",
-                "hash_sha_2_224_hw_x86_v_1"
+                "hash_sha_2_224_hw_x86_64_ni"
             ]
         },
         "include": [

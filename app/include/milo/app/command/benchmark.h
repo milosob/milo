@@ -1031,10 +1031,10 @@ namespace milo::app::command::benchmark
                                 {"hash-sha-2-512-sw",                       primitive_hash<primitive::hash_sha_2_512_sw>},
                                 {"hash-sha-2-512-224-sw",                   primitive_hash<primitive::hash_sha_2_512_224_sw>},
                                 {"hash-sha-2-512-256-sw",                   primitive_hash<primitive::hash_sha_2_512_256_sw>},
-                                #if MILO_INTERNAL_ARCH_X86
+                                #if MILO_INTERNAL_ARCH_X86_64
                                 {"hash-sha-1-160-hw-x86-64-ni",             primitive_hash<primitive::hash_sha_1_160_hw_x86_64_ni>},
-                                {"hash-sha-2-224-hw-x86-v-1",               primitive_hash<primitive::hash_sha_2_224_hw_x86_v_1>},
-                                {"hash-sha-2-256-hw-x86-v-1",               primitive_hash<primitive::hash_sha_2_256_hw_x86_v_1>},
+                                {"hash-sha-2-224-hw-x86-64-ni",             primitive_hash<primitive::hash_sha_2_224_hw_x86_64_ni>},
+                                {"hash-sha-2-256-hw-x86-64-ni",             primitive_hash<primitive::hash_sha_2_256_hw_x86_64_ni>}
                                 #endif
                             }
                         )
@@ -1072,10 +1072,10 @@ namespace milo::app::command::benchmark
                                 {"mac-hmac-sha-2-512-224-sw",               primitive_mac<primitive::mac_hmac_sha_2_512_224_sw>},
                                 {"mac-hmac-sha-2-512-256-sw",               primitive_mac<primitive::mac_hmac_sha_2_512_256_sw>},
                                 {"mac-poly-1305-sw",                        primitive_mac<primitive::mac_poly_1305_sw>},
-                                #if MILO_INTERNAL_ARCH_X86
+                                #if MILO_INTERNAL_ARCH_X86_64
                                 {"mac-hmac-sha-1-160-hw-x86-64-ni",         primitive_mac<primitive::mac_hmac_sha_1_160_hw_x86_64_ni>},
-                                {"mac-hmac-sha-2-224-hw-x86-v-1",           primitive_mac<primitive::mac_hmac_sha_2_224_hw_x86_v_1>},
-                                {"mac-hmac-sha-2-256-hw-x86-v-1",           primitive_mac<primitive::mac_hmac_sha_2_256_hw_x86_v_1>}
+                                {"mac-hmac-sha-2-224-hw-x86-64-ni",         primitive_mac<primitive::mac_hmac_sha_2_224_hw_x86_64_ni>},
+                                {"mac-hmac-sha-2-256-hw-x86-64-ni",         primitive_mac<primitive::mac_hmac_sha_2_256_hw_x86_64_ni>}
                                 #endif
                             }
                         )
@@ -1113,10 +1113,10 @@ namespace milo::app::command::benchmark
                                 {"kdf-hkdf-hmac-sha-2-512-sw",              primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_512_sw>},
                                 {"kdf-hkdf-hmac-sha-2-512-224-sw",          primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_512_224_sw>},
                                 {"kdf-hkdf-hmac-sha-2-512-256-sw",          primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_512_256_sw>},
-                                #if MILO_INTERNAL_ARCH_X86
+                                #if MILO_INTERNAL_ARCH_X86_64
                                 {"kdf-hkdf-hmac-sha-1-160-hw-x86-64-ni",    primitive_kdf<primitive::kdf_hkdf_hmac_sha_1_160_hw_x86_64_ni>},
-                                {"kdf-hkdf-hmac-sha-2-224-hw-x86-v-1",      primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_224_hw_x86_v_1>},
-                                {"kdf-hkdf-hmac-sha-2-256-hw-x86-v-1",      primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_256_hw_x86_v_1>}
+                                {"kdf-hkdf-hmac-sha-2-224-hw-x86-64-ni",    primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_224_hw_x86_64_ni>},
+                                {"kdf-hkdf-hmac-sha-2-256-hw-x86-64-ni",    primitive_kdf<primitive::kdf_hkdf_hmac_sha_2_256_hw_x86_64_ni>}
                                 #endif
                             }
                         )
@@ -1154,10 +1154,10 @@ namespace milo::app::command::benchmark
                                 {"kdf-pbkdf-2-hmac-sha-2-512-sw",           primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_512_sw>},
                                 {"kdf-pbkdf-2-hmac-sha-2-512-224-sw",       primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_512_224_sw>},
                                 {"kdf-pbkdf-2-hmac-sha-2-512-256-sw",       primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_512_256_sw>},
-                                #if MILO_INTERNAL_ARCH_X86
+                                #if MILO_INTERNAL_ARCH_X86_64
                                 {"kdf-pbkdf-2-hmac-sha-1-160-hw-x86-64-ni", primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_1_160_hw_x86_64_ni>},
-                                {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-v-1",   primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_224_hw_x86_v_1>},
-                                {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-v-1",   primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_256_hw_x86_v_1>}
+                                {"kdf-pbkdf-2-hmac-sha-2-224-hw-x86-64-ni", primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_224_hw_x86_64_ni>},
+                                {"kdf-pbkdf-2-hmac-sha-2-256-hw-x86-64-ni", primitive_kdf<primitive::kdf_pbkdf_2_hmac_sha_2_256_hw_x86_64_ni>}
                                 #endif
                             }
                         )

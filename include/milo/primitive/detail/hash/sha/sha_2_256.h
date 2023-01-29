@@ -7,7 +7,7 @@
 
 #include <milo/primitive/detail/hash/impl.h>
 #include <milo/primitive/detail/hash/sha/sha_2_256_impl_sw.h>
-#include <milo/primitive/detail/hash/sha/sha_2_256_impl_hw_x86.h>
+#include <milo/primitive/detail/hash/sha/sha_2_256_impl_hw_x86_64.h>
 
 
 namespace milo::primitive::detail
@@ -28,7 +28,7 @@ namespace milo::primitive::detail
                     hash_sha_2_256_impl_sw
                 >,
                 internal::impl_runtime<
-                    hash_sha_2_256_impl_hw_x86_v_1,
+                    hash_sha_2_256_impl_hw_x86_64_ni,
                     hash_sha_2_256_impl_sw
                 >,
                 t_options...

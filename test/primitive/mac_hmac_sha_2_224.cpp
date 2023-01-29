@@ -1267,7 +1267,7 @@ main(
     
     TEST_RUNTIME(mac_hmac_sha_2_224);
     TEST_RUNTIME(mac_hmac_sha_2_224_sw);
-    TEST_RUNTIME(mac_hmac_sha_2_224_hw_x86_v_1);
+    TEST_RUNTIME(mac_hmac_sha_2_224_hw_x86_64_ni);
     
     return 0;
 }
