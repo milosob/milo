@@ -45,7 +45,7 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 %define     m_dst(i)                [g_dst + (i)]
 %define     g_src                   abi_arg_4
 %define     m_src(i)                [g_src + (i)]
-%define     x_state_eval(i)         xmm %+ i
+%define     x_state_eval(i)         xmm %+ %eval((i))
 
 %macro  chacha_ssse_3_rounds 18
 ; Args:
