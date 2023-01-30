@@ -24,7 +24,7 @@ Supported:
 Headers and types:
 
 - `<milo/primitive/kdf/apie.h>`
-    - `milo::primitive::kdf::apie<hkdf_type>`
+    - `milo::primitive::kdf::apie<kdf_type>`
 - `<milo/primitive/kdf/hkdf.h>`
     - `milo::primitive::kdf::hkdf<hmac_type>`
 - `<milo/primitive/mac/pbkdf.h>`
