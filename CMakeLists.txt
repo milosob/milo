@@ -5,6 +5,7 @@ project(
         LANGUAGES CXX
 )
 
+include(CheckLanguage)
 include(GNUInstallDirs)
 
 # Testing options.
@@ -32,22 +33,36 @@ add_library(
 set(MILO_HDR_FILES "")
 set(MILO_SRC_FILES "")
 set(MILO_ASM_FILES "")
+set(MILO_ASM_FOUND FALSE)
 
 file(GLOB_RECURSE MILO_HDR_FILES CONFIGURE_DEPENDS include/*.h)
 file(GLOB_RECURSE MILO_SRC_FILES CONFIGURE_DEPENDS include/*.cpp)
 
 if (${MILO_ASM})
     if (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
-        enable_language(ASM_NASM)
-        file(GLOB_RECURSE MILO_ASM_FILES CONFIGURE_DEPENDS include/*_x86_64.asm)
-        # TODO Portability.
+        check_language(ASM_NASM)
+        if (CMAKE_ASM_NASM_COMPILER)
+            set(MILO_ASM_FOUND TRUE)
+            enable_language(ASM_NASM)
+            message(STATUS "[${PROJECT_NAME}] Assembler for the current target was found, NASM is available")
+            file(GLOB_RECURSE MILO_ASM_FILES CONFIGURE_DEPENDS include/*_x86_64.asm)
+        else ()
+            message(STATUS "[${PROJECT_NAME}] Assembler for the current target was not found, NASM is missing")
+        endif ()
+    else()
+        message(STATUS "[${PROJECT_NAME}] Assembler for the current target is not used")
     endif ()
 
-    target_compile_definitions(
-            ${PROJECT_NAME}
-            PUBLIC
-            MILO_INTERNAL_ASM=true
-    )
+    if (${MILO_ASM_FOUND})
+        target_compile_definitions(
+                ${PROJECT_NAME}
+                PUBLIC
+                MILO_INTERNAL_ASM=true
+        )
+        message(STATUS "[${PROJECT_NAME}] Assembler configuration done")
+    else ()
+        message(STATUS "[${PROJECT_NAME}] Assembler configuration skipped")
+    endif ()
 endif ()
 
 target_sources(

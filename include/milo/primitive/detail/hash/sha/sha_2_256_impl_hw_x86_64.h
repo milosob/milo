@@ -82,7 +82,7 @@ namespace milo::primitive::detail
     
     #else
     
-    using hash_sha_2_256_impl_hw_x86_64_ni = void
+    using hash_sha_2_256_impl_hw_x86_64_ni = void;
     
     #endif
 }

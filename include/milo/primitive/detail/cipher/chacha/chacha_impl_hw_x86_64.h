@@ -110,7 +110,7 @@ namespace milo::primitive::detail
     
     #else
     
-    using cipher_chacha_impl_hw_x86_ssse_3 = void;
+    using cipher_chacha_impl_hw_x86_64_ssse_3_ietf = void;
     
     #endif
 }
