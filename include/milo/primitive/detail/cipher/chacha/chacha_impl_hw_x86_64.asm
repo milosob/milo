@@ -20,7 +20,7 @@ global milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate
 ;%define abi_arg_3 r9
 ;%define abi_arg_4
 
-; BEG chacha_impl_hw_x86_64_ssse_3
+; BEG cipher_chacha_impl_hw_x86_64_ssse_3
 
 ; TODO Support for wabi.
 
@@ -421,4 +421,4 @@ milo_primitive_detail_cipher_chacha_impl_hw_x86_64_ssse_3_ietf_generate:
 ;   3 -> dst_ptr
     chacha_ssse_3_body generate
 
-; END chacha_impl_hw_x86_64_ssse_3
+; END cipher_chacha_impl_hw_x86_64_ssse_3

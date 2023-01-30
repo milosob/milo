@@ -102,9 +102,9 @@ section .text
     vpunpcklqdq x_state_base(0),    x_state_save(1),    x_state_save(0)
     vpunpckhqdq x_state_base(1),    x_state_save(1),    x_state_save(0)
 
-    test    g_blocks,       g_blocks
-    mov     g_blocks_cnt,   g_blocks
-    jz      .blocks_loop_end
+    test        g_blocks,       g_blocks
+    mov         g_blocks_cnt,   g_blocks
+    jz          .blocks_loop_end
 
 .blocks_loop:
 ; Read block.
@@ -190,8 +190,8 @@ section .text
     paddd       x_state_base(1),    x_state_save(1)
     paddd       x_state_base(0),    x_state_save(0)
 
-    sub     g_blocks_cnt,   1
-    jnz     .blocks_loop
+    sub         g_blocks_cnt,   1
+    jnz         .blocks_loop
 
 .blocks_loop_end:
 ; Save state.
@@ -202,7 +202,7 @@ section .text
     movdqu      m_state(16 * 0),    x_state_save(0)
     movdqu      m_state(16 * 1),    x_state_save(1)
 ; Return blocks done.
-    mov     rax,    g_blocks
+    mov         rax,    g_blocks
     ret
 
 ; END hash_sha_2_256_impl_hw_x86_64_ni

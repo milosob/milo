@@ -72,26 +72,26 @@ section .text
 
 .start:
 ; Load state.
-    movdqu  x_state_base(0),    m_state(0)
-    movd    x_state_base(1),    m_state(16)
-    movdqa  x_shuff_mask,       [rel .constant_shuffle_mask_message]
-    pshufd  x_state_base(0),    x_state_base(0),    0b00011011
-    pslldq  x_state_base(1),    12
+    movdqu      x_state_base(0),    m_state(0)
+    movd        x_state_base(1),    m_state(16)
+    movdqa      x_shuff_mask,       [rel .constant_shuffle_mask_message]
+    pshufd      x_state_base(0),    x_state_base(0),    0b00011011
+    pslldq      x_state_base(1),    12
 
-    test    g_blocks,       g_blocks
-    mov     g_blocks_cnt,   g_blocks
-    jz      .blocks_loop_end
+    test        g_blocks,       g_blocks
+    mov         g_blocks_cnt,   g_blocks
+    jz          .blocks_loop_end
 
 .blocks_loop:
 ; Read block.
-    movdqu  x_message(0),       m_src(16 * 0)
-    movdqu  x_message(1),       m_src(16 * 1)
-    movdqu  x_message(2),       m_src(16 * 2)
-    movdqu  x_message(3),       m_src(16 * 3)
-    movdqa  x_state_save(0),    x_state_base(0)
-    movdqa  x_state_save(1),    x_state_base(1)
+    movdqu      x_message(0),       m_src(16 * 0)
+    movdqu      x_message(1),       m_src(16 * 1)
+    movdqu      x_message(2),       m_src(16 * 2)
+    movdqu      x_message(3),       m_src(16 * 3)
+    movdqa      x_state_save(0),    x_state_base(0)
+    movdqa      x_state_save(1),    x_state_base(1)
 ; Advance pointer.
-    add     g_src,              c_block_size
+    add         g_src,              c_block_size
 ; Rounds 0 to 3.
     pshufb      x_message(0),       x_shuff_mask
     paddd       x_state_base(1),    x_message(0)
@@ -158,17 +158,17 @@ section .text
     sha1nexte   x_state_base(1),    x_state_save(1)
     paddd       x_state_base(0),    x_state_save(0)
 
-    sub     g_blocks_cnt,   1
-    jnz     .blocks_loop
+    sub         g_blocks_cnt,   1
+    jnz         .blocks_loop
 
 .blocks_loop_end:
 ; Save state.
-    pshufd  x_state_base(0),    x_state_base(0),    0b00011011
-    psrldq  x_state_base(1),    12
-    movdqu  m_state(0),         x_state_base(0)
-    movd    m_state(16),        x_state_base(1)
+    pshufd      x_state_base(0),    x_state_base(0),    0b00011011
+    psrldq      x_state_base(1),    12
+    movdqu      m_state(0),         x_state_base(0)
+    movd        m_state(16),        x_state_base(1)
 ; Return blocks done.
-    mov     rax,    g_blocks
+    mov         rax,    g_blocks
     ret
 
 ; END hash_sha_1_160_impl_hw_x86_64_ni
