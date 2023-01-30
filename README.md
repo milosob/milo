@@ -1,6 +1,6 @@
 ## Description
 
-C++ Cryptographic Library.
+C++ Cryptography Library.
 
 Features:
 
@@ -8,8 +8,8 @@ Features:
 - Throwing and non-throwing overloads.
 - Allocation and allocation-free interfaces, depending on the type of parameter.
 - Support for the majority of containers implementations as inputs and outputs.
-- Type casting free api, no need to cast from `char*` to `unsigned char*`.
-- Can return a value of the type the user needs, specified by template parameter, as long as its `char` or `unsigned char` container.
+- Pointer type casting free api, no need to cast from `char*` to `unsigned char*`.
+- Can return a value of the type the user needs, specified by template parameter.
 - Swapping algorithm by swapping the type.
 - Zeroing all sensitive data when destroying an algorithm instance.
 
@@ -17,6 +17,9 @@ Requirements:
 
 - C++ 20 Compiler
 - C++ 20 Standard library
+
+Optional:
+
 - Netwide Assembler
 
 Tested with:
@@ -67,7 +70,6 @@ Reference guide is [here](docs/reference.md).
 
 Algorithms index is [here](docs/algorithms.md).
 
-
 ## Benchmarking
 
-Benchmarking guide is [here](docs/benchmarking.md)
+Benchmarking guide is [here](docs/benchmarking.md).

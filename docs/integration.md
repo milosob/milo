@@ -5,8 +5,23 @@ This file describes how to integrate the library into your project.
 ### Index
 
 - [Index](#index)
+- [Configuration](#configuration)
 - [FetchContent](#fetchcontent)
 - [Installation](#installation)
+
+### Configuration
+
+Library configuration table.
+To override the defaults, provide `-D` prefixed parameter to `cmake` during configuration step.
+
+| Parameter             | Type     | Default | Description                         |
+|-----------------------|----------|---------|-------------------------------------|
+| `MILO_APP`            | `option` | `OFF`   | Enable building `milo` application. |
+| `MILO_ASM`            | `option` | `ON`    | Enable assembly.                    |
+| `MILO_TEST`           | `option` | `OFF`   | Enable testing.                     |
+| `MILO_TEST_CONSTEXPR` | `option` | `OFF`   | Enable constexpr testing.           |
+| `MILO_TEST_INTERNAL`  | `option` | `OFF`   | Enable internal testing.            |
+| `MILO_TEST_PRIMITIVE` | `option` | `OFF`   | Enable primitive testing.           |
 
 ### FetchContent
 
@@ -18,7 +33,7 @@ include(FetchContent)
 FetchContent_Declare(
         milo
         GIT_REPOSITORY https://github.com/milosob/milo.git
-        GIT_TAG 0.1.0
+        GIT_TAG master
 )
 
 FetchContent_MakeAvailable(
@@ -51,11 +66,6 @@ cd milo-build
 ```shell
 cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON -DMILO_APP=ON && make && ctest
 ```
-
-Skip `-DMILO_TEST_CONSTEXPR=ON` if testing for `constexpr` correctness is not necessary.
-Testing constexpr cases can take up to several minutes.
-
-Skip `-DMILO_APP=ON` if building a command line application is not necessary.
 
 ```shell
 # Using sudo may be required if installing to /usr/local.
