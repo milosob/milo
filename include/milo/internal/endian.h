@@ -77,38 +77,35 @@ namespace milo::internal
         
         if constexpr (meta::same<t_int, uint16_t>)
         {
-            if constexpr (MILO_INTERNAL_COMPILER_MSVC)
-            {
-                return _byteswap_ushort(a_int);
-            }
-            else
-            {
-                return __builtin_bswap16(a_int);
-            }
+            #if MILO_INTERNAL_COMPILER_GCC || MILO_INTERNAL_COMPILER_CLANG || MILO_INTERNAL_COMPILER_ICC
+            return __builtin_bswap16(a_int);
+            #endif
+            
+            #if MILO_INTERNAL_COMPILER_MSVC
+            return _byteswap_ushort(a_int);
+            #endif
         }
         
         if constexpr (meta::same<t_int, uint32_t>)
         {
-            if constexpr (MILO_INTERNAL_COMPILER_MSVC)
-            {
-                return _byteswap_ulong(a_int);
-            }
-            else
-            {
-                return __builtin_bswap32(a_int);
-            }
+            #if MILO_INTERNAL_COMPILER_GCC || MILO_INTERNAL_COMPILER_CLANG || MILO_INTERNAL_COMPILER_ICC
+            return __builtin_bswap32(a_int);
+            #endif
+            
+            #if MILO_INTERNAL_COMPILER_MSVC
+            return _byteswap_ulong(a_int);
+            #endif
         }
         
         if constexpr (meta::same<t_int, uint64_t>)
         {
-            if constexpr (MILO_INTERNAL_COMPILER_MSVC)
-            {
-                return _byteswap_uint64(a_int);
-            }
-            else
-            {
-                return __builtin_bswap64(a_int);
-            }
+            #if MILO_INTERNAL_COMPILER_GCC || MILO_INTERNAL_COMPILER_CLANG || MILO_INTERNAL_COMPILER_ICC
+            return __builtin_bswap64(a_int);
+            #endif
+            
+            #if MILO_INTERNAL_COMPILER_MSVC
+            return _byteswap_uint64(a_int);
+            #endif
         }
         
         static_assert(sizeof(t_int) <= 8);
@@ -128,19 +125,18 @@ namespace milo::internal
         }
         else
         {
-            if constexpr (
-                MILO_INTERNAL_COMPILER_CLANG ||
-                MILO_INTERNAL_COMPILER_GCC ||
-                MILO_INTERNAL_COMPILER_ICC ||
+            #if MILO_INTERNAL_COMPILER_GCC || \
+                MILO_INTERNAL_COMPILER_CLANG || \
+                MILO_INTERNAL_COMPILER_ICC || \
                 MILO_INTERNAL_COMPILER_MSVC
-                )
-            {
-                return endian_swap_bi(a_int);
-            }
-            else
-            {
-                return endian_swap_sw(a_int);
-            }
+            
+            return endian_swap_bi(a_int);
+            
+            #else
+            
+            return endian_swap_sw(a_int);
+            
+            #endif
         }
     }
     

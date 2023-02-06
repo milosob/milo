@@ -1,14 +1,15 @@
-# CMake builds
+# CMake
+CMakeSettings.json
+
+# Builds
 cmake-build-*/
+out/
 
 # JetBrains
 .idea/
 
 # VisualStudio
 .vs/
-
-# Generated headers
-include/milo/internal/config.h
 
 # Python
 tool/codegen/build/

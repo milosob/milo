@@ -34,7 +34,7 @@ namespace milo::primitive::detail
         {
             struct arch
             {
-                struct x86
+                struct x86_64
                 {
                     struct ise
                     {

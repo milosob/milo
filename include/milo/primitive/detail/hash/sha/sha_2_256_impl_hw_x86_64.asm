@@ -2,26 +2,11 @@
 
 bits 64
 
-global milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_ni_blocks:
+%include "abi.asm"
 
-; uabi
-%define abi_arg_0 rdi
-%define abi_arg_1 rsi
-%define abi_arg_2 rdx
-%define abi_arg_3 rcx
-%define abi_arg_4 r8
-%define abi_arg_5 r9
-
-; wabi
-;%define abi_arg_0 rdx
-;%define abi_arg_1 rcx
-;%define abi_arg_2 r8
-;%define abi_arg_3 r9
-;%define abi_arg_4
+global milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_ni_blocks
 
 ; BEG hash_sha_2_256_impl_hw_x86_64_ni
-
-; TODO Support for wabi.
 
 ; Constants.
 %define     c_block_size        64
@@ -46,7 +31,6 @@ global milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_ni_blocks:
 ; Args:
 ;   1-4     ->  messages
 ;   5       ->  k
-
     movdqa      x_implicit,         x_message(%4)
     movdqa      x_message(4),       x_message(%4)
     paddd       x_implicit,         m_k(%5)
@@ -65,6 +49,8 @@ milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_ni_blocks:
 ;   0 -> blocks
 ;   1 -> state_ptr
 ;   2 -> src_ptr
+; Return:
+;   rax -> blocks
 
 section .rodata
     align 16
@@ -93,6 +79,18 @@ section .rodata
 section .text
 
 .start:
+
+%ifdef MILO_INTERNAL_ABI_WIND
+    push        rbp
+    mov         rbp,    rsp
+    sub         rsp,    16 * 5
+    movdqa      [rbp - 16 * 1], xmm6
+    movdqa      [rbp - 16 * 2], xmm7
+    movdqa      [rbp - 16 * 3], xmm8
+    movdqa      [rbp - 16 * 4], xmm9
+    movdqa      [rbp - 16 * 5], xmm10
+%endif
+
 ; Load state.
     movdqu      x_state_save(0),    m_state(16 * 0)
     movdqu      x_state_save(1),    m_state(16 * 1)
@@ -201,6 +199,17 @@ section .text
     pshufd      x_state_save(1),    x_state_save(1),    0b10110001
     movdqu      m_state(16 * 0),    x_state_save(0)
     movdqu      m_state(16 * 1),    x_state_save(1)
+
+%ifdef MILO_INTERNAL_ABI_WIND
+    movdqa      xmm6,   [rbp - 16 * 1]
+    movdqa      xmm7,   [rbp - 16 * 2]
+    movdqa      xmm8,   [rbp - 16 * 3]
+    movdqa      xmm9,   [rbp - 16 * 4]
+    movdqa      xmm10,  [rbp - 16 * 5]
+    mov         rsp,    rbp
+    pop         rbp
+%endif
+
 ; Return blocks done.
     mov         rax,    g_blocks
     ret

@@ -20,30 +20,23 @@ namespace milo::internal
     impl_choose_check(
     ) noexcept(true) -> bool
     {
-        return
-            meta::complex<t_impl> &&
-            (
-                (!
-                    requires
-                    {
-                        typename t_impl::requirements::compiler;
-                    }
-                ) ||
-                (
-                    requires
-                    {
-                        requires MILO_INTERNAL_COMPILER_CLANG;
-                        typename t_impl::requirements::compiler::clang;
-                    }
-                ) ||
-                (
-                    requires
-                    {
-                        requires MILO_INTERNAL_COMPILER_GCC;
-                        typename t_impl::requirements::compiler::gcc;
-                    }
-                )
-            );
+        return false;
+    }
+    
+    template<
+        typename t_impl
+    >
+    static
+    constexpr auto
+    impl_choose_check(
+    ) noexcept(true) -> bool
+    requires
+    requires
+    {
+        requires meta::complex<t_impl>;
+    }
+    {
+        return true;
     }
     
     template<
