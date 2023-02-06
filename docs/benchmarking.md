@@ -11,6 +11,7 @@ This file describes benchmarking framework of the library.
 - [Preparation](#preparation)
 - [Parametrization](#preparation)
 - [Benchmarking](#benchmarking)
+- [Measurements](#measurements)
 
 ### Building
 
@@ -200,6 +201,7 @@ Environment:
 - `Linux 5.19.11-zen1-1-zen`
 - `Ryzen Threadripper PRO 3975WX`
 
+### Measurements
 
 - `hash-sha-1-160`
 
