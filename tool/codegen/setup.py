@@ -3,7 +3,7 @@ import setuptools
 if __name__ == '__main__':
     setuptools.setup(
         name='codegen',
-        version='0.1.0.0',
+        version='0.2.0',
         packages=[
             'src'
         ],
