@@ -33,12 +33,11 @@ namespace milo::app::type
                 m_hasher(
                     [](const std::any& a_any) -> size_t
                     {
-                        if constexpr (
-                            requires{
-                                {
-                                std::hash<t_val>()
-                                };
-                            })
+                        if constexpr (requires{
+                            {
+                            std::hash<t_val>()(*std::any_cast<t_val>(&a_any))
+                            };
+                        })
                         {
                             /*
                              * No infinite recursion because var cannot store var.
@@ -314,6 +313,43 @@ namespace milo::app::type
             
             return false;
         }
+
+        auto
+        string(
+        ) const -> std::string
+        {
+            if (is<std::string>())
+            {
+                return as<std::string>();
+            }
+            
+            if (is<std::string_view>())
+            {
+                return std::string(as<std::string_view>());
+            }
+            
+            if (is<long>())
+            {
+                return std::to_string(as<long>());
+            }
+            
+            if (is<long unsigned>())
+            {
+                return std::to_string(as<long unsigned>());
+            }
+            
+            if (is<double>())
+            {
+                return std::to_string(as<double>());
+            }
+            
+            if (is<bool>())
+            {
+                return as<bool>() ? std::string("true") : std::string("false");
+            }
+            
+            throw std::logic_error("Attempt to convert to string non-string convertible type.");
+        }
     
     public:
         
@@ -352,42 +388,6 @@ namespace milo::app::type
             }
             
             throw std::logic_error("Attempt to convert to bool non-bool convertible type.");
-        }
-        
-        operator std::string(
-        ) const
-        {
-            if (is<std::string>())
-            {
-                return as<std::string>();
-            }
-            
-            if (is<std::string_view>())
-            {
-                return std::string(as<std::string_view>());
-            }
-            
-            if (is<long>())
-            {
-                return std::to_string(as<long>());
-            }
-            
-            if (is<long unsigned>())
-            {
-                return std::to_string(as<long unsigned>());
-            }
-            
-            if (is<double>())
-            {
-                return std::to_string(as<double>());
-            }
-            
-            if (is<bool>())
-            {
-                return as<bool>() ? std::string("true") : std::string("false");
-            }
-            
-            throw std::logic_error("Attempt to convert to string non-string convertible type.");
         }
         
         template<
@@ -554,7 +554,7 @@ namespace milo::app::type
             const var& a_val
         ) -> std::ostream&
         {
-            return a_ostream << std::string(a_val);
+            return a_ostream << a_val.string();
         }
     };
 }
