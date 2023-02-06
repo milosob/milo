@@ -1,17 +1,22 @@
 ## Description
 
-C++ Cryptography Library.
+Cryptography library for modern C++.
 
 Features:
 
 - Constexpr.
+- Oneliners.
+- Assembly optimized.
+- Backend dispatching based on CPU capabilities.
 - Throwing and non-throwing overloads.
-- Allocation and allocation-free interfaces, depending on the type of parameter.
-- Support for the majority of containers implementations as inputs and outputs.
-- Pointer type casting free api, no need to cast from `char*` to `unsigned char*`.
-- Can return a value of the type the user needs, specified by template parameter.
+- Allocation and allocation-free interfaces.
+- Support for the majority of container types as inputs and outputs.
+- Support for user defined container types.
+- Overloads that remove playing with pointers.
+- Pointer type casting free api, casting from `char*` to `unsigned char*` is not necessary.
+- Returns a value of the type the user needs, specified by template parameter.
 - Swapping algorithm by swapping the type.
-- Zeroing all sensitive data when destroying an algorithm instance.
+- Zeroing all sensitive data.
 
 Requirements:
 
