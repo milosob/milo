@@ -41,6 +41,7 @@ Optional:
     - If available and the library is configured to use an assembly (default yes),
       additional performance-optimized backends will be available and dispatched based on CPU capabilities.
     - If not available, the library runs in generic mode using only software backends.
+    - Currently only used when targeting `x86-64`.
 
 ### Configuration
 
