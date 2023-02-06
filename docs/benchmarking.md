@@ -193,34 +193,264 @@ Error. Missing --message-size parameter of hash-* command.
 The following examples should give a pretty good understanding of how to compose
 command line arguments to benchmark algorithms in the library.
 
-#### Benchmark hash-sha-2-256
+Environment:
 
+- `gcc version 12.2.1`
+- `nasm version 2.16.01`
+- `Linux 5.19.11-zen1-1-zen`
+- `Ryzen Threadripper PRO 3975WX`
+
+
+- `hash-sha-1-160`
+
+```shell
+./milo benchmark --cpu-clock=3500 primitive "hash-sha-1-160" --message-size=16384
 ```
+
+```json
+{
+    "benchmark": {
+        "primitive": {
+            "hash-sha-1-160": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 1.904761,
+                        "cycles_per_call": 31207.603027
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 1837.500943,
+                        "gigabytes_per_second": 1.837501
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 8916.458008
+                    }
+                },
+                "config": {
+                    "input": {
+                        "message-size": 16384
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+- `hash-sha-2-256`
+
+```shell
 ./milo benchmark --cpu-clock=3500 primitive "hash-sha-2-256" --message-size=16384
 ```
 
-#### Benchmark hash-sha-2-256 x86 extensions backend
+```json
+{
+    "benchmark": {
+        "primitive": {
+            "hash-sha-2-256": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 2.033197,
+                        "cycles_per_call": 33311.892578
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 1721.427261,
+                        "gigabytes_per_second": 1.721427
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 9517.683594
+                    }
+                },
+                "config": {
+                    "input": {
+                        "message-size": 16384
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+- `mac-poly-1305`
+
+```shell
+./milo benchmark --cpu-clock=3500 primitive "mac-poly-1305" --key-size=32 --message-size=16384
 
 ```
-./milo --advanced benchmark --cpu-clock=3500 primitive "hash-sha-2-256-hw*" --message-size=16384
+
+```json
+{
+    "benchmark": {
+        "primitive": {
+            "mac-poly-1305": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 2.422251,
+                        "cycles_per_call": 39686.158203
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 1444.937041,
+                        "gigabytes_per_second": 1.444937
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 11338.902344
+                    }
+                },
+                "config": {
+                    "input": {
+                        "message-size": 16384,
+                        "key-size": 32
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            }
+        }
+    }
+}
 ```
 
-#### Benchmark hash-sha-2-256 software backend
+- `cipher-chacha-20`
 
-```
-./milo --advanced benchmark --cpu-clock=3500 primitive "hash-sha-2-256-sw" --message-size=16384
-```
-
-#### Benchmark all hash functions
-
-```
-./milo benchmark --cpu-clock=3500 primitive "hash-*" --message-size=16384
+```shell
+./milo benchmark --cpu-clock=3500 primitive "cipher-chacha-20-*" --aad-size=1024 --bytes-size=16384
 ```
 
-#### Benchmark aead-chacha-20-poly-1305
-
+```json
+{
+    "benchmark": {
+        "primitive": {
+            "cipher-chacha-20-decrypt": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 2.064460,
+                        "cycles_per_call": 33824.112793
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 1695.358585,
+                        "gigabytes_per_second": 1.695359
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 9664.032227
+                    }
+                },
+                "config": {
+                    "input": {
+                        "bytes-size": 16384
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            },
+            "cipher-chacha-20-encrypt": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 2.067819,
+                        "cycles_per_call": 33879.145508
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 1692.604673,
+                        "gigabytes_per_second": 1.692605
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 9679.755859
+                    }
+                },
+                "config": {
+                    "input": {
+                        "bytes-size": 16384
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            }
+        }
+    }
+}
 ```
-./milo benchmark --cpu-clock=3500 primitive "aead-chacha-20-poly-1305" --aad-size=1024 --bytes-size=8192
+
+- `aead-chacha-20-poly-1305`
+
+```shell
+./milo benchmark --cpu-clock=3500 primitive "aead-chacha-20-poly-1305-*" --aad-size=1024 --bytes-size=8192
 ```
 
-TODO Example outputs and json description.
+```json
+{
+    "benchmark": {
+        "primitive": {
+            "aead-chacha-20-poly-1305-decrypt": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 4.356709,
+                        "cycles_per_call": 40151.429199
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 803.358701,
+                        "gigabytes_per_second": 0.803359
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 11471.836914
+                    }
+                },
+                "config": {
+                    "input": {
+                        "bytes-size": 8192,
+                        "aad-size": 1024
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            },
+            "aead-chacha-20-poly-1305-encrypt": {
+                "metrics": {
+                    "cpu": {
+                        "cycles_per_byte": 4.353707,
+                        "cycles_per_call": 40123.760742
+                    },
+                    "throughput": {
+                        "megabytes_per_second": 803.912679,
+                        "gigabytes_per_second": 0.803913
+                    },
+                    "duration": {
+                        "nanoseconds_per_call": 11463.931641
+                    }
+                },
+                "config": {
+                    "input": {
+                        "bytes-size": 8192,
+                        "aad-size": 1024
+                    },
+                    "benchmark": {
+                        "cpu-clock": 3500000000,
+                        "repeats-time": 1024,
+                        "repeats-warm": 128
+                    }
+                }
+            }
+        }
+    }
+}
+```
