@@ -67,7 +67,7 @@ target_include_directories(
         ${PROJECT_NAME}
         INTERFACE
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
-        $<INSTALL_INTERFACE:src/${PROJECT_NAME}>
+        $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
 
 target_sources(
