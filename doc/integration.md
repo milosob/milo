@@ -101,6 +101,11 @@ cd milo-build
 cmake ../milo -DMILO_TEST=ON -DMILO_TEST_CONSTEXPR=ON -DMILO_TEST_PRIMITIVE=ON -DMILO_APP=ON && make && ctest
 ```
 
+**If `msvc` is used do not configure library with `-DMILO_TEST_CONSTEXPR=ON` to perform constexpr tests.
+The library contains deep tests which combined with build parallelism can lead to yea, picture says it all.**
+
+![milo-test-constexpr-msvc](media/milo-test-constexpr-msvc.png)
+
 ```shell
 # Using sudo may be required if installing to /usr/local.
 cmake --install .
