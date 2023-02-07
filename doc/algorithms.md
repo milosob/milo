@@ -1,6 +1,7 @@
 ## Algorithms
 
 This file list algorithms supported by the library.
+Every algorithm supports constexpr evaluation.
 
 ### Codecs
 

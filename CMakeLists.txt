@@ -28,8 +28,8 @@ set(MILO_SRC_FILES "")
 set(MILO_ASM_FILES "")
 set(MILO_ASM_FOUND FALSE)
 
-file(GLOB_RECURSE MILO_HDR_FILES CONFIGURE_DEPENDS include/*.h)
-file(GLOB_RECURSE MILO_SRC_FILES CONFIGURE_DEPENDS include/*.cpp)
+file(GLOB_RECURSE MILO_HDR_FILES CONFIGURE_DEPENDS src/*.h)
+file(GLOB_RECURSE MILO_SRC_FILES CONFIGURE_DEPENDS src/*.cpp)
 
 if (${MILO_ASM})
     if (
@@ -40,12 +40,12 @@ if (${MILO_ASM})
         if (CMAKE_ASM_NASM_COMPILER)
             enable_language(ASM_NASM)
             set(MILO_ASM_FOUND TRUE)
-            set(CMAKE_ASM_NASM_FLAGS "-i ${PROJECT_SOURCE_DIR}/include/milo/internal/arch/x86_64")
+            set(CMAKE_ASM_NASM_FLAGS "-i ${PROJECT_SOURCE_DIR}/src/milo/internal/arch/x86_64")
             file(
                     GLOB_RECURSE MILO_ASM_FILES
                     CONFIGURE_DEPENDS
-                    include/milo/internal/arch/x86_64/*.asm
-                    include/*x86_64.asm
+                    src/milo/internal/arch/x86_64/*.asm
+                    src/*x86_64.asm
             )
             message(STATUS "[${PROJECT_NAME}] Assembler for the current target was found, NASM is available")
         else ()
@@ -65,14 +65,14 @@ endif ()
 target_include_directories(
         ${PROJECT_NAME}
         INTERFACE
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+        $<INSTALL_INTERFACE:src/${PROJECT_NAME}>
 )
 
 target_sources(
         ${PROJECT_NAME}
         PUBLIC
-        FILE_SET HEADERS BASE_DIRS include FILES ${MILO_HDR_FILES}
+        FILE_SET HEADERS BASE_DIRS src FILES ${MILO_HDR_FILES}
         PRIVATE
         ${MILO_SRC_FILES}
         ${MILO_ASM_FILES}

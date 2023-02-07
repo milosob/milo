@@ -65,20 +65,20 @@ catch (const milo::error& error)
 ```
 
 More algorithms and interfaces are available, including stateful streaming interfaces.
-Information on how to use them can be found in the [reference](docs/reference.md).
+Information on how to use them can be found in the [reference](doc/reference.md).
 
 ## Integration
 
-Integration guide is [here](docs/integration.md).
+Integration guide is [here](doc/integration.md).
 
 ## Reference
 
-Reference guide is [here](docs/reference.md).
+Reference guide is [here](doc/reference.md).
 
 ## Algorithms
 
-Algorithms index is [here](docs/algorithms.md).
+Algorithms index is [here](doc/algorithms.md).
 
 ## Benchmarking
 
-Benchmarking guide is [here](docs/benchmarking.md).
+Benchmarking guide is [here](doc/benchmarking.md).
