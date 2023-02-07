@@ -29,9 +29,13 @@ Optional:
 
 Tested with:
 
-- `clang version 14.0.6`-`x86-64-linux`
-- `gcc version 12.2.0`-`x86-64-linux`
-- `nasm version 2.16.01`-`x86-64-linux`
+- `x86-64-linux`
+    - `clang version 14.0.6`
+    - `gcc version 12.2.0`
+    - `nasm version 2.16.01`
+- `x86-64-windows-11`
+    - `msvc version 14.00.24245`
+    - `nasm version 2.16.01`
 
 ## Motivation
 
