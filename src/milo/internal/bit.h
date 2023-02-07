@@ -10,12 +10,6 @@
 
 namespace milo::internal
 {
-    /*
-     * TODO
-     *  Replace template width function with trait.
-     *  Use std::numeric_limits or CHAR_BIT.
-     */
-    
     constexpr auto
     bit_width(
         size_t a_size

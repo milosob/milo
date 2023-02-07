@@ -52,12 +52,6 @@ namespace milo::primitive::detail
             uint32_t state_eval[16];
             uint32_t state_base[16];
             
-            /*
-             * TODO
-             *  Code alignment issues in benchmarking app.
-             *  Performance drops by 0.343 cycles per byte.
-             */
-            
             for (size_t i = 0; i < 16; i += 1)
             {
                 state_base[i] = a_state_ptr[i];
