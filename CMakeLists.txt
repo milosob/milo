@@ -20,6 +20,7 @@ option(MILO_APP "Enable application." OFF)
 
 add_library(
         ${PROJECT_NAME}
+        STATIC
 )
 
 # Resolve sources.
