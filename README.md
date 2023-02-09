@@ -67,6 +67,10 @@ catch (const milo::error& error)
 More algorithms and interfaces are available, including stateful streaming interfaces.
 Information on how to use them can be found in the [reference](doc/reference.md).
 
+## Roadmap
+
+Roadmap is [here](doc/roadmap.md).
+
 ## Integration
 
 Integration guide is [here](doc/integration.md).
