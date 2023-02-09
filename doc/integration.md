@@ -106,6 +106,8 @@ The library contains deep tests which combined with build parallelism can lead t
 
 ![milo-test-constexpr-msvc](media/milo-test-constexpr-msvc.png)
 
+This problem does not occur when other compilers are used.
+
 ```shell
 # Using sudo may be required if installing to /usr/local.
 cmake --install .
