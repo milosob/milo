@@ -20,10 +20,10 @@ milo_internal_arch_x86_32_cpuid:
     mov     eax,    [esp + 16]
     mov     ecx,    [esp + 20]
     cpuid
-    mov     [r9 + 0],   eax
-    mov     [r9 + 4],   ebx
-    mov     [r9 + 8],   ecx
-    mov     [r9 + 12],  edx
+    mov     [edi + 0],   eax
+    mov     [edi + 4],   ebx
+    mov     [edi + 8],   ecx
+    mov     [edi + 12],  edx
     pop     ebx
     pop     edi
     ret

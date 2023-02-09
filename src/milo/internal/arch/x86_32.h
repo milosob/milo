@@ -21,6 +21,11 @@ namespace milo::internal
     
     #if MILO_INTERNAL_ASM && MILO_INTERNAL_ARCH_X86_32
     
+    /*
+     * This is not used.
+     * Most likely never will be.
+     */
+    
     extern "C"
     auto
     milo_internal_arch_x86_32_cpuid(
