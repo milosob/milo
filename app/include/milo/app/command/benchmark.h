@@ -88,8 +88,8 @@ namespace milo::app::command::benchmark
     ) noexcept(true) -> uint64_t
     {
         return measure(
-            options.repeats_warm,
-            options.repeats_time,
+            size_t(options.repeats_warm),
+            size_t(options.repeats_time),
             a_invocable,
             std::forward<
                 t_args
