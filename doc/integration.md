@@ -43,8 +43,6 @@ Optional:
     - If not available, the library runs in generic mode using only software backends.
     - Currently only used when targeting `x86-64`.
 
-If building on macOS two things must be taken in care
-
 ### Configuration
 
 Library configuration table.
