@@ -88,7 +88,7 @@ target_compile_definitions(
         ${PROJECT_NAME}
         PUBLIC
         $<$<BOOL:${MILO_ASM_FOUND}>:MILO_INTERNAL_ASM=true>
-        $<$<IN_LIST:$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>,linux>:MILO_INTERNAL_ABI_UNIX=true>
+        $<$<IN_LIST:$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>,linux;darwin>:MILO_INTERNAL_ABI_UNIX=true>
         $<$<IN_LIST:$<LOWER_CASE:${CMAKE_SYSTEM_NAME}>,windows>:MILO_INTERNAL_ABI_WIND=true>
 )
 
