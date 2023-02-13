@@ -86,3 +86,8 @@ Algorithms index is [here](doc/algorithms.md).
 ## Benchmarking
 
 Benchmarking guide is [here](doc/benchmarking.md).
+
+## Contact
+
+Can reach me via email address available on my [GitHub profile](https://github.com/milosob).
+Need to be logged in to see it.
