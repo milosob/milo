@@ -42,6 +42,11 @@ if (${MILO_ASM})
             enable_language(ASM_NASM)
             set(MILO_ASM_FOUND TRUE)
             set(CMAKE_ASM_NASM_FLAGS "-i ${PROJECT_SOURCE_DIR}/src/milo/internal/arch/x86_64")
+
+            if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+                set(CMAKE_ASM_NASM_FLAGS "${CMAKE_ASM_NASM_FLAGS} --gprefix _")
+            endif()
+
             file(
                     GLOB_RECURSE MILO_ASM_FILES
                     CONFIGURE_DEPENDS
