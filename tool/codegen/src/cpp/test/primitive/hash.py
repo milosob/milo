@@ -96,7 +96,7 @@ def gen(
             '',
             src.cpp.milo.gen_test_primitive_core(
                 [
-                    'milo::primitive::hash::test<t_impl>::digest',
+                    'milo::primitive::hash::test::digest<t_impl>',
                     [
                         'message,',
                         'digest'
@@ -104,11 +104,15 @@ def gen(
                 ]
             ),
             '',
-            src.cpp.milo.gen_test_primitive_macros(),
+            src.cpp.milo.gen_test_primitive_macros(
+                a_namespace='hash',
+                a_differential=True
+            ),
             '',
             src.cpp.milo.gen_test_primitive_main(
                 test_impl['cpltime'],
-                test_impl['runtime']
+                test_impl['runtime'],
+                a_differential=True
             ),
             ''
         ]
