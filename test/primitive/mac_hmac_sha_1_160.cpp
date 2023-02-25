@@ -1235,7 +1235,7 @@ test(
 {
     for (auto&& test_vector :test_vectors)
     {
-        auto result = milo::primitive::mac::test<t_impl>::digest(
+        auto result = milo::primitive::mac::test::digest<t_impl>(
             test_vector.key,
             test_vector.message,
             test_vector.digest
@@ -1256,6 +1256,7 @@ test(
 #define TEST_CPLTIME(a_impl) {static_assert(true, "cpltime error of " #a_impl);}
 #endif
 #define TEST_RUNTIME(a_impl) {volatile auto test_cb = test<a_impl>;if (test_cb() != 0){std::cerr << "runtime error of " #a_impl "\n";return 1;}}
+#define TEST_DIFFERENTIAL(a_impl_a, a_impl_b) {volatile auto test_cb = milo::primitive::mac::test::differential<a_impl_a, a_impl_b>;if (!test_cb()){std::cerr << "runtime differential error of " #a_impl_a " and " #a_impl_b "\n";return 1;}}
 
 auto
 main(
@@ -1268,6 +1269,10 @@ main(
     TEST_RUNTIME(mac_hmac_sha_1_160);
     TEST_RUNTIME(mac_hmac_sha_1_160_sw);
     TEST_RUNTIME(mac_hmac_sha_1_160_hw_x86_64_ni);
+    
+    TEST_DIFFERENTIAL(mac_hmac_sha_1_160, mac_hmac_sha_1_160_sw);
+    TEST_DIFFERENTIAL(mac_hmac_sha_1_160, mac_hmac_sha_1_160_hw_x86_64_ni);
+    TEST_DIFFERENTIAL(mac_hmac_sha_1_160_sw, mac_hmac_sha_1_160_hw_x86_64_ni);
     
     return 0;
 }

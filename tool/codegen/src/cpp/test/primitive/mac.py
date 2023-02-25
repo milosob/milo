@@ -106,7 +106,7 @@ def gen(
             '',
             src.cpp.milo.gen_test_primitive_core(
                 [
-                    'milo::primitive::mac::test<t_impl>::digest',
+                    'milo::primitive::mac::test::digest<t_impl>',
                     [
                         'key,',
                         'message,',
@@ -115,11 +115,15 @@ def gen(
                 ]
             ),
             '',
-            src.cpp.milo.gen_test_primitive_macros(),
+            src.cpp.milo.gen_test_primitive_macros(
+                a_namespace='mac',
+                a_differential=True
+            ),
             '',
             src.cpp.milo.gen_test_primitive_main(
                 test_impl['cpltime'],
-                test_impl['runtime']
+                test_impl['runtime'],
+                a_differential=True
             ),
             ''
         ]
