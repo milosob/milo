@@ -66,16 +66,16 @@ namespace milo::primitive::hash
          * This function performs differential test.
          * Two implementations are compared to check if they yield the same results.
          *
-         * @tparam t_impl_a
-         * Implementation a type.
-         * @tparam t_impl_b
-         * Implementation b type.
+         * @tparam t_impl_0
+         * Implementation 0 type.
+         * @tparam t_impl_1
+         * Implementation 1 type.
          * @return
          * True on success, otherwise returns False.
          */
         template<
-            meta::primitive::hash t_impl_a,
-            meta::primitive::hash t_impl_b
+            meta::primitive::hash t_impl_0,
+            meta::primitive::hash t_impl_1
         >
         static
         constexpr auto
@@ -84,86 +84,81 @@ namespace milo::primitive::hash
         requires
         requires
         {
-            requires t_impl_a::block_size == t_impl_b::block_size;
-            requires t_impl_a::digest_size == t_impl_b::digest_size;
+            requires t_impl_0::block_size == t_impl_1::block_size;
+            requires t_impl_0::digest_size == t_impl_1::digest_size;
         }
         {
-            using impl_0_type = t_impl_a;
-            using impl_1_type = t_impl_b;
+            using impl_0_type = t_impl_0;
+            using impl_1_type = t_impl_1;
             
-            constexpr auto block_factor = 4;
-            constexpr auto block_size = impl_0_type::block_size;
-            constexpr auto message_size = block_size * block_factor;
-            
-            char message[message_size]{};
+            constexpr auto input_size = 64 * 8;
+            char input[input_size]{};
             
             apie<impl_0_type> impl_0;
             apie<impl_1_type> impl_1;
             
             auto update_loop = [&]<typename t_impl>(
-                t_impl& a_impl,
-                size_t a_step
+                t_impl& impl,
+                size_t update_size
             )
             {
                 size_t offs = 0;
-                size_t step = a_step;
-                size_t updates = message_size / step;
+                size_t updates = input_size / update_size;
                 
-                a_impl.initialize();
+                impl.initialize();
                 
                 for (size_t j = 0; j < updates; j += 1)
                 {
-                    a_impl.update(
-                        message + offs,
-                        step
+                    impl.update(
+                        input + offs,
+                        update_size
                     );
                     
-                    offs += step;
+                    offs += update_size;
                 }
                 
-                if (offs < message_size)
+                if (offs < input_size)
                 {
-                    a_impl.update(
-                        message + offs,
-                        message_size - offs
+                    impl.update(
+                        input + offs,
+                        input_size - offs
                     );
                 }
             };
             
-            size_t step_a = 1;
-            size_t step_b = 1;
-            size_t step_grow = 3;
+            size_t grow_size = 3;
             
-            for (size_t i = 0; i < message_size; i += 1)
+            for (size_t i = 0; i < input_size; i += 1)
             {
-                while (step_a <= message_size + step_grow ||
-                       step_b <= message_size + step_grow)
+                size_t impl_0_update_size = 1;
+                size_t impl_1_update_size = 1;
+                
+                while (impl_0_update_size <= input_size + grow_size ||
+                       impl_1_update_size <= input_size + grow_size)
                 {
                     size_t temp;
                     
                     update_loop(
                         impl_0,
-                        step_a
+                        impl_0_update_size
                     );
                     
                     update_loop(
                         impl_1,
-                        step_b
+                        impl_1_update_size
                     );
                     
-                    temp = step_a;
-                    step_a = step_b;
-                    step_b = temp;
+                    temp = impl_0_update_size;
+                    impl_0_update_size = impl_1_update_size + grow_size;
+                    impl_1_update_size = temp;
                     
                     if (impl_0.digest() != impl_1.digest())
                     {
                         return false;
                     }
-                    
-                    step_a += step_grow;
                 }
                 
-                message[i] = char(i);
+                input[i] = char(i);
             }
             
             return true;
