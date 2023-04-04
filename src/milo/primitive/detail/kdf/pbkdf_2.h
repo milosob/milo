@@ -82,7 +82,8 @@ namespace milo::primitive::detail
             uint32_t a_counter
         ) noexcept(true) -> void
         {
-            uint8_t buffer[expand_size * 2];
+            uint8_t buffer_0[expand_size];
+            uint8_t buffer_1[expand_size];
             uint8_t buffer_counter[sizeof(uint32_t)];
             
             internal::memory_stor_be<uint32_t>(
@@ -105,55 +106,41 @@ namespace milo::primitive::detail
             );
             m_prf.finalize();
             m_prf.digest(
-                buffer
+                buffer_0
             );
             
             internal::memory_copy(
-                buffer + expand_size,
-                buffer,
+                buffer_1,
+                buffer_0,
                 expand_size
             );
             
-            for (size_t i = 1; i < m_iterations - 1; i += 1)
+            for (size_t i = m_iterations; i > 1; i -= 1)
             {
                 m_prf.initialize(
                     m_ikm.data(),
                     m_ikm.size()
                 );
                 m_prf.update(
-                    buffer,
+                    buffer_0,
                     expand_size
                 );
                 m_prf.finalize();
                 m_prf.digest(
-                    buffer
+                    buffer_0
                 );
                 
                 internal::memory_xor(
-                    buffer + expand_size,
-                    buffer + expand_size,
-                    buffer,
+                    buffer_1,
+                    buffer_1,
+                    buffer_0,
                     expand_size
                 );
             }
             
-            m_prf.initialize(
-                m_ikm.data(),
-                m_ikm.size()
-            );
-            m_prf.update(
-                buffer,
-                expand_size
-            );
-            m_prf.finalize();
-            m_prf.digest(
-                buffer
-            );
-            
-            internal::memory_xor(
+            internal::memory_copy(
                 a_key_ptr,
-                buffer + expand_size,
-                buffer,
+                buffer_1,
                 expand_size
             );
         }
