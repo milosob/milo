@@ -1,5 +1,5 @@
 project(
-        milo-cli
+        milo-app
         VERSION ${PROJECT_VERSION}
         LANGUAGES CXX
 )
