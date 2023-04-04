@@ -116,7 +116,7 @@ def gen(
             '',
             src.cpp.milo.gen_test_primitive_core(
                 [
-                    'milo::primitive::kdf::test<t_impl>::derive',
+                    'milo::primitive::kdf::test::derive<t_impl>',
                     [
                         'ikm,',
                         'salt,',
@@ -126,11 +126,15 @@ def gen(
                 ]
             ),
             '',
-            src.cpp.milo.gen_test_primitive_macros(),
+            src.cpp.milo.gen_test_primitive_macros(
+                a_namespace='kdf',
+                a_differential=True
+            ),
             '',
             src.cpp.milo.gen_test_primitive_main(
                 test_impl['cpltime'],
-                test_impl['runtime']
+                test_impl['runtime'],
+                a_differential=True
             ),
             ''
         ]
