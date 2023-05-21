@@ -180,11 +180,24 @@ namespace milo::internal
         
         using cpltime_override = option_impl_cpltime_suite::query_default_t<void, t_options...>;
         
-        using runtime_override = option_impl_runtime_suite::query_default_t<void, t_options...>;
+        using cpltime_selected = typename meta::args_reader<
+            t_cpltime,
+            impl_cpltime_reader,
+            chooser
+        >::type;
         
-        using cpltime_selected = typename meta::args_reader<t_cpltime, impl_cpltime_reader, chooser>::type;
+        using runtime_prefer = option_impl_runtime_suite::query_default_t<void, t_options...>;
         
-        using runtime_selected = typename meta::args_reader<t_runtime, impl_runtime_reader, chooser>::type;
+        using runtime_override = option_impl_enforce_suite::query_default_t<void, t_options...>;
+        
+        using runtime_selected = typename meta::args_reader<
+            typename meta::args_push_front<
+                t_runtime,
+                runtime_prefer
+            >::type,
+            impl_runtime_reader,
+            chooser
+        >::type;
     
     public:
         

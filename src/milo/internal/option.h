@@ -289,14 +289,6 @@ namespace milo::internal
      * Start of impl options.
      */
     
-    struct option_impl_domain_id
-    {
-    };
-    
-    using option_impl_domain_suite = option_oftype_suite<
-        option_impl_domain_id
-    >;
-    
     struct option_impl_chooser_id
     {
     };
@@ -327,5 +319,13 @@ namespace milo::internal
     
     using option_impl_runtime_suite = option_oftype_suite<
         option_impl_runtime_id
+    >;
+
+    struct option_impl_enforce_id
+    {
+    };
+    
+    using option_impl_enforce_suite = option_oftype_suite<
+        option_impl_enforce_id
     >;
 }

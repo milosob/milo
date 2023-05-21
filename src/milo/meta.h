@@ -73,6 +73,50 @@ namespace milo::meta
         );
     };
     
+    template<
+        typename t_input,
+        typename t_push
+    >
+    struct args_push_front
+    {
+        using type = decltype(
+        []<typename... t_args>(
+            args<t_args...>
+        ) constexpr noexcept(true) -> auto
+        {
+            return args<
+                t_push,
+                t_args...
+            >();
+        }
+            (
+                t_input()
+            )
+        );
+    };
+    
+    template<
+        typename t_input,
+        typename t_push
+    >
+    struct args_push_back
+    {
+        using type = decltype(
+        []<typename... t_args>(
+            args<t_args...>
+        ) constexpr noexcept(true) -> auto
+        {
+            return args<
+                t_args...,
+                t_push
+            >();
+        }
+            (
+                t_input()
+            )
+        );
+    };
+    
     template<bool t_cond, typename t_0, typename t_1>
     using conditional = std::conditional<t_cond, t_0, t_1>;
     
