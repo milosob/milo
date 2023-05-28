@@ -116,7 +116,7 @@ def gen(
             '',
             src.cpp.milo.gen_test_primitive_core(
                 [
-                    'milo::primitive::cipher::test<t_impl>::encrypt',
+                    'milo::primitive::cipher::test::encrypt<t_impl>',
                     [
                         'key,',
                         'iv,',
@@ -126,11 +126,15 @@ def gen(
                 ]
             ),
             '',
-            src.cpp.milo.gen_test_primitive_macros(),
+            src.cpp.milo.gen_test_primitive_macros(
+                a_namespace='cipher',
+                a_differential=True
+            ),
             '',
             src.cpp.milo.gen_test_primitive_main(
                 test_impl['cpltime'],
-                test_impl['runtime']
+                test_impl['runtime'],
+                a_differential=True
             ),
             ''
         ]
