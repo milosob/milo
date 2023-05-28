@@ -1183,7 +1183,10 @@ namespace milo::app::command::benchmark
                                 {"cipher-chacha-20-sw-encrypt",             primitive_cipher_encrypt<primitive::cipher_chacha_20_sw>},
                                 {"cipher-chacha-20-sw-decrypt",             primitive_cipher_decrypt<primitive::cipher_chacha_20_sw>},
                                 #if MILO_INTERNAL_ARCH_X86_64
-                                {"cipher-chacha-20-hw-x86-64-ssse-3",       primitive_cipher_decrypt<primitive::cipher_chacha_20_hw_x86_64_ssse_3>},
+                                {"cipher-chacha-20-hw-x86-64-ssse-3-encrypt",   primitive_cipher_encrypt<primitive::cipher_chacha_20_hw_x86_64_ssse_3>},
+                                {"cipher-chacha-20-hw-x86-64-ssse-3-decrypt",   primitive_cipher_decrypt<primitive::cipher_chacha_20_hw_x86_64_ssse_3>},
+                                {"cipher-chacha-20-hw-x86-64-avx-2-encrypt",    primitive_cipher_encrypt<primitive::cipher_chacha_20_hw_x86_64_avx_2>},
+                                {"cipher-chacha-20-hw-x86-64-avx-2-decrypt",    primitive_cipher_decrypt<primitive::cipher_chacha_20_hw_x86_64_avx_2>},
                                 #endif
                             }
                         )
