@@ -27,6 +27,7 @@ namespace milo::primitive::detail
                     cipher_chacha_impl_sw_ietf
                 >,
                 internal::impl_runtime<
+                    cipher_chacha_impl_hw_x86_64_avx_2_ietf,
                     cipher_chacha_impl_hw_x86_64_ssse_3_ietf,
                     cipher_chacha_impl_sw_ietf
                 >,
@@ -63,7 +64,7 @@ namespace milo::primitive::detail
         
         uint32_t m_state[16]{};
         
-        uint8_t m_buffer[block_size * 4]{};
+        uint8_t m_buffer[block_size * 8]{};
         
         size_t m_buffer_size = 0;
     
