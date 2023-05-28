@@ -8,7 +8,8 @@
             "runtime": [
                 "cipher_chacha_20",
                 "cipher_chacha_20_sw",
-                "cipher_chacha_20_hw_x86_64_ssse_3"
+                "cipher_chacha_20_hw_x86_64_ssse_3",
+                "cipher_chacha_20_hw_x86_64_avx_2"
             ]
         },
         "include": [

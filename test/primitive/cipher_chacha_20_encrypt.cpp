@@ -142,7 +142,7 @@ test(
 {
     for (auto&& test_vector :test_vectors)
     {
-        auto result = milo::primitive::cipher::test<t_impl>::encrypt(
+        auto result = milo::primitive::cipher::test::encrypt<t_impl>(
             test_vector.key,
             test_vector.iv,
             test_vector.plaintext,
@@ -164,6 +164,7 @@ test(
 #define TEST_CPLTIME(a_impl) {static_assert(true, "cpltime error of " #a_impl);}
 #endif
 #define TEST_RUNTIME(a_impl) {volatile auto test_cb = test<a_impl>;if (test_cb() != 0){std::cerr << "runtime error of " #a_impl "\n";return 1;}}
+#define TEST_DIFFERENTIAL(a_impl_a, a_impl_b) {volatile auto test_cb = milo::primitive::cipher::test::differential<a_impl_a, a_impl_b>;if (!test_cb()){std::cerr << "runtime differential error of " #a_impl_a " and " #a_impl_b "\n";return 1;}}
 
 auto
 main(
@@ -176,6 +177,14 @@ main(
     TEST_RUNTIME(cipher_chacha_20);
     TEST_RUNTIME(cipher_chacha_20_sw);
     TEST_RUNTIME(cipher_chacha_20_hw_x86_64_ssse_3);
+    TEST_RUNTIME(cipher_chacha_20_hw_x86_64_avx_2);
+    
+    TEST_DIFFERENTIAL(cipher_chacha_20, cipher_chacha_20_sw);
+    TEST_DIFFERENTIAL(cipher_chacha_20, cipher_chacha_20_hw_x86_64_ssse_3);
+    TEST_DIFFERENTIAL(cipher_chacha_20, cipher_chacha_20_hw_x86_64_avx_2);
+    TEST_DIFFERENTIAL(cipher_chacha_20_sw, cipher_chacha_20_hw_x86_64_ssse_3);
+    TEST_DIFFERENTIAL(cipher_chacha_20_sw, cipher_chacha_20_hw_x86_64_avx_2);
+    TEST_DIFFERENTIAL(cipher_chacha_20_hw_x86_64_ssse_3, cipher_chacha_20_hw_x86_64_avx_2);
     
     return 0;
 }
