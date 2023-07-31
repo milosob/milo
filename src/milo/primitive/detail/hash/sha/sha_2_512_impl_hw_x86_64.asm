@@ -11,7 +11,7 @@ bits 64
 
 ; Stack.
 %xdefine    stack_size          (8)
-%xdefine    s_state_base(i)     [rsp + stack_size + 8 * (i)]
+%xdefine    s_state(i)     [rsp + stack_size + 8 * (i)]
 %xdefine    stack_size          (stack_size + 8 * 8)
 %xdefine    s_schedule(i)       [rsp + stack_size + 8 * (i)]
 %xdefine    stack_size          (stack_size + 8 * 16)
@@ -34,6 +34,8 @@ bits 64
 %define     g_state             abi_arg_1
 %define     m_state(i)          [g_state + (i)]
 %define     g_src               abi_arg_2
+%define     m_src(i)            [g_src + (i)]
+%define     m_k(i)              [rel .constant_k + 8 * (i)]
 
 ; Aliases are selected to avoid 1st and 3rd abi arg at all and 2nd abi arg for a-h.
 
@@ -70,9 +72,6 @@ bits 64
 %endif
 
 %define     g_tmp(i)            g_tmp_ %+ %eval(i)
-
-%define     m_src(i)            [g_src + (i)]
-%define     m_k(i)              [rel .constant_k + 8 * (i)]
 
 section .text
 milo_primitive_detail_hash_sha_2_256_impl_hw_x86_64_blocks:
@@ -135,6 +134,7 @@ section .text
 
 ; Save clobbers.
     sub         rsp,            stack_size
+; TODO Use movq and xmm0-xmm5 registers. Free for both abis.
     mov         s_clobbers(0),  rbp
     mov         s_clobbers(1),  rbx
     mov         s_clobbers(2),  r12
@@ -160,14 +160,76 @@ section .text
     mov         g_h,            m_state(7)
 
 .blocks_loop:
-; Read block.
-; TODO
+; Save state.
+    mov         s_state(0),     g_a
+    mov         s_state(1),     g_b
+    mov         s_state(2),     g_c
+    mov         s_state(3),     g_d
+    mov         s_state(4),     g_e
+    mov         s_state(5),     g_f
+    mov         s_state(6),     g_g
+    mov         s_state(7),     g_h
+; Round 0.
+.round_0:
+; TODO Macro this.
+; TODO Try reordering.
+; Load first block.
+    movbe       g_tmp(0),       m_src(8 * 0)
+; Add k to h.
+    add         g_h,            m_k(0)
+    mov         g_tmp(1),       g_e
+    mov         g_tmp(2),       g_e
+    mov         g_tmp(3),       g_e
+    mov         g_tmp(4),       g_f
+; Sigma upper 1.
+    ror         g_tmp(1),       14
+    ror         g_tmp(2),       18
+    ror         g_tmp(3),       41
+    xor         g_tmp(1),       g_tmp(2)
+    xor         g_tmp(1),       g_tmp(3)
+; Ch.
+    xor         g_tmp(4),       g_g
+    and         g_tmp(4),       g_e
+    xor         g_tmp(4),       g_g
+; Add sigma upper to h.
+    add         g_h,            g_tmp(1)
+; Add schedule to h.
+    add         g_h,            g_tmp(0)
+; Add ch to h. This is now t_1. H got trashed.
+    add         g_h,            g_tmp(4)
+; TODO Below code trashes read block part.
+; TODO It is required for schedule calculation.
+; Sigma upper 0.
+    mov         g_tmp(2),       g_a
+    mov         g_tmp(3),       g_a
+    mov         g_tmp(4),       g_a
+    ror         g_tmp(2),       28
+    ror         g_tmp(3),       34
+    ror         g_tmp(4),       39
+    xor         g_tmp(2),       g_tmp(3)
+    xor         g_tmp(2),       g_tmp(4)
+; Maj.
+; TODO Read block part is trashed here.
+    mov         g_tmp(0),       g_a
+    mov         g_tmp(1),       g_a
+    xor         g_tmp(0),       g_b
+    and         g_tmp(1),       g_b
+    and         g_tmp(0),       g_c
+    xor         g_tmp(0),       g_tmp(1)
+; This is t_2.
+    add         g_tmp(0),       g_tmp(2)
+.round_0_end:
 ; Advance pointer.
     add         g_src,          c_block_size
-; Rounds.
-; TODO
 ; Merge state.
-; TODO
+    mov         g_a,            s_state(0)
+    mov         g_b,            s_state(1)
+    mov         g_c,            s_state(2)
+    mov         g_d,            s_state(3)
+    mov         g_e,            s_state(4)
+    mov         g_f,            s_state(5)
+    mov         g_g,            s_state(6)
+    mov         g_h,            s_state(7)
 
     sub         g_blocks_cnt,   1
     jnz         .blocks_loop
